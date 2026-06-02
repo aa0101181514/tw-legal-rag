@@ -146,9 +146,14 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
   `https://tlr.dr-lawbot.com/mcp`(免 OAuth、免 API key)。
 - **ChatGPT（Custom GPT Action）**：在 Actions 匯入 `https://tlr.dr-lawbot.com/openapi.yaml`,
   認證選 None。
+- **Claude Code（Skill）**：本 repo 附了一個現成的 skill 在 [`skills/tw-legal-rag/`](skills/tw-legal-rag/)，
+  把整個資料夾放到你專案的 `.claude/skills/` 即可。它包裝本 CLI 的 `pack` 子指令，
+  讓 Claude 在你問到台灣判決／法律論據時自動檢索、並要求只引用 bundle 內的
+  `citation_id`。skill 內附的 `scripts/search_judgments.py` 會自動定位執行檔，
+  並處理 Windows 上的兩個踩雷點（詳見 skill 內的 `SKILL.md`）。
 
-不論走 CLI、MCP 還是 ChatGPT Action,答案都由**你自己的 AI** 生成,本服務只提供判決
-內容與可驗證的引用連結。
+不論走 CLI、MCP、ChatGPT Action 還是 Claude Code skill,答案都由**你自己的 AI** 生成,
+本服務只提供判決內容與可驗證的引用連結。
 
 ## 架構
 
