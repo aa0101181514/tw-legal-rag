@@ -140,15 +140,17 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
 ## 其他接法（同一個 TLR 後端）
 
 這個 CLI 是接 TLR 檢索服務的方式之一。同一個後端 `tlr.dr-lawbot.com` 也支援把判決
-搜尋直接接進你的 AI 工具：
+搜尋透過 **Remote MCP** 直接接進你的 AI 工具。兩者填同一個 MCP 端點
+`https://tlr.dr-lawbot.com/mcp`,連線時會自動完成 OAuth(動態註冊,無需自行申請或
+設定 API key)：
 
-- **Claude Desktop（Remote MCP）**：Connectors → Add custom connector → URL 填
-  `https://tlr.dr-lawbot.com/mcp`(免 OAuth、免 API key)。
-- **ChatGPT（Custom GPT Action）**：在 Actions 匯入 `https://tlr.dr-lawbot.com/openapi.yaml`,
-  認證選 None。
+- **Claude（Remote MCP）**：Settings → Connectors → Add custom connector,URL 填
+  `https://tlr.dr-lawbot.com/mcp`。
+- **ChatGPT（MCP connector）**：在 Connectors 新增自訂 MCP server,URL 填
+  `https://tlr.dr-lawbot.com/mcp`。
 
-不論走 CLI、MCP 還是 ChatGPT Action,答案都由**你自己的 AI** 生成,本服務只提供判決
-內容與可驗證的引用連結。
+不論走 CLI 還是 MCP,答案都由**你自己的 AI** 生成,本服務只提供判決內容與可驗證的
+引用連結。
 
 ## 架構
 
