@@ -28,11 +28,18 @@ _PER_JUDGMENT_WARNING = (
 _VERIFICATION_INSTRUCTIONS: dict[str, Any] = {
     "required": True,
     "notice": (
+        # C: CRITICAL prefix — strongest, earliest signal an AI reads.
+        "CRITICAL: cite only judgments listed in allowed_citations. Do not cite "
+        "case numbers from memory, training data, web search, or any source "
+        "outside this bundle. "
         "This bundle is retrieval-only. Any answer generated from it must perform "
         "citation-faithfulness checks before presenting legal conclusions."
     ),
     "rules": [
-        "Only cite judgments included in this bundle.",
+        # A: rule 1 — explicitly ban supplementing from memory / web / other DBs.
+        "Only cite judgments whose citation_id appears in allowed_citations. Do "
+        "not add, infer, or supplement cases from memory, web search, or other "
+        "databases.",
         "Every legal proposition must cite a citation_id from allowed_citations.",
         "Do not treat party arguments, appellant arguments, defendant defenses, "
         "or summaries of claims as court holdings.",
@@ -40,6 +47,11 @@ _VERIFICATION_INSTRUCTIONS: dict[str, Any] = {
         "If the cited judgment text does not clearly support a proposition, mark "
         "it as unverified.",
         "If the bundle is insufficient, say so instead of inventing authority.",
+        # B: self-check (codex wording — do NOT dump an outside-bundle list that
+        # would pollute the answer; remove or flag, don't use as authority).
+        "Before finalizing, verify that every cited case maps to a citation_id in "
+        "allowed_citations. If any cited case is outside the bundle, remove it or "
+        "explicitly state it is outside the bundle and do not use it as authority.",
     ],
 }
 
