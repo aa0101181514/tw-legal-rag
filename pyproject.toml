@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "twlegalrag"
-version = "0.1.0"
+version = "1.0.0"
 description = "Open-source CLI for semantic Taiwan legal judgment retrieval — search judgments, package them for your own AI tools, and run a bundle-level citation check. Retrieval-only; does not generate or endorse legal advice."
 readme = "README.md"
 license = { text = "MIT" }
@@ -12,7 +12,7 @@ requires-python = ">=3.9"
 authors = [{ name = "Dr.Lawbot (dr-lawbot.com)" }]
 keywords = ["taiwan", "legal", "judgments", "rag", "retrieval", "semantic-search", "citation"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Legal Industry",
     "Intended Audience :: Developers",
