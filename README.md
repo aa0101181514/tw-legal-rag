@@ -95,6 +95,12 @@ twlegalrag health
 `verification_instructions`,明確要求下游模型只引用 bundle 內判決、把不支持的命題標為
 unverified。stderr 也會印一段 AI USE NOTICE。
 
+`allowed_citations` 是「可引用判決」白名單,**只含實際讀入理由全文的判決**。CLI 的
+`pack` 會讀入每一筆判決,所以兩者一致。Hosted Remote MCP 的 `search_bundle`
+(`/v1/pack`)若 `read_top < max_results`,只讀入前 `read_top` 筆;其餘判決仍列在
+`judgments` 供瀏覽,但會移到 `unread_candidates`(非 authority,不可引為法院論理)。
+詳見 [`docs/mcp-anchor.md`](docs/mcp-anchor.md)。
+
 ## 設定(選用)
 
 預設打公開端點 `https://tlr.dr-lawbot.com`,免金鑰即可使用。若服務方發給你 API key,

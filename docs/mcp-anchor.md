@@ -10,7 +10,7 @@ This applies to the hosted MCP tool surface. The open-source CLI remains retriev
 
 - `allowed_citations`: citation IDs that may be used as authority.
 - `judgments`: judgments whose reasoning excerpt was actually included in this response.
-- `unread_candidates`: candidates not included because of payload budget or unavailable full text.
+- `unread_candidates`: candidates whose reasoning was not read into the bundle — because of payload budget, unavailable/empty full text, or (for `search_bundle`) falling outside `read_top`. They carry a `reason` and must not be cited as authority.
 - `verification_instructions`: rules telling the downstream AI to cite only `allowed_citations`.
 
 Only judgments listed in `allowed_citations` should be cited for court reasoning.
@@ -27,6 +27,13 @@ This is not a guarantee that the downstream AI will be faithful. TLR cannot cont
 
 `unread_candidates` are not authority. They are included only as retrieval metadata and must not be cited as court reasoning.
 
-## Relationship to CLI bundles
+## Relationship to CLI bundles and the hosted `search_bundle`
 
-The CLI `pack` command already packages judgments and citation rules for user-provided AI tools. The hosted MCP anchor flow applies the same retrieval-only philosophy directly to Remote MCP `search_judgments`, with a stricter read whitelist: `allowed_citations` contains only judgments whose excerpts were actually included in that MCP response.
+The CLI `pack` command packages judgments and citation rules for user-provided AI tools. The CLI assembles its bundle locally and reads every returned judgment, so `allowed_citations` there always matches the included excerpts.
+
+The hosted Remote MCP applies the same read-whitelist philosophy to both tools:
+
+- `search_judgments` (anchor): the server reads the most relevant excerpts up to a payload budget; `allowed_citations` contains only judgments whose excerpts were actually included.
+- `search_bundle` (the hosted `/v1/pack`): when `read_top < max_results`, only the top `read_top` judgments are read in full. As of 2026-06-26, `allowed_citations` contains **only** those read judgments; the remaining results stay in `judgments` for listing but are moved to `unread_candidates` and must not be cited as authority. (Previously the unread results were incorrectly listed in `allowed_citations` as empty shells — fixed.)
+
+In all three surfaces the rule is the same: cite only `allowed_citations`; treat `unread_candidates` as retrieval metadata, not authority.
