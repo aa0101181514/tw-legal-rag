@@ -21,6 +21,12 @@ bundle.
 - 經過上千小時的 retrieval pipeline optimization。
 - 支援**語義模糊搜尋**——不是只靠案號、法院、關鍵字,能用自然語言查找
   「概念相近但用詞不同」的判決。
+- **案號精確調卷**(v1.1)——query 是完整裁判字號(如「最高法院112年度台上字第9號」)
+  時自動切換精確調卷,回傳該案號在庫內的文書(民/刑同號並列標注);**查無時明確
+  告知**「查無不代表該裁判不存在,不得臆測該案內容」,不會拿語義近似結果充數。
+- **審級關聯 `case_history`**(v1.1)——讀全文時附上該判決在資料庫記錄的上下審級
+  (含「主文含『廢棄』」標記)。**引用前就能看到這篇判決是否已被上級審廢棄**;
+  無上級審記錄僅代表資料庫未收錄,不代表裁判已確定。
 - 開源 CLI 本身**不內建判決庫**,也不暴露後端模型權重或向量索引;它是連接公開
   TLR retrieval endpoint 的工具。
 
@@ -91,9 +97,16 @@ twlegalrag health
 
 `pack` 產生的 bundle 包含 `query`、每筆判決的 `citation_id`(J1, J2, ...)、
 `citation_text`、`citation_url`、`doc_id`、Layer-1 listing、`fulltext_excerpt`
-(判決理由的擷取片段,有長度上限)、`allowed_citations`,以及一段
-`verification_instructions`,明確要求下游模型只引用 bundle 內判決、把不支持的命題標為
-unverified。stderr 也會印一段 AI USE NOTICE。
+(判決理由的擷取片段,有長度上限)、`case_history`(資料庫記錄的審級關聯,v1.1)、
+`allowed_citations`,以及一段 `verification_instructions`,明確要求下游模型只引用
+bundle 內判決、把不支持的命題標為 unverified。stderr 也會印一段 AI USE NOTICE。
+
+v1.1 起 `verification_instructions` 額外包含**見解層自查規則**(OPINION-LAYER
+SELF-CHECK),要求下游模型在作答後逐一回頭核對:(a) 歸給某判決的見解確實出現在
+該判決的 excerpt(不是別篇的、不是推論的);(b) 裁判結果方向(勝訴/敗訴/廢棄/駁回/
+發回)沒有顛倒;(c) `case_history` 顯示已被廢棄的判決,不得當成現行有效見解引用。
+這與 `check` 的 bundle 層級字號檢查互補——字號真實不代表見解真實,見解層的核對
+只能由**讀了全文的模型**自己做,這些規則就是把該動作寫進每個 bundle 的硬性指示。
 
 `allowed_citations` 是「可引用判決」白名單,**只含實際讀入理由全文的判決**。CLI 的
 `pack` 會讀入每一筆判決,所以兩者一致。Hosted Remote MCP 的 `search_bundle`

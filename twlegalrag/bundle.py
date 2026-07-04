@@ -52,6 +52,19 @@ _VERIFICATION_INSTRUCTIONS: dict[str, Any] = {
         "Before finalizing, verify that every cited case maps to a citation_id in "
         "allowed_citations. If any cited case is outside the bundle, remove it or "
         "explicitly state it is outside the bundle and do not use it as authority.",
+        # Opinion-layer self-check (2026-07-04): a real case number does not make
+        # the attributed holding real. These are the dominant real-world failure
+        # modes observed in citation-faithfulness audits.
+        "OPINION-LAYER SELF-CHECK — after drafting your answer, re-read each cited "
+        "judgment's excerpt and verify: (a) every holding you attribute to it "
+        "actually appears in that excerpt (not another judgment's, not inferred); "
+        "(b) the outcome direction (勝訴/敗訴/廢棄/駁回/發回) is not reversed; "
+        "(c) per case_history, a judgment overturned on appeal (upper record with "
+        "主文含「廢棄」) is not presented as currently authoritative. Delete or "
+        "explicitly mark as unverified any statement that fails these checks.",
+        "case_history is a database record of the appeal chain. Absence of an "
+        "upper-court record means NOT COLLECTED — never assert a judgment is "
+        "final (確定); say the database shows no upper-court record instead.",
     ],
 }
 
@@ -84,6 +97,8 @@ def build_bundle(query: str, judgments: list[Judgment]) -> dict[str, Any]:
                 "listing": j.snippet,            # Layer-1 structured listing line
                 "fulltext_excerpt": excerpt,
                 "fulltext_truncated": bool(j.fulltext and len(j.fulltext) > _EXCERPT_CHARS),
+                # Database-recorded appeal chain (may be None on older servers).
+                "case_history": j.case_history,
                 "warning": _PER_JUDGMENT_WARNING,
             }
         )

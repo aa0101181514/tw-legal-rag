@@ -78,6 +78,11 @@ def search(
     except RetrievalError as e:
         err.print(f"[bold red]檢索失敗:[/] {e}")
         raise typer.Exit(1)
+    # Server retrieval note (e.g. exact docket lookup / case number not found —
+    # 查無不代表該裁判不存在, 不得臆測). stderr so it never pollutes piped output.
+    _note = getattr(c, "last_search_note", None)
+    if _note:
+        err.print(f"[yellow]ℹ {_note}[/]")
     if not hits:
         console.print("[yellow]無結果[/]")
         return
@@ -159,6 +164,9 @@ def pack(
     except RetrievalError as e:
         err.print(f"[bold red]檢索失敗:[/] {e}")
         raise typer.Exit(1)
+    _note = getattr(c, "last_search_note", None)
+    if _note:
+        err.print(f"[yellow]ℹ {_note}[/]")
     if not hits:
         err.print("[yellow]檢索無結果。[/]")
         raise typer.Exit(1)

@@ -60,6 +60,12 @@ class Judgment:
     # filled in by fetch_fulltext():
     fulltext: Optional[str] = None
     cited_articles: list[str] = field(default_factory=list)
+    # Database-recorded appeal chain ({"upper": [...], "lower": [...], "note": str})
+    # or None. An upper entry whose main_flag shows 主文含「廢棄」 means this
+    # judgment was overturned on appeal — downstream models must not present it
+    # as currently authoritative. Absence of an upper record means NOT COLLECTED,
+    # never "final (確定)".
+    case_history: Optional[dict] = None
 
     @property
     def has_fulltext(self) -> bool:
@@ -157,6 +163,10 @@ class TLRClient:
             {"query": query, "search_type": search_type, "max_results": max_results},
         )
         results = data.get("results", []) if isinstance(data, dict) else []
+        # Server-side retrieval note (e.g. exact docket lookup engaged, or
+        # "case number not found — do not describe the case from memory").
+        # Exposed for the CLI to surface; None on older servers.
+        self.last_search_note = data.get("note") if isinstance(data, dict) else None
         out: list[Judgment] = []
         for r in results:
             out.append(
@@ -192,6 +202,9 @@ class TLRClient:
         judgment.fulltext = data.get("text_excerpt", "") if isinstance(data, dict) else ""
         judgment.cited_articles = (
             data.get("cited_articles") or [] if isinstance(data, dict) else []
+        )
+        judgment.case_history = (
+            data.get("case_history") if isinstance(data, dict) else None
         )
         return judgment
 

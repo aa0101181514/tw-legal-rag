@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "twlegalrag"
-version = "1.0.0"
+version = "1.1.0"
 description = "Open-source CLI for semantic Taiwan legal judgment retrieval — search judgments, package them for your own AI tools, and run a bundle-level citation check. Retrieval-only; does not generate or endorse legal advice."
 readme = "README.md"
 license = { text = "MIT" }

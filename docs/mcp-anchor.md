@@ -37,3 +37,14 @@ The hosted Remote MCP applies the same read-whitelist philosophy to both tools:
 - `search_bundle` (the hosted `/v1/pack`): when `read_top < max_results`, only the top `read_top` judgments are read in full. As of 2026-06-26, `allowed_citations` contains **only** those read judgments; the remaining results stay in `judgments` for listing but are moved to `unread_candidates` and must not be cited as authority. (Previously the unread results were incorrectly listed in `allowed_citations` as empty shells — fixed.)
 
 In all three surfaces the rule is the same: cite only `allowed_citations`; treat `unread_candidates` as retrieval metadata, not authority.
+
+## v1.1: case_history 與見解層自查
+
+- 已讀判決 (`fulltext_available=true`) 附 `case_history`:資料庫記錄的上下審級
+  (`upper` / `lower`,各項含 `citation_text`、`doc_type`、`jdate`、`main_flag`)。
+  `main_flag` 為「主文含『廢棄』」時,該判決已被上級審廢棄,不得當現行有效見解引用。
+  無上級審記錄僅代表資料庫未收錄,不代表裁判確定。
+- `verification_instructions.rules` 新增 OPINION-LAYER SELF-CHECK:要求下游模型
+  作答後逐一核對見解出處、裁判結果方向、以及 case_history 的廢棄標記。
+- `search_judgments` 對完整裁判字號自動切換精確調卷;查無時 `note` 欄位明示
+  「查無不代表不存在,不得臆測」。
