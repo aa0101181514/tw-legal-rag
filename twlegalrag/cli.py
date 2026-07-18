@@ -12,8 +12,19 @@ It does not generate legal advice and does not call any LLM.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Optional
+
+# Windows console (cp950/cp1252) cannot encode CJK / box-drawing characters and
+# crashes rich table rendering with UnicodeEncodeError (issue #12). Reconfigure
+# the standard streams to UTF-8 before any rich Console is constructed.
+if sys.platform == "win32":  # pragma: no cover
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
 
 import typer
 from rich.console import Console
