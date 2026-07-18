@@ -167,9 +167,15 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
   `https://tlr.dr-lawbot.com/mcp`。
 - **ChatGPT（MCP connector）**：在 Connectors 新增自訂 MCP server,URL 填
   `https://tlr.dr-lawbot.com/mcp`。
+- **Claude Code（Skill,走 CLI 非 MCP）**：本 repo 附了一個現成的 skill 在
+  [`skills/tw-legal-rag/`](skills/tw-legal-rag/)，把整個資料夾放到你專案的
+  `.claude/skills/` 即可。它包裝本 CLI 的 `pack` 子指令，讓 Claude 在你問到
+  台灣判決／法律論據時自動檢索、並要求只引用 bundle 內的 `citation_id`。
+  skill 內附的 `scripts/search_judgments.py` 會自動定位執行檔，並處理 Windows
+  上的兩個踩雷點（詳見 skill 內的 `SKILL.md`）。
 
-不論走 CLI 還是 MCP,答案都由**你自己的 AI** 生成,本服務只提供判決內容與可驗證的
-引用連結。
+不論走 CLI、MCP 還是 Claude Code skill,答案都由**你自己的 AI** 生成,本服務只提供
+判決內容與可驗證的引用連結。
 
 ## 架構
 
