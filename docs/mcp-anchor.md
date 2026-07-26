@@ -51,11 +51,7 @@ In all three surfaces the rule is the same: cite only `allowed_citations`; treat
 
 ## 2026-07-26: repeated-query guidance and stale-token recovery
 
-Based on a community report of client-side model degeneration (an AI client
-re-asking the same question 4-5 times accumulated several near-identical large
-bundles in its context and started looping), the hosted MCP surface added three
-mitigations. The server itself has no loop: it is stateless, retrieval-only,
-and never calls an LLM — these changes help the *client* model recover.
+Two client-facing behavior updates on the hosted MCP surface:
 
 - **Tool descriptions now instruct bundle reuse.** `search_bundle` and
   `search_judgments` tell the client: if the same question was already
@@ -65,8 +61,4 @@ and never calls an LLM — these changes help the *client* model recover.
 - **Stale `result_token` errors are now actionable.** `get_judgment_fulltext`
   with an expired or mismatched `result_token` returns HTTP 400
   `result_token_invalid_or_expired` with a hint to re-run the search once for
-  a fresh token, instead of an opaque error that could send a client into a
-  search→read→fail retry loop. (HTTP 404 for a missing document is unchanged.)
-- **Rate-limit responses include `Retry-After`.** HTTP 429 now carries a
-  `Retry-After` header so well-behaved clients back off instead of
-  immediately retrying.
+  a fresh token. (HTTP 404 for a missing document is unchanged.)

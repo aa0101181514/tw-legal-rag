@@ -47,10 +47,10 @@ bundle.
 | 案號調卷 | 依官網功能 | 精確調卷,查無時明確告知不得臆測 |
 | 審級關聯 | 需自行逐案追 | `case_history` 直接附上,含廢棄標記 |
 | 可用性 | 受官網 WAF / 改版影響,常需本地跑瀏覽器繞驗證 | hosted endpoint,零本地環境需求 |
-| 資料即時性 | 官網即時 | 語料定期同步,極新裁判可能尚未入庫 |
+| 資料即時性 | 官網即時 | 極新公告的裁判請以官網為準 |
 
 官網 wrapper 的強項是即時性與官方來源直連;本工具的強項是語義檢索品質與引用
-紀律。最後一列是誠實揭露:剛公告的裁判請以官網為準。
+紀律。
 
 > Unlike keyword-only legal search tools, Taiwan Legal RAG CLI connects to a
 > production semantic retrieval backend built on 22M+ Taiwan court judgments,
@@ -160,9 +160,8 @@ export TWLEGALRAG_TLR_API_KEY=...                          # 選用
   回答**,全部發生在你與你的 AI provider 之間,**從不經過** TLR。TLR 是 retrieval-only
   伺服器,唯一收到的是你的 AI client 決定送出的**檢索 query 字串**與後續調閱的
   判決編號。
-- **不需要註冊帳號,伺服器端沒有你的身分**：公開 REST 端點免金鑰、無帳號;
-  Remote MCP 的 OAuth token 刻意**不對應任何使用者身分**(僅為滿足 connector
-  平台的授權流程)。伺服器看到的請求無法歸戶到特定個人。
+- **不需要註冊帳號**：公開 REST 端點免金鑰即可使用,本服務沒有使用者帳號系統,
+  查詢不與任何帳號身分綁定。
 - 判決資料本身是台灣**公開**裁判書,查詢回傳的內容不含非公開個資。
 
 其餘請務必理解的網路傳輸：
