@@ -132,7 +132,18 @@ export TWLEGALRAG_TLR_API_KEY=...                          # 選用
 
 ## 隱私與資料流向
 
-請務必理解這些網路傳輸：
+先講清楚**哪些東西永遠不會經過 TLR 伺服器**：
+
+- 你與 AI(Claude / ChatGPT / 本地模型)的**完整對話內容、上傳的文件、AI 生成的
+  回答**,全部發生在你與你的 AI provider 之間,**從不經過** TLR。TLR 是 retrieval-only
+  伺服器,唯一收到的是你的 AI client 決定送出的**檢索 query 字串**與後續調閱的
+  判決編號。
+- **不需要註冊帳號,伺服器端沒有你的身分**：公開 REST 端點免金鑰、無帳號;
+  Remote MCP 的 OAuth token 刻意**不對應任何使用者身分**(僅為滿足 connector
+  平台的授權流程)。伺服器看到的請求無法歸戶到特定個人。
+- 判決資料本身是台灣**公開**裁判書,查詢回傳的內容不含非公開個資。
+
+其餘請務必理解的網路傳輸：
 
 - 你的**搜尋字詞 / 問題**會送到 TLR 檢索端點(`https://tlr.dr-lawbot.com`)以取得判決。
 - **TLR may log your query text, timestamp, IP-derived metadata, and result
