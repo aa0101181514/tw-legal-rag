@@ -48,3 +48,25 @@ In all three surfaces the rule is the same: cite only `allowed_citations`; treat
   作答後逐一核對見解出處、裁判結果方向、以及 case_history 的廢棄標記。
 - `search_judgments` 對完整裁判字號自動切換精確調卷;查無時 `note` 欄位明示
   「查無不代表不存在,不得臆測」。
+
+## 2026-07-26: repeated-query guidance and stale-token recovery
+
+Based on a community report of client-side model degeneration (an AI client
+re-asking the same question 4-5 times accumulated several near-identical large
+bundles in its context and started looping), the hosted MCP surface added three
+mitigations. The server itself has no loop: it is stateless, retrieval-only,
+and never calls an LLM — these changes help the *client* model recover.
+
+- **Tool descriptions now instruct bundle reuse.** `search_bundle` and
+  `search_judgments` tell the client: if the same question was already
+  searched earlier in the conversation, reuse those results instead of
+  repeating the identical query. Identical queries return the same judgments;
+  stacking duplicate bundles degrades answer quality.
+- **Stale `result_token` errors are now actionable.** `get_judgment_fulltext`
+  with an expired or mismatched `result_token` returns HTTP 400
+  `result_token_invalid_or_expired` with a hint to re-run the search once for
+  a fresh token, instead of an opaque error that could send a client into a
+  search→read→fail retry loop. (HTTP 404 for a missing document is unchanged.)
+- **Rate-limit responses include `Retry-After`.** HTTP 429 now carries a
+  `Retry-After` header so well-behaved clients back off instead of
+  immediately retrying.
