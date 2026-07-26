@@ -27,8 +27,30 @@ bundle.
 - **審級關聯 `case_history`**(v1.1)——讀全文時附上該判決在資料庫記錄的上下審級
   (含「主文含『廢棄』」標記)。**引用前就能看到這篇判決是否已被上級審廢棄**;
   無上級審記錄僅代表資料庫未收錄,不代表裁判已確定。
+- **引用防護是一等公民,不是事後補丁**——bundle 附 `allowed_citations` 白名單
+  (只含實際讀入理由全文的判決)、`unread_candidates` 標記(未讀入理由的判決不得
+  引為 authority)、寫進每個 bundle 的 verification instructions(含見解層自查),
+  加上 CLI 端的 bundle 層級 citation check。整套設計針對法律 AI 最痛的幻覺型態:
+  **字號真實、見解捏造**。一般檢索工具把資料丟給模型就結束,這裡把「引用紀律」
+  做成資料格式本身。
 - 開源 CLI 本身**不內建判決庫**,也不暴露後端模型權重或向量索引;它是連接公開
   TLR retrieval endpoint 的工具。
+
+### 與「官方網站 wrapper」型工具的差異
+
+另一類常見做法是即時轉打司法院/法規官網的站內搜尋。兩者定位不同,可以互補：
+
+| | 官網 wrapper | Taiwan Legal RAG |
+|---|---|---|
+| 搜尋方式 | 官方站內關鍵字搜尋 | 自建 2,200 萬筆語料的語義檢索,概念相近、用詞不同也找得到 |
+| 引用防護 | 通常無 | read-whitelist + 驗證指示 + citation check |
+| 案號調卷 | 依官網功能 | 精確調卷,查無時明確告知不得臆測 |
+| 審級關聯 | 需自行逐案追 | `case_history` 直接附上,含廢棄標記 |
+| 可用性 | 受官網 WAF / 改版影響,常需本地跑瀏覽器繞驗證 | hosted endpoint,零本地環境需求 |
+| 資料即時性 | 官網即時 | 語料定期同步,極新裁判可能尚未入庫 |
+
+官網 wrapper 的強項是即時性與官方來源直連;本工具的強項是語義檢索品質與引用
+紀律。最後一列是誠實揭露:剛公告的裁判請以官網為準。
 
 > Unlike keyword-only legal search tools, Taiwan Legal RAG CLI connects to a
 > production semantic retrieval backend built on 22M+ Taiwan court judgments,
