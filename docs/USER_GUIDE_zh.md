@@ -1,3 +1,5 @@
+**繁體中文** | [English](USER_GUIDE_en.md) | [日本語](USER_GUIDE_ja.md)
+
 # 怎麼用 AI 搜尋台灣判決（使用者指南）
 
 法律偵探的判決檢索服務（TLR）讓你**用自己的 AI**（ChatGPT / Claude / 或開發工具）

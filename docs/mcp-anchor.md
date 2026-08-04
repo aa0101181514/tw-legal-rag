@@ -1,3 +1,5 @@
+[中文](mcp-anchor.zh.md) | **English** | [日本語](mcp-anchor.ja.md)
+
 # Remote MCP Anchor Search Bundle
 
 As of 2026-06-04, the hosted Remote MCP endpoint at `https://tlr.dr-lawbot.com/mcp` uses an anchor-style response for `search_judgments`.
@@ -38,16 +40,23 @@ The hosted Remote MCP applies the same read-whitelist philosophy to both tools:
 
 In all three surfaces the rule is the same: cite only `allowed_citations`; treat `unread_candidates` as retrieval metadata, not authority.
 
-## v1.1: case_history 與見解層自查
+## v1.1: `case_history` and opinion-layer self-check
 
-- 已讀判決 (`fulltext_available=true`) 附 `case_history`:資料庫記錄的上下審級
-  (`upper` / `lower`,各項含 `citation_text`、`doc_type`、`jdate`、`main_flag`)。
-  `main_flag` 為「主文含『廢棄』」時,該判決已被上級審廢棄,不得當現行有效見解引用。
-  無上級審記錄僅代表資料庫未收錄,不代表裁判確定。
-- `verification_instructions.rules` 新增 OPINION-LAYER SELF-CHECK:要求下游模型
-  作答後逐一核對見解出處、裁判結果方向、以及 case_history 的廢棄標記。
-- `search_judgments` 對完整裁判字號自動切換精確調卷;查無時 `note` 欄位明示
-  「查無不代表不存在,不得臆測」。
+- Judgments that were read in full (`fulltext_available=true`) carry a
+  `case_history`: the database-recorded upper/lower instances (`upper` /
+  `lower`, each with `citation_text`, `doc_type`, `jdate`, `main_flag`). When
+  `main_flag` indicates 主文含「廢棄」 (the main text contains "vacated"), the
+  judgment has been vacated by a higher court and must not be cited as a
+  currently valid holding. Absence of an upper-court record only means the
+  database has no record; it does not mean the judgment is final.
+- `verification_instructions.rules` adds an OPINION-LAYER SELF-CHECK: after
+  answering, the downstream model must verify each holding's source, the
+  outcome direction (win/lose/vacated/dismissed/remanded), and the vacated
+  flags in `case_history`.
+- `search_judgments` automatically switches to exact docket lookup when the
+  query is a complete docket number; on a miss, the `note` field states
+  explicitly that "not found does not mean the judgment does not exist — do
+  not speculate."
 
 ## 2026-07-26: repeated-query guidance and stale-token recovery
 
@@ -63,51 +72,67 @@ Two client-facing behavior updates on the hosted MCP surface:
   `result_token_invalid_or_expired` with a hint to re-run the search once for
   a fresh token. (HTTP 404 for a missing document is unchanged.)
 
-## 2026-08-04: `get_legal_reference` — 行政函釋字號精確查詢（hosted MCP）
+## 2026-08-04: `get_legal_reference` — exact administrative-interpretation lookup (hosted MCP)
 
-Hosted MCP 新增第四個工具 `get_legal_reference`（另有 REST `POST /v1/legal_reference`），
-以**發文字號**精確查詢台灣主管機關行政函釋／令函，回傳全文與**效力狀態欄位**。
-開源 CLI 目前未接此工具；本工具同樣**不呼叫任何 LLM**。
+The hosted MCP adds a fourth tool, `get_legal_reference` (also available as
+REST `POST /v1/legal_reference`): an **exact lookup by issuing serial number**
+for Taiwan administrative interpretations (行政函釋/令函), returning the full
+text plus a **lifecycle status field**. The open-source CLI does not wire this
+tool yet; like everything else on this surface, it **calls no LLM**.
 
-### 用途
+### Purpose
 
-引用函釋前的存在性與效力驗證：書狀或法律分析引到「台財稅第○○號函」時，
-先查這支函釋是否存在於語料庫、資料庫是否記錄其已廢止／停止適用。
+Existence and validity verification before citing an interpretation: when a
+brief or legal analysis cites e.g. 台財稅第○○號函, check first whether that
+interpretation exists in the corpus and whether the database records it as
+repealed / no longer applied.
 
-### 輸入
+### Input
 
-- `serial`（必填）：發文字號，如 `台財稅第881945861號`、`(79)台勞保二字第17914號`。
-  伺服器端自動正規化：全半形、臺／台、「字第」／「第」、尾綴「函／令／公告」、
-  中文數字（第○六八五四號）、年度前綴（（79））等格式差異都會收斂，不需先整理格式。
-- `authority`（可選）：機關名稱提示，僅用於同字號多機關時的排序，不做過濾。
+- `serial` (required): the issuing serial number, e.g. `台財稅第881945861號`
+  or `(79)台勞保二字第17914號`. The server normalizes automatically:
+  full/half-width characters, 臺/台, 「字第」 vs 「第」, trailing 函/令/公告,
+  CJK numerals (第○六八五四號), year prefixes (（79）), and similar format
+  drift all converge — no need to clean up the format first.
+- `authority` (optional): an issuing-agency name hint, used only to rank
+  results when the same serial matches multiple agencies; it never filters.
 
-裁判字號（含「年度」，如 `112年度台上字第9號`）會被擋下並提示改用
-`search_judgments` — 函釋與判決是兩類文書，永不混排。
+Court docket numbers (which contain 年度, e.g. `112年度台上字第9號`) are
+rejected with a hint to use `search_judgments` instead — interpretations and
+judgments are two different document classes and are never mixed.
 
-### 輸出
+### Output
 
-`matches[]` 每筆含：`authority`、`serial_no`（正規化後）、`title`、`issue_date`、
-`fulltext`、`source_url`，以及效力狀態欄位：
+Each entry in `matches[]` carries `authority`, `serial_no` (normalized),
+`title`, `issue_date`, `fulltext`, `source_url`, and the lifecycle status
+field:
 
-| `status` | 意義 | 呼叫方應對 |
+| `status` | Meaning | What the caller should do |
 |---|---|---|
-| `active_verified` | 資料庫已驗證仍為現行有效 | 可引用（仍建議核對原文） |
-| `unknown` | **尚未完成效力驗證** | 不代表失效、也不代表確認有效；引用前向主管機關法規系統確認 |
-| `repealed` / `ceased` | 資料庫記錄已廢止／停止適用 | 勿引為現行有效法源 |
-| `superseded` | 已被後令取代 | 改查 `superseded_by` 所指字號 |
+| `active_verified` | database has verified it is currently in force | citable (still verify the original text) |
+| `unknown` | **validity not yet verified** | does not mean invalid, and does not mean confirmed valid; check the issuing agency's law database before relying on it |
+| `repealed` / `ceased` | database records it as repealed / no longer applied | do not cite as current law |
+| `superseded` | replaced by a later directive | look up the serial in `superseded_by` instead |
 
-`status` 為 `unknown` 時回應會附明確警語，不隱藏、也不假裝 active。彙整／修正令
-一筆記錄可能涵蓋多支字號，以其中任一支字號查詢皆可命中。
+When `status` is `unknown` the response carries an explicit warning — it is
+neither hidden nor presented as active. A consolidation/amendment directive
+may cover multiple serials in one record; looking up any one of those serials
+finds it.
 
-### 查無的語義（重要）
+### Semantics of a miss (important)
 
-查無時回傳收錄範圍聲明（收錄機關數與筆數）。**查無不代表該函釋不存在**——
-本庫非全量收錄，不得因查無而認定字號有誤或函釋係捏造。查無的字號會回饋為
-語料補收的優先參考（用量驅動涵蓋率）。
+A miss returns a coverage statement (number of agencies and documents in the
+corpus). **Not found does NOT mean the interpretation does not exist** — the
+corpus is not exhaustive, and a miss must never be used to conclude that a
+serial is wrong or that an interpretation was fabricated. Missed serials feed
+back into corpus-expansion priorities (usage-driven coverage).
 
-### 限制
+### Limits
 
-- 效力狀態為**資料庫記錄**，非法律意見；引用前請以主管機關公告為準。
-- 回傳為主管機關行政函釋／命令資料，**非法院裁判**，不得作為法院見解引用；
-  每筆回應皆附此提醒。
-- 目前僅支援字號精確查詢；函釋的語義／主題檢索尚未開放。
+- The validity status is a **database record**, not a legal opinion; before
+  citing, verify against the issuing agency's official publications.
+- Returned content is agency interpretation/directive material, **not court
+  judgments**, and must not be cited as court reasoning; every response
+  carries this reminder.
+- Only exact serial lookup is supported for now; semantic/topic search over
+  interpretations is not yet available.

@@ -1,3 +1,5 @@
+**繁體中文** | [English](README.en.md) | [日本語](README.ja.md)
+
 # Taiwan Legal RAG (`twlegalrag`)
 
 > Open-source CLI for **semantic** Taiwan legal judgment retrieval, powered by
@@ -31,7 +33,7 @@ bundle.
   (如「台財稅第881945861號」)查函釋全文與**效力狀態**(已驗證有效/未驗證/已廢止/
   停止適用/已被取代)。引用函釋前先驗存在性與效力;查無時明確告知**查無不代表
   該函釋不存在**。函釋與判決嚴格分流,不混排、不得引為法院見解。詳見
-  [`docs/mcp-anchor.md`](docs/mcp-anchor.md)。
+  [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md)。
 - **引用防護是一等公民,不是事後補丁**——bundle 附 `allowed_citations` 白名單
   (只含實際讀入理由全文的判決)、`unread_candidates` 標記(未讀入理由的判決不得
   引為 authority)、寫進每個 bundle 的 verification instructions(含見解層自查),
@@ -139,7 +141,7 @@ SELF-CHECK),要求下游模型在作答後逐一回頭核對:(a) 歸給某判決
 `pack` 會讀入每一筆判決,所以兩者一致。Hosted Remote MCP 的 `search_bundle`
 (`/v1/pack`)若 `read_top < max_results`,只讀入前 `read_top` 筆;其餘判決仍列在
 `judgments` 供瀏覽,但會移到 `unread_candidates`(非 authority,不可引為法院論理)。
-詳見 [`docs/mcp-anchor.md`](docs/mcp-anchor.md)。
+詳見 [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md)。
 
 ## 設定(選用)
 
@@ -213,7 +215,7 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
 
 Remote MCP 介面現有四個工具:`search_bundle`、`search_judgments`、
 `get_judgment_fulltext`,以及 2026-08 新增的 `get_legal_reference`(行政函釋字號
-精確查詢,見 [`docs/mcp-anchor.md`](docs/mcp-anchor.md));後者尚未接入本 CLI。
+精確查詢,見 [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md));後者尚未接入本 CLI。
 
 不論走 CLI、MCP 還是 Claude Code skill,答案都由**你自己的 AI** 生成,本服務只提供
 判決內容與可驗證的引用連結。
