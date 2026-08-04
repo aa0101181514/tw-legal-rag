@@ -1,6 +1,14 @@
-[繁體中文](README.md) | [English](README.en.md) | **日本語**
-
 # Taiwan Legal RAG (`twlegalrag`)
+
+<div align="center">
+
+### 🌐 Language / 語言 / 言語
+
+[**繁體中文**](README.md) ・ [**English**](README.en.md) ・ **日本語**
+
+</div>
+
+---
 
 > 法律偵探（Legal Detective）が構築した 2,200 万件の判決検索基盤に接続する、
 > 台湾判決の**セマンティック検索**オープンソース CLI。
@@ -37,7 +45,7 @@ Taiwan Legal RAG CLI は、法律偵探の公開 TLR エンドポイントから
   照会できます。解釈を引用する前に存在と効力を検証してください。見つからない場合は
   **「見つからない＝存在しない、ではない」**ことを明示します。行政解釈と判決は
   厳格に分離され、同一ランキングに混在せず、裁判所の見解として引用してはなりません。
-  詳細は [`docs/mcp-anchor.md`](docs/mcp-anchor.md)。
+  詳細は [`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md)。
 - **引用保護は後付けではなく第一級の設計要素** — 各バンドルには
   `allowed_citations` ホワイトリスト（理由全文を実際に読み込んだ判決のみ）、
   `unread_candidates` マーク（理由未読の判決は authority として引用不可）、
@@ -160,7 +168,7 @@ v1.1 以降、`verification_instructions` には**見解レイヤーのセルフ
 `read_top < max_results` の場合、上位 `read_top` 件のみ全文読み込みされ、残りは
 閲覧用に `judgments` に残るものの `unread_candidates` に移されます（authority では
 なく、裁判所の論理として引用不可）。詳細は
-[`docs/mcp-anchor.md`](docs/mcp-anchor.md)。
+[`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md)。
 
 ## 設定（任意）
 
@@ -245,7 +253,7 @@ CLI が使うのはバンドルレベルの 2 チェックのみです。ファ�
 Remote MCP インターフェースには現在 4 つのツールがあります：`search_bundle`、
 `search_judgments`、`get_judgment_fulltext`、そして 2026-08 追加の
 `get_legal_reference`（行政解釈の文書番号による正確検索、
-[`docs/mcp-anchor.md`](docs/mcp-anchor.md) 参照）。最後のツールはまだ本 CLI には
+[`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md) 参照）。最後のツールはまだ本 CLI には
 組み込まれていません。
 
 CLI・MCP・Claude Code skill のいずれを使っても、回答を生成するのは**あなた自身の

@@ -1,6 +1,14 @@
-[繁體中文](README.md) | **English** | [日本語](README.ja.md)
-
 # Taiwan Legal RAG (`twlegalrag`)
+
+<div align="center">
+
+### 🌐 Language / 語言 / 言語
+
+[**繁體中文**](README.md) ・ **English** ・ [**日本語**](README.ja.md)
+
+</div>
+
+---
 
 > Open-source CLI for **semantic** Taiwan legal judgment retrieval, powered by
 > Legal Detective's 22M-judgment retrieval infrastructure.
