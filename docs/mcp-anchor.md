@@ -62,3 +62,52 @@ Two client-facing behavior updates on the hosted MCP surface:
   with an expired or mismatched `result_token` returns HTTP 400
   `result_token_invalid_or_expired` with a hint to re-run the search once for
   a fresh token. (HTTP 404 for a missing document is unchanged.)
+
+## 2026-08-04: `get_legal_reference` — 行政函釋字號精確查詢（hosted MCP）
+
+Hosted MCP 新增第四個工具 `get_legal_reference`（另有 REST `POST /v1/legal_reference`），
+以**發文字號**精確查詢台灣主管機關行政函釋／令函，回傳全文與**效力狀態欄位**。
+開源 CLI 目前未接此工具；本工具同樣**不呼叫任何 LLM**。
+
+### 用途
+
+引用函釋前的存在性與效力驗證：書狀或法律分析引到「台財稅第○○號函」時，
+先查這支函釋是否存在於語料庫、資料庫是否記錄其已廢止／停止適用。
+
+### 輸入
+
+- `serial`（必填）：發文字號，如 `台財稅第881945861號`、`(79)台勞保二字第17914號`。
+  伺服器端自動正規化：全半形、臺／台、「字第」／「第」、尾綴「函／令／公告」、
+  中文數字（第○六八五四號）、年度前綴（（79））等格式差異都會收斂，不需先整理格式。
+- `authority`（可選）：機關名稱提示，僅用於同字號多機關時的排序，不做過濾。
+
+裁判字號（含「年度」，如 `112年度台上字第9號`）會被擋下並提示改用
+`search_judgments` — 函釋與判決是兩類文書，永不混排。
+
+### 輸出
+
+`matches[]` 每筆含：`authority`、`serial_no`（正規化後）、`title`、`issue_date`、
+`fulltext`、`source_url`，以及效力狀態欄位：
+
+| `status` | 意義 | 呼叫方應對 |
+|---|---|---|
+| `active_verified` | 資料庫已驗證仍為現行有效 | 可引用（仍建議核對原文） |
+| `unknown` | **尚未完成效力驗證** | 不代表失效、也不代表確認有效；引用前向主管機關法規系統確認 |
+| `repealed` / `ceased` | 資料庫記錄已廢止／停止適用 | 勿引為現行有效法源 |
+| `superseded` | 已被後令取代 | 改查 `superseded_by` 所指字號 |
+
+`status` 為 `unknown` 時回應會附明確警語，不隱藏、也不假裝 active。彙整／修正令
+一筆記錄可能涵蓋多支字號，以其中任一支字號查詢皆可命中。
+
+### 查無的語義（重要）
+
+查無時回傳收錄範圍聲明（收錄機關數與筆數）。**查無不代表該函釋不存在**——
+本庫非全量收錄，不得因查無而認定字號有誤或函釋係捏造。查無的字號會回饋為
+語料補收的優先參考（用量驅動涵蓋率）。
+
+### 限制
+
+- 效力狀態為**資料庫記錄**，非法律意見；引用前請以主管機關公告為準。
+- 回傳為主管機關行政函釋／命令資料，**非法院裁判**，不得作為法院見解引用；
+  每筆回應皆附此提醒。
+- 目前僅支援字號精確查詢；函釋的語義／主題檢索尚未開放。

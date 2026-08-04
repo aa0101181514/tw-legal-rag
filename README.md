@@ -27,6 +27,11 @@ bundle.
 - **審級關聯 `case_history`**(v1.1)——讀全文時附上該判決在資料庫記錄的上下審級
   (含「主文含『廢棄』」標記)。**引用前就能看到這篇判決是否已被上級審廢棄**;
   無上級審記錄僅代表資料庫未收錄,不代表裁判已確定。
+- **行政函釋字號精確查詢 `get_legal_reference`**(2026-08, hosted MCP)——以發文字號
+  (如「台財稅第881945861號」)查函釋全文與**效力狀態**(已驗證有效/未驗證/已廢止/
+  停止適用/已被取代)。引用函釋前先驗存在性與效力;查無時明確告知**查無不代表
+  該函釋不存在**。函釋與判決嚴格分流,不混排、不得引為法院見解。詳見
+  [`docs/mcp-anchor.md`](docs/mcp-anchor.md)。
 - **引用防護是一等公民,不是事後補丁**——bundle 附 `allowed_citations` 白名單
   (只含實際讀入理由全文的判決)、`unread_candidates` 標記(未讀入理由的判決不得
   引為 authority)、寫進每個 bundle 的 verification instructions(含見解層自查),
@@ -205,6 +210,10 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
   台灣判決／法律論據時自動檢索、並要求只引用 bundle 內的 `citation_id`。
   skill 內附的 `scripts/search_judgments.py` 會自動定位執行檔，並處理 Windows
   上的兩個踩雷點（詳見 skill 內的 `SKILL.md`）。
+
+Remote MCP 介面現有四個工具:`search_bundle`、`search_judgments`、
+`get_judgment_fulltext`,以及 2026-08 新增的 `get_legal_reference`(行政函釋字號
+精確查詢,見 [`docs/mcp-anchor.md`](docs/mcp-anchor.md));後者尚未接入本 CLI。
 
 不論走 CLI、MCP 還是 Claude Code skill,答案都由**你自己的 AI** 生成,本服務只提供
 判決內容與可驗證的引用連結。
