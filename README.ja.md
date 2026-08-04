@@ -4,7 +4,7 @@
 
 ### 🌐 Language / 語言 / 言語
 
-[**繁體中文**](README.md) ・ [**English**](README.en.md) ・ **日本語**
+[**English**](README.md) ・ [**繁體中文**](README.zh-TW.md) ・ **日本語**
 
 </div>
 
