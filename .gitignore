@@ -19,3 +19,6 @@ config.toml
 .idea/
 .vscode/
 .pytest_cache
+
+# MCP registry publishing CLI (local binary, not part of the package)
+mcp-publisher

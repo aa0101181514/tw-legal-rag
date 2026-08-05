@@ -256,6 +256,9 @@ Remote MCP インターフェースには現在 4 つのツールがあります
 [`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md) 参照）。最後のツールはまだ本 CLI には
 組み込まれていません。
 
+本サーバーは公式 [MCP Server Registry](https://registry.modelcontextprotocol.io/) に
+`io.github.aa0101181514/tw-legal-rag` として登録されています。
+
 CLI・MCP・Claude Code skill のいずれを使っても、回答を生成するのは**あなた自身の
 AI** です。本サービスが提供するのは判決コンテンツと検証可能な引用リンクのみです。
 

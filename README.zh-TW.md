@@ -225,6 +225,9 @@ Remote MCP 介面現有四個工具:`search_bundle`、`search_judgments`、
 `get_judgment_fulltext`,以及 2026-08 新增的 `get_legal_reference`(行政函釋字號
 精確查詢,見 [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md));後者尚未接入本 CLI。
 
+本服務已登錄於官方 [MCP Server Registry](https://registry.modelcontextprotocol.io/),
+名稱為 `io.github.aa0101181514/tw-legal-rag`。
+
 不論走 CLI、MCP 還是 Claude Code skill,答案都由**你自己的 AI** 生成,本服務只提供
 判決內容與可驗證的引用連結。
 
