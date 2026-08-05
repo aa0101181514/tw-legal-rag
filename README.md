@@ -4,7 +4,7 @@
 
 ### 🌐 Language / 語言 / 言語
 
-**English** ・ [**繁體中文**](README.zh-TW.md) ・ [**日本語**](README.ja.md)
+**English** ・ [**繁體中文**](https://github.com/aa0101181514/tw-legal-rag/blob/main/README.zh-TW.md) ・ [**日本語**](https://github.com/aa0101181514/tw-legal-rag/blob/main/README.ja.md)
 
 </div>
 
@@ -52,7 +52,7 @@ retrieval service that Legal Detective has been building for a long time:
   an interpretation; a miss explicitly states that **not found does not mean
   the interpretation does not exist**. Interpretations and judgments are
   strictly separated: never mixed in one ranking, and never to be cited as
-  court reasoning. See [`docs/mcp-anchor.md`](docs/mcp-anchor.md).
+  court reasoning. See [`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md).
 - **Citation protection is a first-class citizen, not an afterthought** — each
   bundle carries an `allowed_citations` whitelist (only judgments whose
   reasoning text was actually read in), `unread_candidates` markers (judgments
@@ -186,7 +186,7 @@ every judgment it returns, so the two always match. For the hosted Remote MCP
 `search_bundle` (`/v1/pack`), when `read_top < max_results`, only the top
 `read_top` judgments are read in full; the rest remain listed in `judgments`
 for browsing but are moved to `unread_candidates` (not authority; must not be
-cited as court reasoning). See [`docs/mcp-anchor.md`](docs/mcp-anchor.md).
+cited as court reasoning). See [`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md).
 
 ## Configuration (optional)
 
@@ -262,7 +262,7 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
 - **ChatGPT (MCP connector)**: add a custom MCP server in Connectors, URL
   `https://tlr.dr-lawbot.com/mcp`.
 - **Claude Code (Skill, via CLI not MCP)**: this repo ships a ready-made skill
-  in [`skills/tw-legal-rag/`](skills/tw-legal-rag/) — drop the whole folder
+  in [`skills/tw-legal-rag/`](https://github.com/aa0101181514/tw-legal-rag/blob/main/skills/tw-legal-rag/) — drop the whole folder
   into your project's `.claude/skills/`. It wraps this CLI's `pack` subcommand
   so Claude automatically retrieves judgments when you ask about Taiwan
   case law and is required to cite only in-bundle `citation_id`s. The included
@@ -272,7 +272,7 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
 The Remote MCP surface currently has four tools: `search_bundle`,
 `search_judgments`, `get_judgment_fulltext`, and `get_legal_reference` added
 in 2026-08 (exact administrative-interpretation lookup, see
-[`docs/mcp-anchor.md`](docs/mcp-anchor.md)); the last one is not wired into
+[`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md)); the last one is not wired into
 this CLI yet.
 
 Whether you go through the CLI, MCP, or the Claude Code skill, answers are
