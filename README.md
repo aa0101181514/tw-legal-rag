@@ -307,3 +307,9 @@ own use.
 ## License
 
 MIT.
+
+---
+
+<!-- MCP Server Registry ownership marker — verifies this PyPI package owns the
+     io.github.aa0101181514/* namespace. Do not remove. -->
+mcp-name: io.github.aa0101181514/tw-legal-rag
