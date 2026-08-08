@@ -53,6 +53,15 @@ retrieval service that Legal Detective has been building for a long time:
   the interpretation does not exist**. Interpretations and judgments are
   strictly separated: never mixed in one ranking, and never to be cited as
   court reasoning. See [`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md).
+- **Semantic interpretation search `search_legal_references`** (2026-08,
+  hosted MCP) — natural-language topic search over the same interpretation
+  corpus (optional agency / source-kind filters). Returns candidates with the
+  same lifecycle status field, a similarity score, and an excerpt — and
+  deliberately performs **no relevance judgment**: the calling model must
+  read each candidate, judge relevance itself, and verify text + validity via
+  `get_legal_reference` before citing. The pair closes the loop against
+  serial-number guessing: search finds real serials, exact lookup verifies
+  them.
 - **Citation protection is a first-class citizen, not an afterthought** — each
   bundle carries an `allowed_citations` whitelist (only judgments whose
   reasoning text was actually read in), `unread_candidates` markers (judgments
@@ -269,10 +278,11 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
   `scripts/search_judgments.py` auto-locates the executable and handles two
   Windows pitfalls (see the skill's `SKILL.md`).
 
-The Remote MCP surface currently has four tools: `search_bundle`,
-`search_judgments`, `get_judgment_fulltext`, and `get_legal_reference` added
-in 2026-08 (exact administrative-interpretation lookup, see
-[`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md)); the last one is not wired into
+The Remote MCP surface currently has five tools: `search_bundle`,
+`search_judgments`, `get_judgment_fulltext`, plus `get_legal_reference` and
+`search_legal_references` added in 2026-08 (exact lookup and semantic search
+over administrative interpretations, see
+[`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md)); the last two are not wired into
 this CLI yet.
 
 This server is listed in the official [MCP Server Registry](https://registry.modelcontextprotocol.io/)

@@ -134,5 +134,65 @@ back into corpus-expansion priorities (usage-driven coverage).
 - Returned content is agency interpretation/directive material, **not court
   judgments**, and must not be cited as court reasoning; every response
   carries this reminder.
-- Only exact serial lookup is supported for now; semantic/topic search over
-  interpretations is not yet available.
+- For topic/keyword exploration of interpretations, use
+  `search_legal_references` (below); this tool is the exact-lookup and
+  validity-check half of that pair.
+
+## 2026-08-08: `search_legal_references` — semantic interpretation search (hosted MCP)
+
+The hosted MCP adds a fifth tool, `search_legal_references` (also available as
+REST `POST /v1/legal_references/search`): **semantic (natural-language) search**
+over Taiwan administrative interpretations (行政函釋/令函), administrative
+orders, tax interpretations, and constitutional interpretations/judgments.
+Like everything else on this surface, it **calls no LLM** — and deliberately
+performs **no relevance judgment**: it returns semantic-similarity candidates
+and hands the judgment to the calling model.
+
+### Input
+
+- `query` (required): a natural-language topic query, e.g.
+  扣繳義務人未依限申報扣繳憑單之處罰.
+- `authority` (optional): exact issuing-agency name filter, e.g. 財政部.
+  Unlike `get_legal_reference`'s hint, this one **does filter**.
+- `source_kind` (optional): one of `administrative_interpretation` /
+  `administrative_order` / `tax_interpretation` /
+  `constitutional_interpretation` / `constitutional_judgment`.
+- `max_results` (optional, 1–10, default 5).
+
+Court docket numbers are rejected with a hint to use `search_judgments`,
+same as `get_legal_reference`.
+
+### Output
+
+Each entry in `results[]` carries `citation`, `serial_no`, `authority`,
+`title`, `issue_date`, `source_kind`, the same lifecycle `status` field as
+`get_legal_reference`, a similarity `score`, and a short `excerpt`.
+Candidates that fail the server's deterministic integrity checks (including
+records the database marks as repealed / no longer applied) are dropped and
+**counted in `rejected`** — exclusions are disclosed, never silent.
+
+### The caller-verification contract (the point of this tool)
+
+Results are **semantic-similarity candidates, not verified answers**. A high
+score does not mean the reference is relevant to your question, still in
+force, or authoritative. Before citing any candidate, the calling model must:
+
+1. read the excerpt and judge relevance itself;
+2. call `get_legal_reference` with the candidate's `serial_no` to retrieve
+   the full text and validity status (`repealed`/`ceased` → do not cite as
+   current law; `unknown` → validity unverified);
+3. quote only text that exists verbatim in the retrieved full text.
+
+The two tools are designed as a pair: `search_legal_references` finds real
+serials so the model never has to guess one from memory;
+`get_legal_reference` then verifies existence, text, and validity.
+
+### Limits
+
+- An empty result does **not** mean no relevant interpretation exists — the
+  corpus is not exhaustive and semantic search is not enumeration.
+- Returned content is agency material, **not court judgments**: never cite it
+  as court reasoning, and never mix it with judgment citations; every
+  response carries this reminder.
+- Interpretations and judgments remain strictly separated — this tool never
+  returns judgments, and judgment tools never return interpretations.

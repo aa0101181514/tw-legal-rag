@@ -123,4 +123,53 @@ Hosted MCP 新增第四個工具 `get_legal_reference`(另有 REST
 - 效力狀態為**資料庫記錄**,非法律意見;引用前請以主管機關公告為準。
 - 回傳為主管機關行政函釋/命令資料,**非法院裁判**,不得作為法院見解引用;每筆
   回應皆附此提醒。
-- 目前僅支援字號精確查詢;函釋的語義/主題檢索尚未開放。
+- 函釋的主題/關鍵字探索請用 `search_legal_references`(見下節);本工具是這對
+  工具中負責精確查證與效力核驗的一半。
+
+## 2026-08-08:`search_legal_references`:函釋語義檢索(hosted MCP)
+
+hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
+`POST /v1/legal_references/search`):以**自然語言**對台灣行政函釋/令函、
+行政命令、稅務函釋、憲法解釋/憲法法庭裁判做語義檢索。與本介面其他工具一樣
+**全程零 LLM**,且**刻意不做相關性判斷**:只回傳語義相似候選,判斷權交給
+呼叫端模型。
+
+### 輸入
+
+- `query`(必填):自然語言主題查詢,如「扣繳義務人未依限申報扣繳憑單之處罰」。
+- `authority`(可選):機關名稱精確過濾,如「財政部」。與 `get_legal_reference`
+  的 hint 不同,此參數**會過濾**。
+- `source_kind`(可選):`administrative_interpretation` /
+  `administrative_order` / `tax_interpretation` /
+  `constitutional_interpretation` / `constitutional_judgment` 之一。
+- `max_results`(可選,1–10,預設 5)。
+
+裁判字號會被拒絕並提示改用 `search_judgments`,與 `get_legal_reference` 同。
+
+### 輸出
+
+`results[]` 每筆含 `citation`、`serial_no`、`authority`、`title`、
+`issue_date`、`source_kind`、與 `get_legal_reference` 同一套效力 `status`
+欄位、相似分數 `score` 與摘錄 `excerpt`。未通過伺服器端確定性完整性檢核的
+候選(含資料庫記錄為已廢止/停止適用者)會被剔除並**計入 `rejected`**:
+剔除必揭露,絕不靜默。
+
+### 呼叫端自驗契約(本工具的核心)
+
+回傳為**語義相似候選,不是已驗證的答案**。分數高不代表與你的問題相關、
+不代表現行有效、也不代表具權威性。引用任何候選前,呼叫端模型必須:
+
+1. 閱讀摘錄,自行判斷相關性;
+2. 以候選的 `serial_no` 呼叫 `get_legal_reference` 取得全文與效力狀態
+   (`repealed`/`ceased` 勿引為現行法;`unknown` 為效力未驗證);
+3. 只引用在取回全文中逐字存在的文字。
+
+兩工具成對設計:`search_legal_references` 找到真實字號,讓模型不必憑記憶
+臆測字號;`get_legal_reference` 再驗證存在性、原文與效力。
+
+### 限制
+
+- 查無結果**不代表**不存在相關函釋:本庫非全量收錄,語義檢索亦非窮舉。
+- 回傳為主管機關資料,**非法院裁判**:不得引為法院見解,不得與判決引用
+  混排;每筆回應皆附此提醒。
+- 函釋與判決維持嚴格分流:本工具絕不回傳判決,判決工具絕不回傳函釋。
