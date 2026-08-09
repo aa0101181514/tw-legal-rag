@@ -144,10 +144,7 @@ class TLRClient:
 
     # -- public API -----------------------------------------------------------
     def health(self) -> dict:
-        try:
-            resp = self._client.get(self.base_url + _HEALTH_PATH, headers=self._headers())
-        except httpx.HTTPError as exc:
-            raise RetrievalError(f"TLR health check failed: {exc}") from exc
+        resp = self._client.get(self.base_url + _HEALTH_PATH, headers=self._headers())
         return _loads_lenient(resp.text)
 
     def search(

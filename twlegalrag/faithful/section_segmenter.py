@@ -10,8 +10,6 @@ Layer 1 依標題粗切大區塊, Layer 2 對 span 所在的局部句段判子�
   segs = segment(fulltext)          # Layer1 大區塊 list
   role = role_of_span(fulltext, span_text)  # 給一段 evidence_span, 回它所在的 section_role
 """
-from __future__ import annotations
-
 import re
 
 # ---- Layer 1: 標題粗切 (容忍全形/多半形空白) ----

@@ -13,10 +13,7 @@ from pathlib import Path
 try:
     import tomllib  # Python 3.11+
 except ModuleNotFoundError:  # pragma: no cover
-    try:
-        import tomli as tomllib
-    except ModuleNotFoundError:
-        tomllib = None
+    tomllib = None
 
 CONFIG_DIR = Path(os.environ.get("TWLEGALRAG_HOME", Path.home() / ".twlegalrag"))
 CONFIG_FILE = CONFIG_DIR / "config.toml"

@@ -270,14 +270,12 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
   `https://tlr.dr-lawbot.com/mcp`.
 - **ChatGPT (MCP connector)**: add a custom MCP server in Connectors, URL
   `https://tlr.dr-lawbot.com/mcp`.
-- **Claude Code (Skill, via CLI not MCP)**: this repo ships a ready-made skill
-  in [`skills/tw-legal-rag/`](https://github.com/aa0101181514/tw-legal-rag/blob/main/skills/tw-legal-rag/) — drop the whole folder
-  into your project's `.claude/skills/`. It wraps this CLI's `pack` subcommand
-  so Claude automatically retrieves judgments when you ask about Taiwan
-  case law and is required to cite only in-bundle `citation_id`s. The included
-  `scripts/search_judgments.py` auto-locates the executable and handles two
-  Windows pitfalls (see the skill's `SKILL.md`).
-
+- **Claude Code (skill, wraps this CLI rather than MCP)**: a ready-made skill
+  lives in [`skills/tw-legal-rag/`](https://github.com/aa0101181514/tw-legal-rag/blob/main/skills/tw-legal-rag/).
+  Copy that folder into your project's `.claude/skills/` and Claude will run
+  this CLI's `pack` subcommand whenever a question involves Taiwan case law,
+  citing only `citation_id`s that exist in the returned bundle. Setup notes
+  and Windows caveats are in the skill's `SKILL.md`.
 The Remote MCP surface currently has five tools: `search_bundle`,
 `search_judgments`, `get_judgment_fulltext`, plus `get_legal_reference` and
 `search_legal_references` added in 2026-08 (exact lookup and semantic search
