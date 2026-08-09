@@ -10,7 +10,7 @@
 
 ---
 
-> Open-source CLI for **semantic** Taiwan legal judgment retrieval, powered by
+> Source-available CLI for **semantic** Taiwan legal judgment retrieval, powered by
 > Legal Detective's 22M-judgment retrieval infrastructure.
 
 Taiwan Legal RAG CLI retrieves Taiwan court judgments from Legal Detective's
@@ -20,7 +20,7 @@ guarantee semantic faithfulness of third-party model outputs. Its built-in
 citation check only verifies whether cited judgments belong to the retrieved
 bundle.
 
-繁中：Taiwan Legal RAG CLI 是一個開源命令列工具,連接法律偵探建置的 2,200 萬筆
+繁中：Taiwan Legal RAG CLI 是一個公開原始碼命令列工具,連接法律偵探建置的 2,200 萬筆
 台灣裁判語義檢索服務,讓你能用自然語言搜尋判決,並將檢索結果帶入自己的 AI 工具使用。
 
 ## 為什麼不一樣
@@ -53,7 +53,7 @@ bundle.
   加上 CLI 端的 bundle 層級 citation check。整套設計針對法律 AI 最痛的幻覺型態:
   **字號真實、見解捏造**。一般檢索工具把資料丟給模型就結束,這裡把「引用紀律」
   做成資料格式本身。
-- 開源 CLI 本身**不內建判決庫**,也不暴露後端模型權重或向量索引;它是連接公開
+- 本 CLI **不內建判決庫**,也不暴露後端模型權重或向量索引;它是連接公開
   TLR retrieval endpoint 的工具。
 
 ### 與「官方網站 wrapper」型工具的差異
@@ -77,7 +77,7 @@ bundle.
 > enabling fuzzy concept-level search while keeping model weights, infrastructure,
 > and private indexes server-side.
 
-（措辭說明：開源的是 **CLI**,不是模型或向量庫;後端的檢索服務、模型權重、私有
+（措辭說明：公開原始碼的是 **CLI**,不是模型或向量庫;後端的檢索服務、模型權重、私有
 索引都留在伺服器端,不隨本工具公開。）
 
 ## 它做什麼 / 不做什麼
@@ -251,7 +251,7 @@ Remote MCP 介面現有五個工具:`search_bundle`、`search_judgments`、
 [檢查]  check ──► bundle 層級引用檢查 (在/不在 bundle + bundle 內引文存在性)
 ```
 
-判決庫、embedding、檢索邏輯都在伺服器端,**不在本 repo**。本 CLI 是開源客戶端
+判決庫、embedding、檢索邏輯都在伺服器端,**不在本 repo**。本 CLI 是公開原始碼的客戶端
 與引用檢查工具。
 
 ## 免責
@@ -261,4 +261,11 @@ Remote MCP 介面現有五個工具:`search_bundle`、`search_judgments`、
 
 ## License
 
-MIT.
+v2.0.0 起採 **Elastic License 2.0（ELv2）**。可自由使用、複製、修改與
+再散布,包含商業與企業內部使用,僅有兩項限制:不得將本軟體本身作為
+託管/代管服務提供給第三人,以及不得移除授權與聲明保護。
+1.2.2 以前的版本維持 MIT。
+
+託管 API 與判決語料庫從未在程式碼授權範圍內,詳見 [`TERMS.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/TERMS.md)。
+專案名稱與標識不在授權範圍,詳見 [`TRADEMARK.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/TRADEMARK.md)。
+本專案不接受外部 pull request（單一作者授權策略）,詳見 [`CONTRIBUTING.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/CONTRIBUTING.md)。

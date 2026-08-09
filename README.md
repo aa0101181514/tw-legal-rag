@@ -10,7 +10,7 @@
 
 ---
 
-> Open-source CLI for **semantic** Taiwan legal judgment retrieval, powered by
+> Source-available CLI for **semantic** Taiwan legal judgment retrieval, powered by
 > Legal Detective's 22M-judgment retrieval infrastructure.
 
 Taiwan Legal RAG CLI retrieves Taiwan court judgments from Legal Detective's
@@ -71,7 +71,7 @@ retrieval service that Legal Detective has been building for a long time:
   the most painful hallucination pattern in legal AI: **real case number,
   fabricated holding**. Ordinary retrieval tools stop at handing data to the
   model; here, citation discipline is part of the data format itself.
-- The open-source CLI **does not embed the judgment corpus** and does not
+- This CLI **does not embed the judgment corpus** and does not
   expose backend model weights or vector indexes; it is a client for the
   public TLR retrieval endpoint.
 
@@ -98,7 +98,7 @@ strength is semantic retrieval quality and citation discipline.
 > enabling fuzzy concept-level search while keeping model weights, infrastructure,
 > and private indexes server-side.
 
-(Wording note: what is open-sourced is the **CLI**, not the model or the vector
+(Wording note: what is published here is the **CLI**, not the model or the vector
 store; the backend retrieval service, model weights, and private indexes stay
 server-side and are not published with this tool.)
 
@@ -305,7 +305,7 @@ your question
 ```
 
 The judgment corpus, embeddings, and retrieval logic live server-side and are
-**not in this repo**. This CLI is the open-source client and citation-check
+**not in this repo**. This CLI is the published client and citation-check
 tool.
 
 ## Disclaimer
@@ -317,7 +317,16 @@ own use.
 
 ## License
 
-MIT.
+**Elastic License 2.0 (ELv2)** from v2.0.0. Free to use, copy, modify and
+redistribute — including commercial and internal-business use — with two
+limits: you may not offer the software itself to third parties as a hosted
+or managed service, and you may not remove license/notice protections.
+Versions up to v1.2.2 remain MIT.
+
+The hosted API and the judgment corpus were never covered by the code
+license — see [`TERMS.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/TERMS.md). Project names and logos are not licensed —
+see [`TRADEMARK.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/TRADEMARK.md). This project does not accept external pull
+requests (single-author licensing policy) — see [`CONTRIBUTING.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/CONTRIBUTING.md).
 
 ---
 
