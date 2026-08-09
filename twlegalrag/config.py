@@ -8,12 +8,19 @@ Env vars override the file.
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
-try:
-    import tomllib  # Python 3.11+
-except ModuleNotFoundError:  # pragma: no cover
-    tomllib = None
+if sys.version_info >= (3, 11):
+    import tomllib
+else:  # pragma: no cover — Python 3.9 / 3.10: stdlib tomllib not yet available
+    try:
+        import tomli as tomllib  # type: ignore[no-redef]
+    except ModuleNotFoundError:
+        # Without a TOML parser the config file is ignored (env vars still
+        # work). requires-python allows 3.9, so declare tomli for those
+        # interpreters in pyproject instead of failing at import time.
+        tomllib = None  # type: ignore[assignment]
 
 CONFIG_DIR = Path(os.environ.get("TWLEGALRAG_HOME", Path.home() / ".twlegalrag"))
 CONFIG_FILE = CONFIG_DIR / "config.toml"

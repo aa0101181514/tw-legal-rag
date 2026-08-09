@@ -74,7 +74,7 @@ def health() -> None:
 @app.command()
 def search(
     query: str = typer.Argument(..., help="搜尋字詞 (口語/關鍵字皆可)"),
-    n: int = typer.Option(5, "--n", "-n", help="結果筆數 (1-10)"),
+    n: int = typer.Option(5, "--n", "-n", min=1, max=10, help="結果筆數 (1-10)"),
     search_type: str = typer.Option("hybrid", "--type", help="hybrid | keyword | phrase"),
     read: bool = typer.Option(False, "--read", help="同時抓取判決理由全文片段 (excerpt)"),
 ) -> None:
@@ -154,7 +154,7 @@ def _print_report(rep: VerifyReport) -> None:
 @app.command()
 def pack(
     question: str = typer.Argument(..., help="你的法律問題 (白話即可)"),
-    n: int = typer.Option(5, "--n", "-n", help="檢索判決筆數 (1-10)"),
+    n: int = typer.Option(5, "--n", "-n", min=1, max=10, help="檢索判決筆數 (1-10)"),
     out: Optional[Path] = typer.Option(
         None, "--out", "-o", help="輸出 bundle JSON 路徑 (預設印到 stdout)"
     ),
@@ -208,7 +208,19 @@ def check(
     except Exception as e:
         err.print(f"[bold red]讀取 bundle 失敗:[/] {e}")
         raise typer.Exit(1)
-    answer = answer_path.read_text(encoding="utf-8")
+    # Refuse files that are not a twlegalrag bundle: without this, any JSON
+    # "passes" with 0 citations, which looks like a successful check.
+    if not isinstance(data, dict) or not str(data.get("schema", "")).startswith("twlegalrag.bundle/"):
+        err.print(
+            "[bold red]不是 twlegalrag bundle:[/] 檔案缺少 schema 標記 "
+            "(應為 pack 指令的輸出)。"
+        )
+        raise typer.Exit(1)
+    try:
+        answer = answer_path.read_text(encoding="utf-8")
+    except OSError as e:
+        err.print(f"[bold red]讀取答案檔失敗:[/] {e}")
+        raise typer.Exit(1)
     # Rebuild Judgment objects from the bundle so the checker has doc_id + fulltext.
     from .retrieval import Judgment
     hits = [
