@@ -198,19 +198,16 @@ serials so the model never has to guess one from memory;
   returns judgments, and judgment tools never return interpretations.
 
 
-## 2026-08-20 hosted-service update (search_bundle / get_judgment_fulltext)
+## 2026-08-20 update (search_bundle / get_judgment_fulltext)
 
-- `search_bundle` responses now carry a top-level `result_token`: any doc_id in
-  the bundle (including unread_candidates) can be read via
+- `search_bundle` responses carry a top-level `result_token`: any doc_id in the
+  bundle (including `unread_candidates`) can be read via
   `get_judgment_fulltext`. The read-whitelist discipline is unchanged — an
   unread judgment becomes citable only after actually reading it.
-- Each judgments[] entry now carries `hit_excerpt` (the matched passage, with
-  `<em>` marks). `listing` remains the Layer-1 structured line and
-  `fulltext_excerpt` remains the reasoning-text window; the three serve
-  different purposes.
+- `judgments[]` entries carry `hit_excerpt` (matched-passage preview). Quote
+  from the full reasoning text, never from this field alone.
 - `get_judgment_fulltext` accepts `excerpt_offset` and returns
-  `excerpt_offset` / `fulltext_total_chars`; page with the offset while
-  `fulltext_truncated=true`. Never conclude a topic is absent from the first
-  window alone.
-- `keyword` / `phrase` modes now rank by BM25 with all-terms-AND semantics and
-  return empty on zero hits.
+  `fulltext_total_chars`; page with the offset while `fulltext_truncated=true`.
+  Never conclude a topic is absent from the first window alone.
+- Lexical modes (`keyword` / `phrase`) now rank by relevance and return empty
+  on zero hits.

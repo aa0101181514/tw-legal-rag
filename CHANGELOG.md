@@ -2,17 +2,14 @@
 
 ## Hosted service 2026-08-20 (no CLI release)
 
-Server-side update to the hosted TLR endpoint; documented here because it
-changes the wire responses this CLI and the Remote MCP tools consume:
+Server-side update to the hosted TLR endpoint (all additive; existing clients
+keep working unchanged):
 
 - `search_bundle` responses carry a top-level `result_token`.
-- Every search/bundle result carries `hit_excerpt` (matched passage).
+- Results carry `hit_excerpt` (matched-passage preview).
 - `get_judgment_fulltext` accepts `excerpt_offset` (paging) and returns
   `fulltext_total_chars`.
-- `keyword` / `phrase` search modes now rank by BM25 relevance
-  (all-terms-AND, empty on zero hits).
-
-All additive; existing clients keep working unchanged.
+- Lexical search modes (`keyword` / `phrase`) improved.
 
 ## v2.0.0 (2026-08-09)
 

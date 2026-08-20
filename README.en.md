@@ -116,60 +116,33 @@ interpretation, including historical names of reorganized agencies.
 | **合計** | **74,656** |
 
 
-## Why it is different## Why it is different
+## Why it is different
 
 This is not a generic keyword judgment search tool. It connects to the TLR
 retrieval service that Legal Detective has been building for a long time:
 
-- About **22 million** Taiwan court decisions, structurally processed and
-  vectorized.
-- Thousands of hours of retrieval pipeline optimization.
-- **Semantic fuzzy search** — not limited to docket numbers, court names, or
-  keywords; you can use natural language to find judgments that are
-  "conceptually similar but worded differently."
-- **Exact docket lookup** (v1.1) — when the query is a complete Taiwan docket
-  number (e.g. 最高法院112年度台上字第9號), the tool automatically switches to
-  exact lookup and returns that case's own documents (civil/criminal cases
-  sharing the same number are listed side by side with labels). **When nothing
-  is found it says so explicitly**: "not found does not mean the judgment does
-  not exist; do not speculate about the case" — it never pads the result with
-  semantically similar cases.
-- **Appeal chain `case_history`** (v1.1) — when reading a judgment's full text,
-  the database-recorded upper/lower instances are attached (including a flag
-  for 主文含「廢棄」, i.e. the holding was vacated on appeal). **You can see
-  whether a judgment has been vacated by a higher court before citing it.**
-  Absence of an upper-court record only means the database has no record; it
-  does not mean the judgment is final.
-- **Exact administrative-interpretation lookup `get_legal_reference`**
-  (2026-08, hosted MCP) — look up an administrative interpretation (函釋) by
-  its issuing serial number (e.g. 台財稅第881945861號) and get its full text
-  plus a **lifecycle status** (verified-active / unverified / repealed /
-  no-longer-applied / superseded). Verify existence and validity before citing
-  an interpretation; a miss explicitly states that **not found does not mean
-  the interpretation does not exist**. Interpretations and judgments are
-  strictly separated: never mixed in one ranking, and never to be cited as
-  court reasoning. See [`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md).
-- **Semantic interpretation search `search_legal_references`** (2026-08,
-  hosted MCP) — natural-language topic search over the same interpretation
-  corpus (optional agency / source-kind filters). Returns candidates with the
-  same lifecycle status field, a similarity score, and an excerpt — and
-  deliberately performs **no relevance judgment**: the calling model must
-  read each candidate, judge relevance itself, and verify text + validity via
-  `get_legal_reference` before citing. The pair closes the loop against
-  serial-number guessing: search finds real serials, exact lookup verifies
-  them.
-- **Citation protection is a first-class citizen, not an afterthought** — each
-  bundle carries an `allowed_citations` whitelist (only judgments whose
-  reasoning text was actually read in), `unread_candidates` markers (judgments
-  whose reasoning was not read must not be cited as authority), verification
-  instructions written into every bundle (including opinion-layer self-check),
-  plus a bundle-level citation check on the CLI side. The whole design targets
-  the most painful hallucination pattern in legal AI: **real case number,
-  fabricated holding**. Ordinary retrieval tools stop at handing data to the
-  model; here, citation discipline is part of the data format itself.
-- This CLI **does not embed the judgment corpus** and does not
-  expose backend model weights or vector indexes; it is a client for the
-  public TLR retrieval endpoint.
+- **22,519,615** Taiwan court decisions (as of 2026-08-20), structurally
+  processed and vectorized.
+- **Semantic fuzzy search** — natural-language queries find judgments that are
+  "conceptually similar but worded differently"; lexical exact-match modes are
+  available for technical vocabulary.
+- **Exact docket lookup** — a complete docket number switches to exact lookup
+  automatically; a miss is reported honestly ("not found does not mean the
+  judgment does not exist"), never padded with similar cases.
+- **Appeal chain `case_history`** — each judgment carries its recorded
+  upper/lower instances with 主文 "廢棄/駁回" flags, so you can see **before
+  citing** whether a judgment has been overturned.
+- **Paired interpretation tools** — exact serial lookup (with validity status)
+  and semantic search over administrative interpretations; interpretations and
+  judgments are strictly separated. See
+  [`docs/mcp-anchor.md`](docs/mcp-anchor.md).
+- **Citation safeguards are first-class** — `allowed_citations` read-whitelist,
+  `unread_candidates` markers, per-bundle verification instructions, plus the
+  CLI-side citation check — all aimed at legal AI's worst hallucination mode:
+  **real docket number, fabricated holding**.
+- This CLI ships **no judgment database** and exposes no model weights, vector
+  indexes, or retrieval-pipeline internals; it is a client for the public TLR
+  retrieval endpoint.
 
 ### Compared with "official-website wrapper" tools
 
@@ -356,24 +329,17 @@ list as a feature list. See `twlegalrag/faithful/VENDORED.md`.
 
 ## 2026-08-20 hosted-service update (MCP / REST)
 
-- `search_bundle` responses now carry a top-level **`result_token`**, usable with
-  `get_judgment_fulltext` for any `doc_id` in the bundle (previously only
-  `search_judgments` minted tokens).
-- Every result now carries **`hit_excerpt`** — the actual matched passage
-  (semantic hit chunk or lexical highlight, with `<em>` marks), so *why* a
-  judgment matched is directly visible. Quote from the full reasoning text, not
-  from this field.
-- `get_judgment_fulltext` gains an **`excerpt_offset`** parameter plus
-  `fulltext_total_chars`: page through long judgments window by window
-  (~15,000 chars each); `fulltext_truncated=true` means there is more — late
-  sections (e.g. evidence-admissibility discussions) are no longer unreachable.
-- `search_type` **`keyword` / `phrase`** modes now rank by BM25 relevance with
-  all-terms-AND semantics and honestly return empty on zero hits — suited to
-  precise technical vocabulary; conceptual questions should still use the
-  default `hybrid`.
+- Bundle responses carry a `result_token`, so any judgment in the bundle can be
+  read in full directly.
+- Every result carries `hit_excerpt` (a preview of the matched passage); quote
+  from the full reasoning text, not from this field.
+- `get_judgment_fulltext` supports `excerpt_offset` paging — long judgments can
+  be read to the end.
+- Lexical search modes (`search_type: keyword` / `phrase`) improved for precise
+  technical vocabulary; conceptual questions should still use the default
+  `hybrid`.
 
-These are server-side capabilities, live now on REST and Remote MCP; CLI
-wrappers for the new parameters will follow in a later release.
+Live now on REST and Remote MCP.
 
 ## Other ways to connect (same TLR backend)
 
