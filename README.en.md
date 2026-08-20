@@ -23,11 +23,13 @@ bundle.
 ## Data coverage (as of 2026-08-20, counted directly from the production database)
 
 | Corpus | Size | Access |
-|---|---|---|
+|---|---:|---|
 | **Court judgments** (all Taiwan court levels) | **22,519,615** | semantic + lexical search + exact docket lookup; daily incremental sync from Judicial Yuan open data |
 | Appeal-chain relations | 4,510,000+ | attached as `case_history` per judgment, with 主文 "廢棄/駁回" flags |
-| Administrative interpretations (行政函釋/令函) | 75,500+ | exact serial lookup + semantic search (hosted MCP) |
-| Tax interpretations | 9,000+ | same as above |
+| Administrative interpretations (行政函釋/令函) | 74,656 | exact serial lookup + semantic search (hosted MCP); per-agency detail below |
+| Judicial Yuan Grand Justices interpretations (大法官解釋) | 813 | same as above |
+| Constitutional Court decisions (憲法法庭裁判) | 57 | same as above |
+| Tax interpretations (財政部) | 9,093 | same as above |
 | Interpretation validity ledger | 50,800+ | repealed / ceased / superseded status, checked before citing |
 | Labour arbitration decisions (勞動部裁決委員會) | 400 | surfaced alongside labour queries, explicitly labelled as non-court decisions |
 | Statutes | 11,794 laws / 236,733 articles | searchable on [dr-lawbot.com](https://dr-lawbot.com) |
@@ -36,7 +38,85 @@ Judgments sync daily (Judicial Yuan open data lags publication by a few days;
 for very recent decisions consult the official site). Numbers above are taken
 directly from the production database on the stated date, not estimates.
 
-## Why it is different
+### Judgment detail (by court level / case category)
+
+| 法院層級 | 筆數 |
+|---|---:|
+| 地方法院 | 16,686,158 |
+| 地方法院簡易庭 | 3,268,495 |
+| 高等法院及分院 | 1,328,661 |
+| 最高法院 | 399,290 |
+| 高等行政法院 | 200,600 |
+| 最高行政法院 | 122,964 |
+| 地方行政訴訟庭 | 78,891 |
+| 智慧財產及商業法院 | 23,678 |
+| 高雄少年及家事法院 | 22,113 |
+| 其他專業法庭・委員會 | 32,250 |
+| 未帶法院代碼欄位（計入總數，不列層級） | 356,515 |
+| **合計** | **22,519,615** |
+
+| 案件類別 | 筆數 |
+|---|---:|
+| 民事 | 14,232,712 |
+| 刑事 | 7,332,321 |
+| 行政 | 573,417 |
+| 其他 | 24,650 |
+
+### Administrative interpretations by issuing agency (74,656 total)
+
+Agency names are kept in their official Chinese form as recorded on each
+interpretation, including historical names of reorganized agencies.
+
+| Agency | Count |
+|---|---:|
+| 財政部 | 10,602 |
+| 內政部國土管理署 | 8,769 |
+| 經濟部智慧財產局 | 7,161 |
+| 法務部 | 7,064 |
+| 勞動部 | 6,257 |
+| 行政院環境保護署 | 4,463 |
+| 行政院公共工程委員會 | 4,104 |
+| 銓敘部 | 3,988 |
+| 經濟部 | 3,118 |
+| 農業部 | 3,057 |
+| 金管會 | 2,815 |
+| 內政部 | 2,648 |
+| 前司法行政部 | 1,432 |
+| 法務部行政執行署 | 1,410 |
+| 內政部戶政司 | 1,391 |
+| 公務人員保障暨培訓委員會 | 684 |
+| 主計總處 | 669 |
+| 國科會 | 567 |
+| 文化部文化資產局 | 561 |
+| 農業部水保署 | 543 |
+| 司法行政部 | 433 |
+| 考選部 | 429 |
+| 人事行政總處 | 322 |
+| 核能安全委員會 | 227 |
+| 原住民族委員會 | 224 |
+| 海洋委員會 | 213 |
+| 公平交易委員會 | 204 |
+| 文化部 | 203 |
+| 法務部矯正署 | 167 |
+| 中央選舉委員會 | 112 |
+| 農業部林業及自然保育署 | 103 |
+| 客家委員會 | 97 |
+| 國家發展委員會 | 86 |
+| 考試院 | 85 |
+| 個人資料保護委員會籌備處 | 73 |
+| 故宮博物院 | 55 |
+| 環境部 | 46 |
+| 臺灣高等法院檢察署 | 41 |
+| 法務部政風司 | 37 |
+| 法務部廉政署 | 32 |
+| 司法院 | 28 |
+| 經濟部能源署 | 28 |
+| 法務部調查局 | 20 |
+| 其他 35 個機關（各未滿 20 筆） | 88 |
+| **合計** | **74,656** |
+
+
+## Why it is different## Why it is different
 
 This is not a generic keyword judgment search tool. It connects to the TLR
 retrieval service that Legal Detective has been building for a long time:
