@@ -1,7 +1,7 @@
 # Trademark Policy
 
 The `LICENSE` covers the **code**. It does not license the project's names
-or branding. "TW Legal RAG", "tw-legal-rag", "twlegalrag", "Dr.Lawbot", and
+or branding. "TW Legal RAG", "tw-legal-rag", "twlegalrag", "Dr.Legal", and
 the associated logos identify this project and its hosted service, and
 remain the exclusive property of the licensor.
 
@@ -29,7 +29,7 @@ via dr-lawbot.com.
 # 商標政策（繁體中文）
 
 `LICENSE` 授權的是**程式碼**，不包含專案名稱與品牌。「TW Legal RAG」、
-「tw-legal-rag」、「twlegalrag」、「Dr.Lawbot」及相關標識用於識別本專案
+「tw-legal-rag」、「twlegalrag」、「Dr.Legal」及相關標識用於識別本專案
 與其託管服務，權利由授權人保留。
 
 **你可以：**
