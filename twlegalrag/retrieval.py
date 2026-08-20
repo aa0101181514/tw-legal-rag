@@ -36,6 +36,9 @@ import httpx
 DEFAULT_BASE_URL = "https://tlr.dr-lawbot.com"
 _SEARCH_PATH = "/v1/search"
 _FULLTEXT_PATH = "/v1/fulltext"
+# v2.1 paging safety caps: at most this many windows / total chars per judgment.
+_MAX_FULLTEXT_PAGES = 6
+_MAX_FULLTEXT_CHARS = 90_000
 _HEALTH_PATH = "/v1/health"
 
 
@@ -66,6 +69,13 @@ class Judgment:
     # as currently authoritative. Absence of an upper record means NOT COLLECTED,
     # never "final (確定)".
     case_history: Optional[dict] = None
+    # v2.1 (2026-08-20 server): preview of the matched passage (why this hit
+    # matched). Never a substitute for reading the full reasoning text.
+    hit_excerpt: Optional[str] = None
+    # v2.1: total reasoning-text length reported by the server, and whether the
+    # paged fetch read it to the end. None/True on older servers.
+    fulltext_total_chars: Optional[int] = None
+    fulltext_complete: bool = True
 
     @property
     def has_fulltext(self) -> bool:
@@ -186,6 +196,7 @@ class TLRClient:
                     citation_markdown=r.get("citation_markdown", ""),
                     result_token=r.get("result_token", ""),
                     case_category=r.get("case_category"),
+                    hit_excerpt=r.get("hit_excerpt") or None,
                 )
             )
         return out
@@ -200,17 +211,51 @@ class TLRClient:
             raise RetrievalError(
                 f"{judgment.doc_id}: no result_token (fetch via search() first)."
             )
-        data = self._post(
-            _FULLTEXT_PATH,
-            {"doc_id": judgment.doc_id, "result_token": judgment.result_token},
-        )
-        judgment.fulltext = data.get("text_excerpt", "") if isinstance(data, dict) else ""
+        payload = {"doc_id": judgment.doc_id, "result_token": judgment.result_token}
+        data = self._post(_FULLTEXT_PATH, payload)
+        text = data.get("text_excerpt", "") if isinstance(data, dict) else ""
+
+        # v2.1: page through long judgments. Servers from 2026-08-20 report
+        # ``fulltext_truncated`` and accept ``excerpt_offset``; older servers
+        # omit both, so this loop never runs and behavior is unchanged.
+        # Each window's text_excerpt repeats the citation header (up to the
+        # first blank line) — strip it from continuation windows before
+        # concatenating, and advance the offset by the raw window length.
+        if isinstance(data, dict) and data.get("fulltext_truncated") is True and text:
+            parts = text.split("\n\n", 1)
+            header, body = (parts[0] + "\n\n", parts[1]) if len(parts) == 2 else ("", text)
+            offset = int(data.get("excerpt_offset") or 0) + len(body)
+            pages = 1
+            while (
+                data.get("fulltext_truncated") is True
+                and pages < _MAX_FULLTEXT_PAGES
+                and len(body) < _MAX_FULLTEXT_CHARS
+            ):
+                try:
+                    data = self._post(_FULLTEXT_PATH, {**payload, "excerpt_offset": offset})
+                except RetrievalError:
+                    break  # keep what we have; fulltext_complete stays False
+                if not isinstance(data, dict):
+                    break
+                nxt = data.get("text_excerpt", "")
+                nxt_body = nxt.split("\n\n", 1)[1] if "\n\n" in nxt else nxt
+                if not nxt_body:
+                    break
+                body += nxt_body
+                offset += len(nxt_body)
+                pages += 1
+            text = header + body
+
+        judgment.fulltext = text
         judgment.cited_articles = (
             data.get("cited_articles") or [] if isinstance(data, dict) else []
         )
         judgment.case_history = (
             data.get("case_history") if isinstance(data, dict) else None
         )
+        if isinstance(data, dict):
+            judgment.fulltext_total_chars = data.get("fulltext_total_chars")
+            judgment.fulltext_complete = data.get("fulltext_truncated") is not True
         return judgment
 
     def search_and_read(

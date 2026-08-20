@@ -339,7 +339,9 @@ list as a feature list. See `twlegalrag/faithful/VENDORED.md`.
   technical vocabulary; conceptual questions should still use the default
   `hybrid`.
 
-Live now on REST and Remote MCP.
+Live now on REST and Remote MCP. CLI **v2.1.0** follows suit: `pack` pages
+through long judgments to the end (per-judgment bundle budget doubled) and
+carries `hit_excerpt` into bundles.
 
 ## Other ways to connect (same TLR backend)
 

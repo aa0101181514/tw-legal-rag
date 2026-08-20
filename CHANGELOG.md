@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.1.0 (2026-08-20)
+
+CLI support for the 2026-08-20 hosted-service capabilities:
+
+- **`pack` reads long judgments to the end.** `fetch_fulltext` now pages
+  through the server's excerpt windows (`excerpt_offset`), so late sections of
+  long judgments are no longer cut off. Older servers: single window, behavior
+  unchanged.
+- **Per-judgment bundle budget doubled** (6,000 → 12,000 chars) to carry the
+  extra text; bundles gain `fulltext_total_chars` so downstream models know
+  how much of the judgment they received.
+- **`hit_excerpt` in bundles** — the matched-passage preview returned by the
+  server is included per judgment (never a substitute for the reasoning text).
+- New `Judgment` fields: `hit_excerpt`, `fulltext_total_chars`,
+  `fulltext_complete`.
+
 ## Hosted service 2026-08-20 (no CLI release)
 
 Server-side update to the hosted TLR endpoint (all additive; existing clients

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "twlegalrag"
-version = "2.0.0"
+version = "2.1.0"
 description = "Source-available CLI for semantic Taiwan legal judgment retrieval — search judgments, package them for your own AI tools, and run a bundle-level citation check. Retrieval-only; does not generate or endorse legal advice."
 readme = "README.md"
 license = { text = "Elastic-2.0" }

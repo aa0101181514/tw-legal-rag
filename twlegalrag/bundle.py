@@ -18,7 +18,10 @@ from .retrieval import Judgment
 
 # Per-judgment full-text budget included in the bundle. Keeps total size
 # reasonable for context windows while preserving the court's reasoning.
-_EXCERPT_CHARS = 6000
+# v2.1: doubled — fetch_fulltext now pages through long judgments, so the
+# bundle can carry late sections (e.g. evidence discussions) that used to be
+# cut off. Modern context windows absorb this comfortably.
+_EXCERPT_CHARS = 12000
 
 _PER_JUDGMENT_WARNING = (
     "Use only the court's reasoning as authority. Do not quote party arguments, "
@@ -95,8 +98,15 @@ def build_bundle(query: str, judgments: list[Judgment]) -> dict[str, Any]:
                 "case_category": j.case_category,
                 "cited_articles": j.cited_articles,
                 "listing": j.snippet,            # Layer-1 structured listing line
+                # v2.1: matched-passage preview from the server (may be None on
+                # older servers). Never a substitute for the reasoning text.
+                "hit_excerpt": j.hit_excerpt,
                 "fulltext_excerpt": excerpt,
-                "fulltext_truncated": bool(j.fulltext and len(j.fulltext) > _EXCERPT_CHARS),
+                "fulltext_truncated": (
+                    bool(j.fulltext and len(j.fulltext) > _EXCERPT_CHARS)
+                    or not getattr(j, "fulltext_complete", True)
+                ),
+                "fulltext_total_chars": getattr(j, "fulltext_total_chars", None),
                 # Database-recorded appeal chain (may be None on older servers).
                 "case_history": j.case_history,
                 "warning": _PER_JUDGMENT_WARNING,

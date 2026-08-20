@@ -297,7 +297,9 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
 - 詞彙精確檢索模式（`search_type: keyword` / `phrase`）強化，適合專有名詞
   與技術用語；概念性問題建議預設的 `hybrid`。
 
-以上為伺服器端能力，REST 與 Remote MCP 介面即日可用。
+以上為伺服器端能力，REST 與 Remote MCP 介面即日可用。CLI **v2.1.0** 已跟進：
+`pack` 自動分頁讀完長判決（bundle 每篇全文預算加倍），並將命中段落
+`hit_excerpt` 帶入 bundle。
 
 ## 其他接法（同一個 TLR 後端）
 

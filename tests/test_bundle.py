@@ -42,7 +42,7 @@ def test_bundle_carries_verification_instructions():
 
 
 def test_bundle_marks_truncation():
-    big = "字" * 9000
+    big = "字" * 15000
     b = build_bundle("q", [_judgment(1, "MLDM,89,交易,54,20000911", "甲案", big)])
     assert b["judgments"][0]["fulltext_truncated"] is True
-    assert len(b["judgments"][0]["fulltext_excerpt"]) == 6000
+    assert len(b["judgments"][0]["fulltext_excerpt"]) == 12000
