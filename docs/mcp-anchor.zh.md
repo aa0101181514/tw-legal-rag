@@ -173,3 +173,16 @@ hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
 - 回傳為主管機關資料,**非法院裁判**:不得引為法院見解,不得與判決引用
   混排;每筆回應皆附此提醒。
 - 函釋與判決維持嚴格分流:本工具絕不回傳判決,判決工具絕不回傳函釋。
+
+
+## 2026-08-20 服務端更新（適用 search_bundle / get_judgment_fulltext）
+
+- `search_bundle` 回應頂層新增 `result_token`：對 bundle 內任一 doc_id（含
+  unread_candidates）可呼叫 `get_judgment_fulltext` 補讀全文——unread 判決
+  「列出但不可引」的紀律不變，補讀後即成為已讀。
+- 每筆 judgments[] 新增 `hit_excerpt`（命中段落，含 `<em>` 標記）。listing 仍為
+  Layer-1 結構行、fulltext_excerpt 仍為理由全文視窗，三者用途不同。
+- `get_judgment_fulltext` 新增 `excerpt_offset` 請求參數，回應新增
+  `excerpt_offset` / `fulltext_total_chars`；`fulltext_truncated=true` 時以
+  offset 續讀。引用前務必讀到相關章節，勿憑首窗斷定某論述不存在。
+- `keyword` / `phrase` 改為 BM25 相關性排序、全詞 AND、零命中回空。

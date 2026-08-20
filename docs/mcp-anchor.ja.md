@@ -207,3 +207,13 @@ silent には行われません。
   この注意が付属します。
 - 解釈と判決は厳格に分離されたままです。本ツールが判決を返すことはなく、
   判決ツールが解釈を返すこともありません。
+
+
+## 2026-08-20 ホストサービス更新（search_bundle / get_judgment_fulltext）
+
+- `search_bundle` レスポンスに `result_token` を追加（bundle 内の任意の doc_id を
+  `get_judgment_fulltext` で続読可能）。read-whitelist の規律は不変。
+- 各 judgments[] に `hit_excerpt`（ヒット箇所、`<em>` マーク付き）を追加。
+- `get_judgment_fulltext` に `excerpt_offset` / `fulltext_total_chars` を追加。
+  `fulltext_truncated=true` の間はオフセットでページング。
+- `keyword` / `phrase` モードは BM25 関連度順・全語 AND・ゼロヒット時空返却に。
