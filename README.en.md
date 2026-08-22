@@ -20,7 +20,7 @@ guarantee semantic faithfulness of third-party model outputs. Its built-in
 citation check only verifies whether cited judgments belong to the retrieved
 bundle.
 
-## Data coverage (as of 2026-08-20, counted directly from the production database)
+## Data coverage (as of 2026-08-22, counted directly from the production database)
 
 | Corpus | Size | Access |
 |---|---:|---|
