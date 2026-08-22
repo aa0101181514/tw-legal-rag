@@ -130,7 +130,7 @@ Hosted MCP 新增第四個工具 `get_legal_reference`(另有 REST
 
 hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
 `POST /v1/legal_references/search`):以**自然語言**對台灣行政函釋/令函、
-行政命令、稅務函釋、憲法解釋/憲法法庭裁判做語義檢索。與本介面其他工具一樣
+行政規則、釋字與憲判字做語義檢索。與本介面其他工具一樣
 **全程零 LLM**,且**刻意不做相關性判斷**:只回傳語義相似候選,判斷權交給
 呼叫端模型。
 
