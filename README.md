@@ -20,6 +20,8 @@ guarantee semantic faithfulness of third-party model outputs. Its built-in
 citation check only verifies whether cited judgments belong to the retrieved
 bundle.
 
+作者：黃思齊（Aaron Huang）律師，[法律偵探／Dr.Legal](https://dr-lawbot.com) 創辦人（[個人介紹](https://dr-lawbot.com/aaron)）。
+
 繁中：Taiwan Legal RAG CLI 是一個公開原始碼命令列工具,連接法律偵探建置的 2,250 萬筆
 台灣裁判語義檢索服務（22,527,498 筆，截至 2026-08-22）,讓你能用自然語言搜尋判決,並將檢索結果帶入自己的 AI 工具使用。
 

@@ -1,5 +1,7 @@
 # Taiwan Legal RAG (`twlegalrag`)
 
+Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律偵探](https://dr-lawbot.com) ([profile](https://dr-lawbot.com/aaron)).
+
 <div align="center">
 
 ### 🌐 Language / 語言 / 言語
