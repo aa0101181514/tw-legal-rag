@@ -9,7 +9,7 @@ description = "Source-available CLI for semantic Taiwan legal judgment retrieval
 readme = "README.md"
 license = { text = "Elastic-2.0" }
 requires-python = ">=3.9"
-authors = [{ name = "Dr.Legal (dr-lawbot.com)" }]
+authors = [{ name = "Dr.Legal (dr-legal.com.tw)" }]
 keywords = ["taiwan", "legal", "judgments", "rag", "retrieval", "semantic-search", "citation"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -39,7 +39,7 @@ dev = ["pytest>=7.0"]
 twlegalrag = "twlegalrag.cli:app"
 
 [project.urls]
-Homepage = "https://dr-lawbot.com"
+Homepage = "https://dr-legal.com.tw"
 Source = "https://github.com/aa0101181514/tw-legal-rag"
 Issues = "https://github.com/aa0101181514/tw-legal-rag/issues"
 

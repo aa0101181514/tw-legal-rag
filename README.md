@@ -20,7 +20,7 @@ guarantee semantic faithfulness of third-party model outputs. Its built-in
 citation check only verifies whether cited judgments belong to the retrieved
 bundle.
 
-作者：黃思齊（Aaron Huang）律師，[法律偵探／Dr.Legal](https://dr-lawbot.com) 創辦人（[個人介紹](https://dr-lawbot.com/aaron)）。
+作者：黃思齊（Aaron Huang）律師，[法律偵探／Dr.Legal](https://dr-legal.com.tw) 創辦人（[個人介紹](https://dr-legal.com.tw/aaron)）。
 
 繁中：Taiwan Legal RAG CLI 是一個公開原始碼命令列工具,連接法律偵探建置的 2,250 萬筆
 台灣裁判語義檢索服務（22,527,498 筆，截至 2026-08-22）,讓你能用自然語言搜尋判決,並將檢索結果帶入自己的 AI 工具使用。
@@ -53,7 +53,7 @@ bundle.
 | 函釋效力履歷 | 50,800+ 筆 | 廢止／停止適用／被取代狀態追蹤，引用前驗效力 |
 
 法規範與裁判之取用方式：裁判書、行政規則走 hosted MCP 的語義檢索與字號精確查詢；
-憲法、法律、命令於 [dr-lawbot.com](https://dr-lawbot.com) 站上檢索。
+憲法、法律、命令於 [dr-legal.com.tw](https://dr-legal.com.tw) 站上檢索。
 
 裁判書為每日增量同步（司法院公開資料釋出有數日時差，極新宣判的裁判請以官網為準）。
 以上數字直接取自 production 資料庫並標註統計日，非估計值。

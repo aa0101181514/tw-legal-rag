@@ -22,7 +22,7 @@ remain the exclusive property of the licensor.
   confusingly similar to these names.
 
 Questions or permission requests: open an issue or contact the maintainer
-via dr-lawbot.com.
+via dr-legal.com.tw.
 
 ---
 
@@ -45,4 +45,4 @@ via dr-lawbot.com.
 - 以上述名稱發布修改後的 fork（請為你的 fork 改名）。
 - 註冊與上述名稱構成混淆近似的商標、社群帳號或套件名稱。
 
-如需詢問或申請授權：請開 issue 或透過 dr-lawbot.com 聯繫維護者。
+如需詢問或申請授權：請開 issue 或透過 dr-legal.com.tw 聯繫維護者。

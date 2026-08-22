@@ -112,5 +112,5 @@ are borne by your own ChatGPT / Claude account — this service charges no AI
 fees and does not call any AI for you.
 
 **Q: A judgment link does not open / I want the full text?**
-A: Every result carries a `dr-lawbot.com` judgment link; open it to read the
+A: Every result carries a `dr-legal.com.tw` judgment link; open it to read the
 complete full text.

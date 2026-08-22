@@ -1,6 +1,6 @@
 # Taiwan Legal RAG (`twlegalrag`)
 
-Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律偵探](https://dr-lawbot.com) ([profile](https://dr-lawbot.com/aaron)).
+Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律偵探](https://dr-legal.com.tw) ([profile](https://dr-legal.com.tw/aaron)).
 
 <div align="center">
 
@@ -34,7 +34,7 @@ bundle.
 | Tax interpretations (財政部) | 9,093 | same as above |
 | Interpretation validity ledger | 50,800+ | repealed / ceased / superseded status, checked before citing |
 | Labour arbitration decisions (勞動部裁決委員會) | 400 | surfaced alongside labour queries, explicitly labelled as non-court decisions |
-| Constitution (憲法) | 1 | 197 articles incl. 12 additional articles. Searchable on [dr-lawbot.com](https://dr-lawbot.com) |
+| Constitution (憲法) | 1 | 197 articles incl. 12 additional articles. Searchable on [dr-legal.com.tw](https://dr-legal.com.tw) |
 | Acts (法律) | 1,083 / 45,620 articles | Named 法/律/條例/通則 per Central Regulation Standard Act §2. Same as above |
 | Regulations (命令) | 7,474 / 132,760 articles | Named 規程/規則/細則/辦法/綱要/標準/準則 per §3. Same as above |
 | Repealed instruments | 3,230 | 254 acts, 2,974 regulations, plus constitutional-tier norms such as the Temporary Provisions; flagged as repealed for historical research |

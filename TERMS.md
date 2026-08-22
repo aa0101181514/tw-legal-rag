@@ -25,7 +25,7 @@ By calling the hosted service you agree to the following:
 5. **Attribution data**: requests are logged (including connector identity
    and user agent) for operations, abuse prevention, and service analytics.
 
-Commercial licensing enquiries: via dr-lawbot.com.
+Commercial licensing enquiries: via dr-legal.com.tw.
 
 ---
 
@@ -50,4 +50,4 @@ Commercial licensing enquiries: via dr-lawbot.com.
 5. **歸戶資料**:請求會被記錄（含連接器識別與 user agent）,
    用於維運、防濫用與服務分析。
 
-商業授權洽詢:請透過 dr-lawbot.com 聯繫。
+商業授權洽詢:請透過 dr-legal.com.tw 聯繫。
