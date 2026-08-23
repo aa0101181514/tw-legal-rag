@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.aa0101181514/tw-legal-rag",
   "description": "Citation-guarded retrieval over 22M Taiwan court judgments and administrative interpretations",
-  "version": "1.2.2",
-  "websiteUrl": "https://dr-lawbot.com",
+  "version": "2.2.0",
+  "websiteUrl": "https://dr-legal.com.tw",
   "repository": {
     "url": "https://github.com/aa0101181514/tw-legal-rag",
     "source": "github"
@@ -11,7 +11,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://tlr.dr-lawbot.com/mcp"
+      "url": "https://tlr.dr-legal.com.tw/mcp"
     }
   ]
 }

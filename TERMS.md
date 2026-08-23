@@ -1,7 +1,7 @@
-# Hosted Service Terms (tlr.dr-lawbot.com)
+# Hosted Service Terms (tlr.dr-legal.com.tw)
 
 The code license in `LICENSE` covers this repository's **client code only**.
-The hosted retrieval service — the API at `tlr.dr-lawbot.com` (REST, MCP,
+The hosted retrieval service — the API at `tlr.dr-legal.com.tw` (REST, MCP,
 and OpenAPI surfaces) and the judgment / interpretation corpus behind it —
 is **not part of the code license** and never has been, under any version.
 
@@ -29,10 +29,10 @@ Commercial licensing enquiries: via dr-legal.com.tw.
 
 ---
 
-# 託管服務使用條款（tlr.dr-lawbot.com）
+# 託管服務使用條款（tlr.dr-legal.com.tw）
 
 `LICENSE` 只授權本 repo 的**用戶端程式碼**。託管檢索服務本身,包括
-`tlr.dr-lawbot.com` 的 API（REST、MCP、OpenAPI 各介面）與其背後的
+`tlr.dr-legal.com.tw` 的 API（REST、MCP、OpenAPI 各介面）與其背後的
 判決/函釋語料庫,**從任何版本起都不在程式碼授權範圍內**。
 
 呼叫託管服務即表示同意以下條款:

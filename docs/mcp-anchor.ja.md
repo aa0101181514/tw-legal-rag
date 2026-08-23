@@ -3,7 +3,7 @@
 # Remote MCP アンカー検索バンドル
 
 2026-06-04 以降、ホスト型 Remote MCP エンドポイント
-`https://tlr.dr-lawbot.com/mcp` の `search_judgments` はアンカー式レスポンスを
+`https://tlr.dr-legal.com.tw/mcp` の `search_judgments` はアンカー式レスポンスを
 使用しています。
 
 本書はホスト型 MCP ツール面に適用されます。オープンソース CLI は retrieval-only の

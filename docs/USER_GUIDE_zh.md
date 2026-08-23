@@ -17,7 +17,7 @@
 3. 點右上角 **+** → **Add custom connector（新增自訂連接器）**。
 4. 填入：
    - **Name（名稱）**：`法律偵探`（隨你取）
-   - **Remote MCP server URL**：`https://tlr.dr-lawbot.com/mcp`
+   - **Remote MCP server URL**：`https://tlr.dr-legal.com.tw/mcp`
 5. 按 **Add**。完成——不需要 OAuth、不需要 API key。
 
 之後直接用中文問,例如：
@@ -32,7 +32,7 @@ Claude 會自動搜尋判決庫、讀取相關判決,再用它自己的理解回
 
 1. 在 ChatGPT 建立 **Custom GPT**（需 ChatGPT Plus）。
 2. 編輯 → **Actions** → **Create new action** → **Import from URL**。
-3. 貼上：`https://tlr.dr-lawbot.com/openapi.yaml`
+3. 貼上：`https://tlr.dr-legal.com.tw/openapi.yaml`
 4. **Authentication（認證）** 選 **None**。
 5. 儲存後,在這個 GPT 裡用中文問問題即可,GPT 會自動呼叫判決搜尋。
 

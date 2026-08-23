@@ -257,17 +257,17 @@ SELF-CHECK),要求下游模型在作答後逐一回頭核對:(a) 歸給某判決
 
 ## 設定(選用)
 
-預設打公開端點 `https://tlr.dr-lawbot.com`,免金鑰即可使用。若服務方發給你 API key,
+預設打公開端點 `https://tlr.dr-legal.com.tw`,免金鑰即可使用。若服務方發給你 API key,
 可放環境變數或 `~/.twlegalrag/config.toml`(已 git-ignore,**切勿** commit)：
 
 ```bash
-export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-lawbot.com   # 預設
+export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # 預設
 export TWLEGALRAG_TLR_API_KEY=...                          # 選用
 ```
 
 ```toml
 [tlr]
-# base_url = "https://tlr.dr-lawbot.com"
+# base_url = "https://tlr.dr-legal.com.tw"
 # api_key  = "..."
 ```
 
@@ -285,7 +285,7 @@ export TWLEGALRAG_TLR_API_KEY=...                          # 選用
 
 其餘請務必理解的網路傳輸：
 
-- 你的**搜尋字詞 / 問題**會送到 TLR 檢索端點(`https://tlr.dr-lawbot.com`)以取得判決。
+- 你的**搜尋字詞 / 問題**會送到 TLR 檢索端點(`https://tlr.dr-legal.com.tw`)以取得判決。
 - **TLR may log your query text, timestamp, IP-derived metadata, and result
   counts for retrieval-quality analysis. Do not submit personal secrets or
   confidential facts. Queries are not used to train generative models.**
@@ -321,15 +321,15 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
 
 ## 其他接法（同一個 TLR 後端）
 
-這個 CLI 是接 TLR 檢索服務的方式之一。同一個後端 `tlr.dr-lawbot.com` 也支援把判決
+這個 CLI 是接 TLR 檢索服務的方式之一。同一個後端 `tlr.dr-legal.com.tw` 也支援把判決
 搜尋透過 **Remote MCP** 直接接進你的 AI 工具。兩者填同一個 MCP 端點
-`https://tlr.dr-lawbot.com/mcp`,連線時會自動完成 OAuth(動態註冊,無需自行申請或
+`https://tlr.dr-legal.com.tw/mcp`,連線時會自動完成 OAuth(動態註冊,無需自行申請或
 設定 API key)：
 
 - **Claude（Remote MCP）**：Settings → Connectors → Add custom connector,URL 填
-  `https://tlr.dr-lawbot.com/mcp`。
+  `https://tlr.dr-legal.com.tw/mcp`。
 - **ChatGPT（MCP connector）**：在 Connectors 新增自訂 MCP server,URL 填
-  `https://tlr.dr-lawbot.com/mcp`。
+  `https://tlr.dr-legal.com.tw/mcp`。
 - **Claude Code（Skill,走 CLI 非 MCP）**：本 repo 附了一個現成的 skill 在
   [`skills/tw-legal-rag/`](skills/tw-legal-rag/)，把整個資料夾放到你專案的
   `.claude/skills/` 即可。它包裝本 CLI 的 `pack` 子指令，讓 Claude 在你問到

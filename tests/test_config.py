@@ -28,7 +28,7 @@ def isolated_home(tmp_path, monkeypatch):
 
 
 def test_defaults_without_config_file(isolated_home):
-    assert config.get_tlr_base_url() == "https://tlr.dr-lawbot.com"
+    assert config.get_tlr_base_url() == "https://tlr.dr-legal.com.tw"
 
 
 def test_reads_base_url_from_toml(isolated_home):
@@ -48,7 +48,7 @@ def test_env_var_beats_file(isolated_home, monkeypatch):
 
 def test_malformed_toml_degrades_to_default(isolated_home):
     (isolated_home / "config.toml").write_text("this is [not toml", encoding="utf-8")
-    assert config.get_tlr_base_url() == "https://tlr.dr-lawbot.com"
+    assert config.get_tlr_base_url() == "https://tlr.dr-legal.com.tw"
 
 
 def test_toml_parser_is_available():

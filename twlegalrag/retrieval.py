@@ -1,6 +1,6 @@
 """Stage 1 — TLR retrieval client.
 
-Talks to the public Taiwan Legal RAG API (default ``https://tlr.dr-lawbot.com``):
+Talks to the public Taiwan Legal RAG API (default ``https://tlr.dr-legal.com.tw``):
 
   POST /v1/search    — hybrid/keyword/phrase search over ~21M judgments.
                        Returns a structured Layer-1 *listing* per hit
@@ -33,7 +33,7 @@ from typing import Optional
 
 import httpx
 
-DEFAULT_BASE_URL = "https://tlr.dr-lawbot.com"
+DEFAULT_BASE_URL = "https://tlr.dr-legal.com.tw"
 _SEARCH_PATH = "/v1/search"
 _FULLTEXT_PATH = "/v1/fulltext"
 # v2.1 paging safety caps: at most this many windows / total chars per judgment.

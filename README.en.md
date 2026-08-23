@@ -273,19 +273,19 @@ cited as court reasoning). See [`docs/mcp-anchor.md`](https://github.com/aa01011
 
 ## Configuration (optional)
 
-By default the CLI talks to the public endpoint `https://tlr.dr-lawbot.com`,
+By default the CLI talks to the public endpoint `https://tlr.dr-legal.com.tw`,
 no key required. If the service operator issues you an API key, put it in an
 environment variable or `~/.twlegalrag/config.toml` (git-ignored — **never**
 commit it):
 
 ```bash
-export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-lawbot.com   # default
+export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # default
 export TWLEGALRAG_TLR_API_KEY=...                          # optional
 ```
 
 ```toml
 [tlr]
-# base_url = "https://tlr.dr-lawbot.com"
+# base_url = "https://tlr.dr-legal.com.tw"
 # api_key  = "..."
 ```
 
@@ -307,7 +307,7 @@ First, what **never** passes through the TLR server:
 What does travel over the network, and you should understand:
 
 - Your **search terms / questions** are sent to the TLR retrieval endpoint
-  (`https://tlr.dr-lawbot.com`) to fetch judgments.
+  (`https://tlr.dr-legal.com.tw`) to fetch judgments.
 - **TLR may log your query text, timestamp, IP-derived metadata, and result
   counts for retrieval-quality analysis. Do not submit personal secrets or
   confidential facts. Queries are not used to train generative models.**
@@ -351,15 +351,15 @@ carries `hit_excerpt` into bundles.
 ## Other ways to connect (same TLR backend)
 
 This CLI is one way to use the TLR retrieval service. The same backend
-`tlr.dr-lawbot.com` also supports plugging judgment search directly into your
+`tlr.dr-legal.com.tw` also supports plugging judgment search directly into your
 AI tools via **Remote MCP**. Both use the same MCP endpoint
-`https://tlr.dr-lawbot.com/mcp`; OAuth completes automatically on connection
+`https://tlr.dr-legal.com.tw/mcp`; OAuth completes automatically on connection
 (dynamic registration, no API key application or setup needed):
 
 - **Claude (Remote MCP)**: Settings → Connectors → Add custom connector, URL
-  `https://tlr.dr-lawbot.com/mcp`.
+  `https://tlr.dr-legal.com.tw/mcp`.
 - **ChatGPT (MCP connector)**: add a custom MCP server in Connectors, URL
-  `https://tlr.dr-lawbot.com/mcp`.
+  `https://tlr.dr-legal.com.tw/mcp`.
 - **Claude Code (skill, wraps this CLI rather than MCP)**: a ready-made skill
   lives in [`skills/tw-legal-rag/`](https://github.com/aa0101181514/tw-legal-rag/blob/main/skills/tw-legal-rag/).
   Copy that folder into your project's `.claude/skills/` and Claude will run

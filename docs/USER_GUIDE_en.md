@@ -20,7 +20,7 @@ developer tools). No coding and no API key required.
 3. Click **+** at the top right → **Add custom connector**.
 4. Fill in:
    - **Name**: `Legal Detective` (any name you like)
-   - **Remote MCP server URL**: `https://tlr.dr-lawbot.com/mcp`
+   - **Remote MCP server URL**: `https://tlr.dr-legal.com.tw/mcp`
 5. Click **Add**. Done — no OAuth setup, no API key.
 
 Then just ask in natural language (Chinese works best for Taiwan case law),
@@ -38,7 +38,7 @@ own understanding, and attach clickable judgment links.
 
 1. Create a **Custom GPT** in ChatGPT (requires ChatGPT Plus).
 2. Edit → **Actions** → **Create new action** → **Import from URL**.
-3. Paste: `https://tlr.dr-lawbot.com/openapi.yaml`
+3. Paste: `https://tlr.dr-legal.com.tw/openapi.yaml`
 4. Set **Authentication** to **None**.
 5. Save, then ask questions inside that GPT; it will call judgment search
    automatically.

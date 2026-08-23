@@ -251,19 +251,19 @@ v1.1 以降、`verification_instructions` には**見解レイヤーのセルフ
 
 ## 設定（任意）
 
-デフォルトで公開エンドポイント `https://tlr.dr-lawbot.com` に接続し、キー不要で
+デフォルトで公開エンドポイント `https://tlr.dr-legal.com.tw` に接続し、キー不要で
 使えます。サービス側から API キーを発行された場合は、環境変数または
 `~/.twlegalrag/config.toml`（git-ignore 済み — **絶対に** commit しないこと）に
 設定します：
 
 ```bash
-export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-lawbot.com   # デフォルト
+export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # デフォルト
 export TWLEGALRAG_TLR_API_KEY=...                          # 任意
 ```
 
 ```toml
 [tlr]
-# base_url = "https://tlr.dr-lawbot.com"
+# base_url = "https://tlr.dr-legal.com.tw"
 # api_key  = "..."
 ```
 
@@ -285,7 +285,7 @@ export TWLEGALRAG_TLR_API_KEY=...                          # 任意
 ネットワークを流れるものとして理解しておくべきこと：
 
 - あなたの**検索語・質問**は判決取得のため TLR 検索エンドポイント
-  （`https://tlr.dr-lawbot.com`）に送信されます。
+  （`https://tlr.dr-legal.com.tw`）に送信されます。
 - **TLR は検索品質分析のため、クエリ文字列・タイムスタンプ・IP 由来のメタデータ・
   結果件数を記録することがあります。個人の機密や秘匿すべき事実を送信しないで
   ください。クエリが生成モデルの学習に使われることはありません。**
@@ -322,15 +322,15 @@ CLI **v2.1.0** も対応：`pack` が長文判決を最後までページング�
 ## その他の接続方法（同一 TLR バックエンド）
 
 この CLI は TLR 検索サービスを使う方法の一つです。同じバックエンド
-`tlr.dr-lawbot.com` は、**Remote MCP** 経由で判決検索を AI ツールに直接組み込む
+`tlr.dr-legal.com.tw` は、**Remote MCP** 経由で判決検索を AI ツールに直接組み込む
 こともできます。いずれも同じ MCP エンドポイント
-`https://tlr.dr-lawbot.com/mcp` を設定し、接続時に OAuth が自動完了します
+`https://tlr.dr-legal.com.tw/mcp` を設定し、接続時に OAuth が自動完了します
 （動的登録、API キーの申請・設定は不要）：
 
 - **Claude（Remote MCP）**：Settings → Connectors → Add custom connector で
-  URL に `https://tlr.dr-lawbot.com/mcp` を設定。
+  URL に `https://tlr.dr-legal.com.tw/mcp` を設定。
 - **ChatGPT（MCP コネクタ）**：Connectors でカスタム MCP サーバーを追加し、
-  URL に `https://tlr.dr-lawbot.com/mcp` を設定。
+  URL に `https://tlr.dr-legal.com.tw/mcp` を設定。
 - **Claude Code（Skill、MCP ではなく CLI 経由）**：本リポジトリには
   [`skills/tw-legal-rag/`](skills/tw-legal-rag/) に既製の skill が同梱されて
   います。フォルダごとプロジェクトの `.claude/skills/` に置くだけです。本 CLI の

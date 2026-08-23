@@ -2,7 +2,7 @@
 
 # Remote MCP Anchor Search Bundle
 
-As of 2026-06-04, the hosted Remote MCP endpoint at `https://tlr.dr-lawbot.com/mcp` uses an anchor-style response for `search_judgments`.
+As of 2026-06-04, the hosted Remote MCP endpoint at `https://tlr.dr-legal.com.tw/mcp` uses an anchor-style response for `search_judgments`.
 
 This applies to the hosted MCP tool surface. The open-source CLI remains retrieval-only and still uses TLR as a remote retrieval endpoint.
 

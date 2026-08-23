@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.2.0 (2026-08-23)
+
+Hosted endpoint moved to the Dr.Legal domain:
+
+- **Default TLR base URL is now `https://tlr.dr-legal.com.tw`** (CLI default,
+  `TWLEGALRAG_TLR_BASE_URL` fallback, `server.json` remote, all docs).
+- **The previous endpoint `https://tlr.dr-lawbot.com` keeps working** and is
+  not scheduled for removal. Existing installs, config files, and MCP clients
+  pointing at it need no change. Each hostname serves its own OAuth discovery
+  metadata, so clients on either one complete the flow against the host they
+  connected to.
+- `server.json` version aligned with the package version.
+
 ## v2.1.0 (2026-08-20)
 
 CLI support for the 2026-08-20 hosted-service capabilities:

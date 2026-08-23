@@ -46,7 +46,7 @@ Windows user-site installs). If both fail, install the CLI first:
 
 ## Notes
 
-- Retrieval hits the public TLR endpoint (`tlr.dr-lawbot.com`); no API key
+- Retrieval hits the public TLR endpoint (`tlr.dr-legal.com.tw`); no API key
   is required and no LLM is called server-side.
 - Windows: if output shows garbled Chinese, the terminal is not in UTF-8;
   the CLI reconfigures its own streams, but pipe output to a file when in

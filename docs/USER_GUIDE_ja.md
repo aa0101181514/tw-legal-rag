@@ -20,7 +20,7 @@
 3. 右上の **+** → **Add custom connector（カスタムコネクタを追加）**。
 4. 以下を入力：
    - **Name（名前）**：`法律偵探`（任意）
-   - **Remote MCP server URL**：`https://tlr.dr-lawbot.com/mcp`
+   - **Remote MCP server URL**：`https://tlr.dr-legal.com.tw/mcp`
 5. **Add** を押す。これで完了 — OAuth 設定も API キーも不要です。
 
 その後は自然言語でそのまま質問できます（台湾判例は中国語での質問が最も効果的）。
@@ -37,7 +37,7 @@ Claude が自動的に判決データベースを検索し、関連判決を読�
 
 1. ChatGPT で **Custom GPT** を作成（ChatGPT Plus が必要）。
 2. 編集 → **Actions** → **Create new action** → **Import from URL**。
-3. 以下を貼り付け：`https://tlr.dr-lawbot.com/openapi.yaml`
+3. 以下を貼り付け：`https://tlr.dr-legal.com.tw/openapi.yaml`
 4. **Authentication（認証）** は **None** を選択。
 5. 保存後、その GPT 内で質問すれば、判決検索が自動的に呼び出されます。
 

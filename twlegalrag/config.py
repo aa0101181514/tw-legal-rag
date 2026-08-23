@@ -40,7 +40,7 @@ def get_tlr_base_url() -> str:
     env = os.environ.get("TWLEGALRAG_TLR_BASE_URL")
     if env:
         return env
-    return _load_file().get("tlr", {}).get("base_url", "https://tlr.dr-lawbot.com")
+    return _load_file().get("tlr", {}).get("base_url", "https://tlr.dr-legal.com.tw")
 
 
 def get_tlr_api_key() -> str | None:

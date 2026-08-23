@@ -2,7 +2,7 @@
 
 # Remote MCP Anchor 搜尋 Bundle
 
-自 2026-06-04 起,hosted Remote MCP 端點 `https://tlr.dr-lawbot.com/mcp` 的
+自 2026-06-04 起,hosted Remote MCP 端點 `https://tlr.dr-legal.com.tw/mcp` 的
 `search_judgments` 改用 anchor 式回應。
 
 本文適用於 hosted MCP 工具面。開源 CLI 維持 retrieval-only,仍以 TLR 為遠端檢索
