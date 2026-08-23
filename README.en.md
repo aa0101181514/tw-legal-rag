@@ -1,4 +1,4 @@
-# Taiwan Legal RAG (`twlegalrag`)
+# Taiwan Legal RAG: Taiwan Legal MCP Server & CLI (`twlegalrag`)
 
 Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律偵探](https://dr-legal.com.tw) ([profile](https://dr-legal.com.tw/aaron)).
 
@@ -12,8 +12,11 @@ Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律�
 
 ---
 
-> Source-available CLI for **semantic** Taiwan legal judgment retrieval, powered by
-> Legal Detective's 22M-judgment retrieval infrastructure.
+> **Free, no signup, no API key.** A Taiwan legal **MCP server**: add one URL
+> (`https://tlr.dr-legal.com.tw/mcp`) to Claude, ChatGPT, Codex or Cursor and your AI
+> assistant can semantically search 22M+ Taiwan court judgments, administrative
+> interpretations and Constitutional Court decisions, each with a citation check.
+> A source-available CLI (`twlegalrag`) talks to the same backend.
 
 Taiwan Legal RAG CLI retrieves Taiwan court judgments from Legal Detective's
 public TLR endpoint and packages them for use with **your own AI tools**. It
@@ -280,7 +283,7 @@ commit it):
 
 ```bash
 export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # default
-export TWLEGALRAG_TLR_API_KEY=...                          # optional
+export TWLEGALRAG_TLR_API_KEY=...   # optional; NOT needed for the public endpoint (enterprise keys only)
 ```
 
 ```toml

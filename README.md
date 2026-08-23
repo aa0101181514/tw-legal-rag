@@ -1,4 +1,4 @@
-# Taiwan Legal RAG (`twlegalrag`)
+# Taiwan Legal RAG：台灣法律 MCP 伺服器與 CLI（`twlegalrag`）
 
 <div align="center">
 
@@ -10,8 +10,12 @@
 
 ---
 
-> Source-available CLI for **semantic** Taiwan legal judgment retrieval, powered by
-> Legal Detective's 22M-judgment retrieval infrastructure.
+> **免費、免註冊、免 API key** 的台灣法律 MCP 伺服器：在 Claude、ChatGPT、Codex、Cursor 加入
+> `https://tlr.dr-legal.com.tw/mcp` 一個網址，AI 助理就能直接語義檢索 2,250 萬筆台灣裁判書、
+> 行政函釋與憲法法庭裁判，逐筆附引用查核。另提供同一後端的公開原始碼 CLI（`twlegalrag`）。
+>
+> Free, no-signup, no-API-key **Taiwan legal MCP server** + source-available CLI, backed by
+> Legal Detective's 22M-judgment semantic retrieval infrastructure.
 
 Taiwan Legal RAG CLI retrieves Taiwan court judgments from Legal Detective's
 public TLR endpoint and packages them for use with **your own AI tools**. It
@@ -262,7 +266,7 @@ SELF-CHECK),要求下游模型在作答後逐一回頭核對:(a) 歸給某判決
 
 ```bash
 export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # 預設
-export TWLEGALRAG_TLR_API_KEY=...                          # 選用
+export TWLEGALRAG_TLR_API_KEY=...   # 選用；公開端點不需要，僅限服務方另行核發的企業金鑰
 ```
 
 ```toml

@@ -1,4 +1,4 @@
-# Taiwan Legal RAG (`twlegalrag`)
+# Taiwan Legal RAG：台湾法律 MCP サーバー & CLI（`twlegalrag`）
 
 <div align="center">
 
@@ -10,8 +10,10 @@
 
 ---
 
-> 法律偵探（Legal Detective）が構築した 2,200 万件の判決検索基盤に接続する、
-> 台湾判決の**セマンティック検索** CLI（ソースコード公開）。
+> **無料・登録不要・API キー不要**の台湾法律 **MCP サーバー**：Claude、ChatGPT、Codex、Cursor に
+> `https://tlr.dr-legal.com.tw/mcp` を追加するだけで、AI アシスタントが 2,250 万件の台湾裁判書・
+> 行政解釈・憲法法廷判決をセマンティック検索し、引用チェック付きで返します。
+> 同じバックエンドに接続するソースコード公開 CLI（`twlegalrag`）も提供。
 
 Taiwan Legal RAG CLI は、法律偵探の公開 TLR エンドポイントから台湾の裁判所判決を
 検索し、**あなた自身の AI ツール**で使える形にパッケージするツールです。本ツールは
@@ -258,7 +260,7 @@ v1.1 以降、`verification_instructions` には**見解レイヤーのセルフ
 
 ```bash
 export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # デフォルト
-export TWLEGALRAG_TLR_API_KEY=...                          # 任意
+export TWLEGALRAG_TLR_API_KEY=...   # 任意；公開エンドポイントには不要（企業向けキーのみ）
 ```
 
 ```toml
