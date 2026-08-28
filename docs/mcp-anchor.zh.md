@@ -15,7 +15,7 @@ Remote MCP 流程中的 `search_judgments` 現在回傳 anchor bundle。伺服�
 
 - `allowed_citations`:可作為 authority 引用的 citation ID。
 - `judgments`:理由摘錄實際被讀入本次回應的判決。
-- `unread_candidates`:理由未被讀入 bundle 的候選——原因可能是 payload 額度、全文
+- `unread_candidates`:理由未被讀入 bundle 的候選：原因可能是 payload 額度、全文
   無法取得/為空,或(對 `search_bundle` 而言)落在 `read_top` 之外。各附 `reason`,
   不得引為 authority。
 - `verification_instructions`:要求下游 AI 只引用 `allowed_citations` 的規則。
@@ -48,7 +48,7 @@ Hosted Remote MCP 對兩個工具套用同一套 read-whitelist 哲學：
 - `search_bundle`(hosted `/v1/pack`):當 `read_top < max_results`,只有前
   `read_top` 筆被完整讀入。自 2026-06-26 起,`allowed_citations` **只**含這些已讀
   判決;其餘結果仍列在 `judgments` 供瀏覽,但移入 `unread_candidates`,不得引為
-  authority。(先前未讀結果曾被錯誤地以空殼形式列入 `allowed_citations`——已修正。)
+  authority。(先前未讀結果曾被錯誤地以空殼形式列入 `allowed_citations`，已修正。)
 
 三個介面規則一致:只引用 `allowed_citations`;`unread_candidates` 視為檢索中介
 資料,非 authority。
@@ -95,7 +95,7 @@ Hosted MCP 新增第四個工具 `get_legal_reference`(另有 REST
 - `authority`(可選):機關名稱提示,僅用於同字號多機關時的排序,不做過濾。
 
 裁判字號(含「年度」,如 `112年度台上字第9號`)會被擋下並提示改用
-`search_judgments`——函釋與判決是兩類文書,永不混排。
+`search_judgments`：函釋與判決是兩類文書,永不混排。
 
 ### 輸出
 
@@ -114,7 +114,7 @@ Hosted MCP 新增第四個工具 `get_legal_reference`(另有 REST
 
 ### 查無的語義(重要)
 
-查無時回傳收錄範圍聲明(收錄機關數與筆數)。**查無不代表該函釋不存在**——本庫非
+查無時回傳收錄範圍聲明(收錄機關數與筆數)。**查無不代表該函釋不存在**，本庫非
 全量收錄,不得因查無而認定字號有誤或函釋係捏造。查無的字號會回饋為語料補收的
 優先參考(用量驅動涵蓋率)。
 
