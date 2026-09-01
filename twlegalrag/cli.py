@@ -3,6 +3,9 @@
     twlegalrag search "勞資 加班費"                 # list matching judgments
     twlegalrag pack "車禍對方全責能求償什麼?" -o b.json  # bundle for your AI tool
     twlegalrag check b.json answer.txt              # citation check an answer
+    twlegalrag law 民法 184                          # exact statute article
+    twlegalrag ref "台財稅第881945861號"              # interpretation by serial
+    twlegalrag ref-search "扣繳義務人未申報之處罰"      # interpretation topic search
     twlegalrag health
 
 This tool retrieves judgments and packages them for use with your own AI tools.
@@ -46,6 +49,29 @@ err = Console(stderr=True)
 
 _STATUS_STYLE = {"pass": "green", "needs_review": "yellow", "fail": "bold red"}
 _STATUS_LABEL = {"pass": "通過", "needs_review": "待人工", "fail": "不在bundle/錯誤"}
+
+# Ledger validity statuses (legal_reference / ref-search). Anything not
+# positively current renders yellow so callers look before citing.
+_ACTIVE_STATUSES = {"active", "active_verified"}
+_DEAD_STATUSES = {"repealed", "superseded", "ceased", "abolished", "inactive"}
+
+
+def _status_markup(status: str) -> str:
+    s = (status or "unknown").strip() or "unknown"
+    if s in _ACTIVE_STATUSES:
+        return f"[green]{s}[/]"
+    if s in _DEAD_STATUSES:
+        return f"[bold red]{s}[/]"
+    return f"[yellow]{s}[/]"
+
+
+def _print_notes(notes) -> None:
+    seen = set()
+    for n in notes or []:
+        if n in seen:  # server emits one note per hit; identical notes add nothing
+            continue
+        seen.add(n)
+        console.print(f"[dim]註: {n}[/]")
 
 
 def _client() -> TLRClient:
@@ -242,6 +268,141 @@ def check(
     ]
     rep = citation_check(answer, hits)
     _print_report(rep)
+
+
+@app.command()
+def law(
+    law_name: str = typer.Argument(..., help="法規名稱 (全名或常用縮寫, 如 民法 / 勞基法)"),
+    article_no: str = typer.Argument(..., help="條號 (如 184 / 第184條 / 47-1)"),
+) -> None:
+    """Exact current-statute article lookup — retrieval only, current version only."""
+    try:
+        with _client() as c:
+            data = c.law_article(law_name, article_no)
+    except RetrievalError as e:
+        err.print(f"[bold red]查詢失敗:[/] {e}")
+        raise typer.Exit(1)
+    for m in data.get("matches") or []:
+        head = f"{m.get('law_name', '')} {m.get('article_no', '')}"
+        lines = [m.get("article_content", "").rstrip()]
+        meta = [
+            f"層級: {m.get('law_level', '')}",
+            f"最後修正: {m.get('law_modified_date', '')}",
+            f"全國法規資料庫: {m.get('law_url', '')}",
+        ]
+        if m.get("abolished"):
+            meta.insert(0, "[bold red]此法規已廢止[/]")
+        if m.get("article_content_truncated"):
+            meta.append("[yellow]條文過長已截斷, 完整內容請開連結[/]")
+        lines.append("")
+        lines.extend(meta)
+        console.print(Panel("\n".join(lines), title=head, border_style="green"))
+    if not data.get("found"):
+        console.print(f"[yellow]查無: {law_name} {article_no}[/]")
+        cands = data.get("law_candidates") or []
+        if cands:
+            table = Table(title="法規名稱候選 (請換精確名稱重查)")
+            table.add_column("法規名稱", style="cyan")
+            table.add_column("層級")
+            for cand in cands:
+                table.add_row(cand.get("law_name", ""), cand.get("law_level", ""))
+            console.print(table)
+    _print_notes(data.get("notes"))
+
+
+@app.command()
+def ref(
+    serial: str = typer.Argument(..., help="函釋發文字號, 如 台財稅第881945861號"),
+    authority: Optional[str] = typer.Option(None, "--authority", help="機關名稱提示 (排序用, 非過濾)"),
+    full: bool = typer.Option(False, "--full", help="連同函釋全文一併輸出"),
+) -> None:
+    """Exact interpretation lookup by serial — validity status passthrough, no LLM."""
+    try:
+        with _client() as c:
+            data = c.legal_reference(serial, authority=authority)
+    except RetrievalError as e:
+        err.print(f"[bold red]查詢失敗:[/] {e}")
+        raise typer.Exit(1)
+    matches = data.get("matches") or []
+    if not data.get("found"):
+        console.print(f"[yellow]查無此字號: {serial}[/]")
+        console.print("[dim]查無不代表不存在: 請確認字號寫法, 或改用 ref-search 以主題檢索。[/]")
+    for m in matches:
+        lines = [
+            f"標題: {m.get('title', '')}",
+            f"發文日期: {m.get('issue_date', '')}",
+            f"效力狀態: {_status_markup(m.get('status'))}",
+        ]
+        if m.get("superseded_by"):
+            lines.append(f"[bold red]為後令取代:[/] {m['superseded_by']}")
+        if m.get("status_effective_at"):
+            lines.append(f"狀態生效日: {m['status_effective_at']}")
+        lines.append(f"來源: {m.get('source_url', '')}")
+        if m.get("last_verified_at"):
+            lines.append(f"[dim]效力最後查核: {m['last_verified_at']}[/]")
+        console.print(Panel(
+            "\n".join(lines),
+            title=f"{m.get('authority', '')} {m.get('serial_no', '')}",
+            border_style="green",
+        ))
+        if full and m.get("fulltext"):
+            console.print("[dim]全文 (主管機關來源頁轉存, 可能夾雜網頁雜訊):[/]")
+            console.print(m["fulltext"])
+            if m.get("fulltext_truncated"):
+                console.print("[yellow]全文過長已截斷, 完整內容請開來源連結[/]")
+    _print_notes(data.get("notes"))
+
+
+@app.command("ref-search")
+def ref_search(
+    query: str = typer.Argument(..., help="自然語言查詢, 如: 扣繳義務人未依限申報之處罰"),
+    n: int = typer.Option(5, "--n", "-n", help="結果筆數 (1-10)"),
+    authority: Optional[str] = typer.Option(None, "--authority", help="機關名稱過濾 (精確名, 如 財政部)"),
+    kind: Optional[str] = typer.Option(
+        None, "--kind",
+        help="來源類型過濾: administrative_interpretation / administrative_order / "
+             "tax_interpretation / constitutional_interpretation / constitutional_judgment",
+    ),
+    excerpt: bool = typer.Option(False, "--excerpt", help="每筆加印命中段落"),
+) -> None:
+    """Semantic topic search over interpretations — listing only, verify with `ref`."""
+    try:
+        with _client() as c:
+            data = c.search_legal_references(
+                query, authority=authority, source_kind=kind, max_results=n
+            )
+    except RetrievalError as e:
+        err.print(f"[bold red]檢索失敗:[/] {e}")
+        raise typer.Exit(1)
+    hits = data.get("results") or []
+    if not hits:
+        console.print("[yellow]無結果[/]")
+        _print_notes(data.get("notes"))
+        return
+    table = Table(show_lines=False)
+    table.add_column("#", justify="right", style="dim")
+    table.add_column("引用", style="cyan")
+    table.add_column("效力")
+    table.add_column("相關度", justify="right")
+    table.add_column("標題")
+    for i, h in enumerate(hits, 1):
+        table.add_row(
+            str(i),
+            h.get("citation", "") or f"{h.get('authority', '')} {h.get('serial_no', '')}",
+            _status_markup(h.get("status")),
+            f"{h.get('score', 0):.3f}",
+            (h.get("title", "") or "")[:30],
+        )
+    console.print(table)
+    if excerpt:
+        for i, h in enumerate(hits, 1):
+            text = (h.get("excerpt") or "").strip()
+            if text:
+                console.print(Panel(text[:1200], title=f"#{i} 命中段落", border_style="dim"))
+    console.print(
+        "[dim]相關性判斷由你的 AI 負責; 引用任一字號前, 先用 `twlegalrag ref <字號>` 查證效力與原文。[/]"
+    )
+    _print_notes(data.get("notes"))
 
 
 @app.callback(invoke_without_command=True)

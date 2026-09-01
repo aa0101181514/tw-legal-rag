@@ -224,6 +224,11 @@ twlegalrag pack "車禍對方全責,我可以求償什麼?" -o bundle.json
 # 3) 引用チェック — AI が生成した回答へのバンドルレベル検査
 twlegalrag check bundle.json answer.txt
 
+# 4) 条文と行政解釈の照会 (LLM なし)
+twlegalrag law 民法 184
+twlegalrag ref "台財稅第881945861號"
+twlegalrag ref-search "扣繳義務人未依限申報之處罰" -n 5
+
 # サービス稼働確認
 twlegalrag health
 ```
@@ -351,9 +356,9 @@ Remote MCP インターフェースには現在 6 つのツールがあります
 | `search_bundle` | 検索＋理由全文読込を 1 回で実行し、引用ホワイトリスト付き bundle を返却（推奨エントリポイント） | 2026-06 | ✅ |
 | `search_judgments` | 判決検索（構造化 listing。完全な事件番号は完全一致照会に自動切替） | 2026-05 | ✅ |
 | `get_judgment_fulltext` | 判決理由の全文（審級関係 `case_history` 付き） | 2026-05 | ✅ |
-| `get_legal_reference` | 行政解釈の文書番号による正確検索、効力状態付き | 2026-08 | 未対応 |
-| `search_legal_references` | 行政解釈のセマンティック検索 | 2026-08 | 未対応 |
-| `get_law_article` | 現行法条の完全一致照会と条番号検証 | 2026-09 | 未対応 |
+| `get_legal_reference` | 行政解釈の文書番号による正確検索、効力状態付き | 2026-08 | ✅ `ref` |
+| `search_legal_references` | 行政解釈のセマンティック検索 | 2026-08 | ✅ `ref-search` |
+| `get_law_article` | 現行法条の完全一致照会と条番号検証 | 2026-09 | ✅ `law` |
 
 各ツールの入出力契約は [`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md) を参照。
 

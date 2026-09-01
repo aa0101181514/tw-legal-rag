@@ -240,6 +240,11 @@ twlegalrag pack "車禍對方全責,我可以求償什麼?" -o bundle.json
 # 3) 引用檢查 — 對任何 AI 產生的答案做 bundle 層級檢查
 twlegalrag check bundle.json answer.txt
 
+# 4) 法源查證: 法條原文與函釋效力 (零 LLM)
+twlegalrag law 民法 184
+twlegalrag ref "台財稅第881945861號"
+twlegalrag ref-search "扣繳義務人未依限申報之處罰" -n 5
+
 # 服務是否正常
 twlegalrag health
 ```
@@ -352,9 +357,9 @@ Remote MCP 介面現有六個工具:
 | `search_bundle` | 檢索＋讀取理由全文,一次回傳含引用白名單的 bundle(建議入口) | 2026-06 | ✅ |
 | `search_judgments` | 判決檢索(結構化 listing,完整案號自動切精確調卷) | 2026-05 | ✅ |
 | `get_judgment_fulltext` | 判決理由全文(含審級關聯 `case_history`) | 2026-05 | ✅ |
-| `get_legal_reference` | 行政函釋字號精確查詢,附效力狀態 | 2026-08 | 尚未 |
-| `search_legal_references` | 行政函釋語義檢索 | 2026-08 | 尚未 |
-| `get_law_article` | 現行法條精確查詢與條號核驗 | 2026-09 | 尚未 |
+| `get_legal_reference` | 行政函釋字號精確查詢,附效力狀態 | 2026-08 | ✅ `ref` |
+| `search_legal_references` | 行政函釋語義檢索 | 2026-08 | ✅ `ref-search` |
+| `get_law_article` | 現行法條精確查詢與條號核驗 | 2026-09 | ✅ `law` |
 
 各工具的輸入輸出契約詳見 [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md)。
 

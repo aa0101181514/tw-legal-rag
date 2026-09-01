@@ -249,6 +249,11 @@ twlegalrag pack "車禍對方全責,我可以求償什麼?" -o bundle.json
 # 3) Citation check — bundle-level check on any AI-generated answer
 twlegalrag check bundle.json answer.txt
 
+# 4) statute and interpretation lookup (no LLM)
+twlegalrag law 民法 184
+twlegalrag ref "台財稅第881945861號"
+twlegalrag ref-search "扣繳義務人未依限申報之處罰" -n 5
+
 # Service health
 twlegalrag health
 ```
@@ -382,9 +387,9 @@ The Remote MCP surface currently has six tools:
 | `search_bundle` | Search plus reasoning-text reads in one call, returning a bundle with a citation whitelist (recommended entry point) | 2026-06 | ✅ |
 | `search_judgments` | Judgment search (structured listing; a full docket number switches to exact lookup) | 2026-05 | ✅ |
 | `get_judgment_fulltext` | Full reasoning text of a judgment (with the `case_history` appeal chain) | 2026-05 | ✅ |
-| `get_legal_reference` | Exact administrative-interpretation lookup by serial, with validity status | 2026-08 | not yet |
-| `search_legal_references` | Semantic search over administrative interpretations | 2026-08 | not yet |
-| `get_law_article` | Exact current-statute lookup and article-number verification | 2026-09 | not yet |
+| `get_legal_reference` | Exact administrative-interpretation lookup by serial, with validity status | 2026-08 | ✅ `ref` |
+| `search_legal_references` | Semantic search over administrative interpretations | 2026-08 | ✅ `ref-search` |
+| `get_law_article` | Exact current-statute lookup and article-number verification | 2026-09 | ✅ `law` |
 
 Per-tool input/output contracts are in
 [`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md).

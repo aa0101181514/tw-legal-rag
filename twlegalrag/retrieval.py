@@ -40,6 +40,9 @@ _FULLTEXT_PATH = "/v1/fulltext"
 _MAX_FULLTEXT_PAGES = 6
 _MAX_FULLTEXT_CHARS = 90_000
 _HEALTH_PATH = "/v1/health"
+_LEGAL_REF_PATH = "/v1/legal_reference"
+_LEGAL_REF_SEARCH_PATH = "/v1/legal_references/search"
+_LAW_ARTICLE_PATH = "/v1/law_article"
 
 
 class RetrievalError(RuntimeError):
@@ -281,3 +284,47 @@ class TLRClient:
                 # needs_review rather than failing on missing text.
                 pass
         return hits
+
+
+    # -- agency interpretations & statutes (parity with the hosted MCP tools) --
+    def legal_reference(self, serial: str, *, authority: Optional[str] = None) -> dict:
+        """Exact agency-interpretation lookup by serial (e.g. 台財稅第881945861號).
+
+        Returns the server dict unchanged: ``found`` / ``matches`` (each carrying
+        a validity ``status``, source URL and stored fulltext) / ``notes``.
+        No result_token: the serial comes from the caller's own document, not
+        from a prior search of this service.
+        """
+        body: dict = {"serial": serial}
+        if authority:
+            body["authority"] = authority
+        return self._post(_LEGAL_REF_PATH, body)
+
+    def search_legal_references(
+        self,
+        query: str,
+        *,
+        authority: Optional[str] = None,
+        source_kind: Optional[str] = None,
+        max_results: int = 5,
+    ) -> dict:
+        """Semantic topic search over agency interpretations (listing only).
+
+        Relevance judgment stays with the caller's AI: read the excerpts, then
+        verify any serial you intend to cite via :meth:`legal_reference`.
+        """
+        max_results = max(1, min(int(max_results), 10))
+        body: dict = {"query": query, "max_results": max_results}
+        if authority:
+            body["authority"] = authority
+        if source_kind:
+            body["source_kind"] = source_kind
+        return self._post(_LEGAL_REF_SEARCH_PATH, body)
+
+    def law_article(self, law_name: str, article_no: str) -> dict:
+        """Exact current-statute article lookup (e.g. 民法 184).
+
+        Current version only. The server's notes say so explicitly: do not use
+        this to verify the law as it stood at the time of the facts.
+        """
+        return self._post(_LAW_ARTICLE_PATH, {"law_name": law_name, "article_no": article_no})

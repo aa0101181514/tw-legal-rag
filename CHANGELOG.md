@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.3.0 (2026-09-01)
+
+The CLI now reaches all six hosted tools. The server side for statutes and
+interpretations shipped in 2026-08 and 2026-09-01; this release adds the
+matching CLI commands (retrieval only, no LLM, same as the rest of the CLI):
+
+- **New `law` command**: exact current-statute article lookup
+  (`twlegalrag law 民法 184`). Current version only; when the article or the
+  law name is not found the server returns explicit notes and law-name
+  candidates instead of an empty result.
+- **New `ref` command**: exact agency-interpretation lookup by serial with
+  validity status passthrough (`--full` prints the stored fulltext).
+- **New `ref-search` command**: semantic topic search over agency
+  interpretations, listing only. Relevance judgment and citation stay with
+  your AI: read the excerpts, then verify serials with `ref`.
+
 ## v2.2.0 (2026-08-23)
 
 Hosted endpoint moved to the Dr.Legal domain:
