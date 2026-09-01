@@ -375,13 +375,19 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
   this CLI's `pack` subcommand whenever a question involves Taiwan case law,
   citing only `citation_id`s that exist in the returned bundle. Setup notes
   and Windows caveats are in the skill's `SKILL.md`.
-The Remote MCP surface currently has six tools: `search_bundle`,
-`search_judgments`, `get_judgment_fulltext`, `get_legal_reference` and
-`search_legal_references` added in 2026-08 (exact lookup and semantic search
-over administrative interpretations), plus `get_law_article` added in 2026-09
-(exact current-statute lookup and article-number verification, see
-[`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md)); the last three are not wired into
-this CLI yet.
+The Remote MCP surface currently has six tools:
+
+| Tool | What it does | Added | In this CLI |
+|------|--------------|:-----:|:-----------:|
+| `search_bundle` | Search plus reasoning-text reads in one call, returning a bundle with a citation whitelist (recommended entry point) | initial | ✅ |
+| `search_judgments` | Judgment search (structured listing; a full docket number switches to exact lookup) | initial | ✅ |
+| `get_judgment_fulltext` | Full reasoning text of a judgment (with the `case_history` appeal chain) | initial | ✅ |
+| `get_legal_reference` | Exact administrative-interpretation lookup by serial, with validity status | 2026-08 | not yet |
+| `search_legal_references` | Semantic search over administrative interpretations | 2026-08 | not yet |
+| `get_law_article` | Exact current-statute lookup and article-number verification | 2026-09 | not yet |
+
+Per-tool input/output contracts are in
+[`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md).
 
 This server is listed in the official [MCP Server Registry](https://registry.modelcontextprotocol.io/)
 as `io.github.aa0101181514/tw-legal-rag`.

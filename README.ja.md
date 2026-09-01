@@ -344,12 +344,18 @@ CLI **v2.1.0** も対応：`pack` が長文判決を最後までページング�
   `scripts/search_judgments.py` は実行ファイルを自動検出し、Windows の 2 つの
   落とし穴にも対応しています（skill 内の `SKILL.md` 参照）。
 
-Remote MCP インターフェースには現在 6 つのツールがあります：`search_bundle`、
-`search_judgments`、`get_judgment_fulltext`、2026-08 追加の
-`get_legal_reference` と `search_legal_references`（行政解釈の正確検索と
-セマンティック検索）、そして 2026-09 追加の `get_law_article`（現行法条の
-完全一致照会、[`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md) 参照）。
-最後の 3 つはまだ本 CLI には組み込まれていません。
+Remote MCP インターフェースには現在 6 つのツールがあります：
+
+| ツール | 機能 | 追加時期 | 本 CLI |
+|--------|------|:-------:|:------:|
+| `search_bundle` | 検索＋理由全文読込を 1 回で実行し、引用ホワイトリスト付き bundle を返却（推奨エントリポイント） | 初版から | ✅ |
+| `search_judgments` | 判決検索（構造化 listing。完全な事件番号は完全一致照会に自動切替） | 初版から | ✅ |
+| `get_judgment_fulltext` | 判決理由の全文（審級関係 `case_history` 付き） | 初版から | ✅ |
+| `get_legal_reference` | 行政解釈の文書番号による正確検索、効力状態付き | 2026-08 | 未対応 |
+| `search_legal_references` | 行政解釈のセマンティック検索 | 2026-08 | 未対応 |
+| `get_law_article` | 現行法条の完全一致照会と条番号検証 | 2026-09 | 未対応 |
+
+各ツールの入出力契約は [`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md) を参照。
 
 本サーバーは公式 [MCP Server Registry](https://registry.modelcontextprotocol.io/) に
 `io.github.aa0101181514/tw-legal-rag` として登録されています。

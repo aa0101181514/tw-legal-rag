@@ -345,11 +345,18 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
   skill 內附的 `scripts/search_judgments.py` 會自動定位執行檔，並處理 Windows
   上的兩個踩雷點（詳見 skill 內的 `SKILL.md`）。
 
-Remote MCP 介面現有六個工具:`search_bundle`、`search_judgments`、
-`get_judgment_fulltext`,2026-08 新增的 `get_legal_reference` 與
-`search_legal_references`(行政函釋字號精確查詢與語義檢索),以及 2026-09 新增的
-`get_law_article`(現行法條精確查詢與條號核驗,見
-[`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md));後三者尚未接入本 CLI。
+Remote MCP 介面現有六個工具:
+
+| 工具 | 功能 | 新增時間 | 接入本 CLI |
+|------|------|:--------:|:----------:|
+| `search_bundle` | 檢索＋讀取理由全文,一次回傳含引用白名單的 bundle(建議入口) | 初版起 | ✅ |
+| `search_judgments` | 判決檢索(結構化 listing,完整案號自動切精確調卷) | 初版起 | ✅ |
+| `get_judgment_fulltext` | 判決理由全文(含審級關聯 `case_history`) | 初版起 | ✅ |
+| `get_legal_reference` | 行政函釋字號精確查詢,附效力狀態 | 2026-08 | 尚未 |
+| `search_legal_references` | 行政函釋語義檢索 | 2026-08 | 尚未 |
+| `get_law_article` | 現行法條精確查詢與條號核驗 | 2026-09 | 尚未 |
+
+各工具的輸入輸出契約詳見 [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md)。
 
 本服務已登錄於官方 [MCP Server Registry](https://registry.modelcontextprotocol.io/),
 名稱為 `io.github.aa0101181514/tw-legal-rag`。
