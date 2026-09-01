@@ -10,7 +10,7 @@
 
 ---
 
-> **無料・登録不要・API キー不要**の台湾法律 **MCP サーバー**：Claude、ChatGPT、Codex、Cursor に
+> **無料・登録不要・API キー不要**の台湾法律 **MCP サーバー**：Claude、ChatGPT、Gemini CLI、Microsoft 365 Copilot、Codex、Cursor に
 > `https://tlr.dr-legal.com.tw/mcp` を追加するだけで、AI アシスタントが 2,250 万件の台湾裁判書・
 > 行政解釈・憲法法廷判決をセマンティック検索し、引用チェック付きで返します。
 > 同じバックエンドに接続するソースコード公開 CLI（`twlegalrag`）も提供。
@@ -341,6 +341,15 @@ CLI **v2.1.0** も対応：`pack` が長文判決を最後までページング�
   URL に `https://tlr.dr-legal.com.tw/mcp` を設定。
 - **ChatGPT（MCP コネクタ）**：Connectors でカスタム MCP サーバーを追加し、
   URL に `https://tlr.dr-legal.com.tw/mcp` を設定。
+- **Gemini CLI（Remote MCP）**：`~/.gemini/settings.json` の `mcpServers` に
+  `{"tlr": {"httpUrl": "https://tlr.dr-legal.com.tw/mcp"}}` を追加し、CLI 内で
+  `/mcp auth tlr` を実行して認可します。手順の詳細は
+  [ユーザーガイド](docs/USER_GUIDE_ja.md) を参照。
+- **Microsoft 365 Copilot / Copilot Studio（MCP）**：Copilot Studio または
+  Agent Builder で agent に MCP ツールを追加し、Server URL に
+  `https://tlr.dr-legal.com.tw/mcp` を設定、認証は OAuth 2.0 の動的探索
+  (dynamic discovery) を選択します。アプリの事前登録は不要です。手順の詳細は
+  [ユーザーガイド](docs/USER_GUIDE_ja.md) を参照。
 - **Claude Code（Skill、MCP ではなく CLI 経由）**：本リポジトリには
   [`skills/tw-legal-rag/`](skills/tw-legal-rag/) に既製の skill が同梱されて
   います。フォルダごとプロジェクトの `.claude/skills/` に置くだけです。本 CLI の

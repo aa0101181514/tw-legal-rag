@@ -2,7 +2,7 @@
 
 # 怎麼用 AI 搜尋台灣判決（使用者指南）
 
-法律偵探的判決檢索服務（TLR）讓你**用自己的 AI**（ChatGPT / Claude / 或開發工具）
+法律偵探的判決檢索服務（TLR）讓你**用自己的 AI**（ChatGPT / Claude / Gemini / Copilot 或開發工具）
 搜尋並引用 2,200 萬筆台灣裁判。你不需要寫程式、不需要 API key。
 
 > ⚠️ 重要：本服務只負責「找出並提供判決」。**答案由你自己的 AI 生成,法律偵探不為
@@ -53,6 +53,44 @@ twlegalrag pack "違反銀行法被判無罪的案件" -o bundle.json
 ```
 
 把 `bundle.json` 整包貼給 ChatGPT / Claude,並要求它「只引用 bundle 內的判決」。
+
+---
+
+## 方式 D：Gemini CLI（給用 Gemini 的開發者）
+
+1. 安裝 [Gemini CLI](https://github.com/google-gemini/gemini-cli)（建議最新版,舊版對
+   streamable HTTP 的支援不完整）。
+2. 編輯 `~/.gemini/settings.json`,在 `mcpServers` 加入：
+
+```json
+{
+  "mcpServers": {
+    "tlr": {
+      "httpUrl": "https://tlr.dr-legal.com.tw/mcp"
+    }
+  }
+}
+```
+
+3. 啟動 `gemini`,輸入 `/mcp auth tlr`,瀏覽器完成授權（免帳號註冊、免 API key）。
+4. 輸入 `/mcp list` 確認工具已載入,之後直接用中文問即可。
+
+---
+
+## 方式 E：Microsoft 365 Copilot（企業版）
+
+適用於有 Microsoft 365 Copilot 授權的組織,在 **Copilot Studio** 或
+**Agent Builder** 把判決搜尋加進你的 agent：
+
+1. 進入 Copilot Studio → 選擇（或建立）一個 agent → **Tools** → **Add a tool** →
+   **Model Context Protocol**。
+2. **Server URL** 填 `https://tlr.dr-legal.com.tw/mcp`。
+3. 認證選 **OAuth 2.0**,並使用**動態探索（dynamic discovery）**：本服務支援動態
+   註冊,不需要預先申請 client ID 或提供任何金鑰。
+4. 儲存後,在該 agent 的對話中用中文提問即可。
+
+介面選單名稱可能隨 Microsoft 改版異動,以
+[微軟官方文件](https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent)為準。
 
 ---
 

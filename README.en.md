@@ -13,7 +13,7 @@ Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律�
 ---
 
 > **Free, no signup, no API key.** A Taiwan legal **MCP server**: add one URL
-> (`https://tlr.dr-legal.com.tw/mcp`) to Claude, ChatGPT, Codex or Cursor and your AI
+> (`https://tlr.dr-legal.com.tw/mcp`) to Claude, ChatGPT, Gemini CLI, Microsoft 365 Copilot, Codex or Cursor and your AI
 > assistant can semantically search 22M+ Taiwan court judgments, administrative
 > interpretations and Constitutional Court decisions, each with a citation check.
 > A source-available CLI (`twlegalrag`) talks to the same backend.
@@ -374,6 +374,16 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
   `https://tlr.dr-legal.com.tw/mcp`.
 - **ChatGPT (MCP connector)**: add a custom MCP server in Connectors, URL
   `https://tlr.dr-legal.com.tw/mcp`.
+- **Gemini CLI (Remote MCP)**: add
+  `{"tlr": {"httpUrl": "https://tlr.dr-legal.com.tw/mcp"}}` under `mcpServers`
+  in `~/.gemini/settings.json`, then run `/mcp auth tlr` inside the CLI to
+  authorize. Step-by-step instructions are in the
+  [user guide](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/USER_GUIDE_en.md).
+- **Microsoft 365 Copilot / Copilot Studio (MCP)**: add an MCP tool to your
+  agent in Copilot Studio or Agent Builder, set the server URL to
+  `https://tlr.dr-legal.com.tw/mcp`, and choose OAuth 2.0 with dynamic
+  discovery; no app pre-registration is needed. Step-by-step instructions are
+  in the [user guide](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/USER_GUIDE_en.md).
 - **Claude Code (skill, wraps this CLI rather than MCP)**: a ready-made skill
   lives in [`skills/tw-legal-rag/`](https://github.com/aa0101181514/tw-legal-rag/blob/main/skills/tw-legal-rag/).
   Copy that folder into your project's `.claude/skills/` and Claude will run

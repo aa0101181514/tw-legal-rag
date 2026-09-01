@@ -10,7 +10,7 @@
 
 ---
 
-> **免費、免註冊、免 API key** 的台灣法律 MCP 伺服器：在 Claude、ChatGPT、Codex、Cursor 加入
+> **免費、免註冊、免 API key** 的台灣法律 MCP 伺服器：在 Claude、ChatGPT、Gemini CLI、Microsoft 365 Copilot、Codex、Cursor 加入
 > `https://tlr.dr-legal.com.tw/mcp` 一個網址，AI 助理就能直接語義檢索 2,250 萬筆台灣裁判書、
 > 行政函釋與憲法法庭裁判，逐筆附引用查核。另提供同一後端的公開原始碼 CLI（`twlegalrag`）。
 >
@@ -343,6 +343,13 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
   `https://tlr.dr-legal.com.tw/mcp`。
 - **ChatGPT（MCP connector）**：在 Connectors 新增自訂 MCP server,URL 填
   `https://tlr.dr-legal.com.tw/mcp`。
+- **Gemini CLI（Remote MCP）**：在 `~/.gemini/settings.json` 的 `mcpServers` 加入
+  `{"tlr": {"httpUrl": "https://tlr.dr-legal.com.tw/mcp"}}`,啟動後執行 `/mcp auth tlr`
+  完成授權。詳細步驟見 [使用者指南](docs/USER_GUIDE_zh.md)。
+- **Microsoft 365 Copilot / Copilot Studio（MCP）**：在 Copilot Studio 或 Agent Builder
+  為 agent 新增 MCP 工具,Server URL 填 `https://tlr.dr-legal.com.tw/mcp`,
+  認證選 OAuth 2.0 動態探索(dynamic discovery),不需預先註冊應用程式。
+  詳細步驟見 [使用者指南](docs/USER_GUIDE_zh.md)。
 - **Claude Code（Skill,走 CLI 非 MCP）**：本 repo 附了一個現成的 skill 在
   [`skills/tw-legal-rag/`](skills/tw-legal-rag/)，把整個資料夾放到你專案的
   `.claude/skills/` 即可。它包裝本 CLI 的 `pack` 子指令，讓 Claude 在你問到
