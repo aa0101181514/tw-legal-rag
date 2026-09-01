@@ -43,7 +43,25 @@ Claude が自動的に判決データベースを検索し、関連判決を読�
 
 ---
 
-## 方法 C：コマンドライン（開発者・上級者向け）
+## 方法 C：Gemini ウェブ版（Gemini Spark）
+
+アカウントに **Gemini Spark** が必要です（Gemini ウェブ版に「Spark」タブが
+あれば利用できます）。2026 年 9 月 1 日に台湾アカウントで動作確認済み。
+
+1. [gemini.google.com/spark/apps](https://gemini.google.com/spark/apps) を開く
+   （または Spark のサイドメニューで「連携アプリ」をクリック）。
+2. **カスタムアプリ**のタブに切り替える。
+3. 「**Spark 適用のカスタムアプリ**」に `https://tlr.dr-legal.com.tw/mcp` を貼り付ける。
+4. 「**続行**」をクリックし、画面に従って認可を完了する（動的登録は自動で完了、
+   認証情報やキーの入力は不要）。
+5. 連携後は **Spark のタスク内**で質問できます。
+
+注意：カスタムアプリは Spark のタスク内でのみ有効で、通常のチャット画面では
+呼び出されません。「アクティビティ」（Keep Activity）は有効のままにしてください。
+
+---
+
+## 方法 D：コマンドライン（開発者・上級者向け）
 
 ターミナルに慣れているなら、オープンソース CLI をインストールし、判決をファイルに
 パックして任意の AI に貼り付けられます：
@@ -63,7 +81,7 @@ twlegalrag pack "違反銀行法被判無罪的案件" -o bundle.json
 
 ---
 
-## 方法 D：Gemini CLI（Gemini を使う開発者向け）
+## 方法 E：Gemini CLI（Gemini を使う開発者向け）
 
 1. [Gemini CLI](https://github.com/google-gemini/gemini-cli) をインストール
    （最新版を推奨。旧版は streamable HTTP への対応が不完全です）。
@@ -85,7 +103,7 @@ twlegalrag pack "違反銀行法被判無罪的案件" -o bundle.json
 
 ---
 
-## 方法 E：Microsoft 365 Copilot（エンタープライズ向け）
+## 方法 F：Microsoft 365 Copilot（エンタープライズ向け）
 
 Microsoft 365 Copilot ライセンスのある組織向けに、**Copilot Studio** または
 **Agent Builder** で agent に判決検索を追加できます：

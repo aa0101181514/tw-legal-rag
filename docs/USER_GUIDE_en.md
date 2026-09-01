@@ -45,7 +45,27 @@ own understanding, and attach clickable judgment links.
 
 ---
 
-## Option C: Command line (developers / advanced)
+## Option C: Gemini web app (Gemini Spark)
+
+Requires **Gemini Spark** on your account (you have it if the Gemini web app
+shows a "Spark" tab). Verified working from a Taiwan account on 2026-09-01.
+
+1. Open [gemini.google.com/spark/apps](https://gemini.google.com/spark/apps)
+   (or click "Connected apps" in the Spark side menu).
+2. Switch to the **custom apps** tab.
+3. Paste `https://tlr.dr-legal.com.tw/mcp` into **"Custom apps for Spark"**.
+4. Click **Continue** and finish the authorization on screen (dynamic
+   registration completes automatically; no credentials or key needed).
+5. Ask inside a **Spark task**, for example: "Find three Taiwan judgments
+   where the defendant was acquitted of negligent injury due to inability to
+   react in time, with docket numbers."
+
+Note: custom apps only work inside Spark tasks, not the regular chat window,
+and Keep Activity must stay on.
+
+---
+
+## Option D: Command line (developers / advanced)
 
 If you prefer a terminal, install the open-source CLI and pack judgments into
 a file you can paste to any AI:
@@ -65,7 +85,7 @@ only judgments inside the bundle."
 
 ---
 
-## Option D: Gemini CLI (for Gemini developers)
+## Option E: Gemini CLI (for Gemini developers)
 
 1. Install the [Gemini CLI](https://github.com/google-gemini/gemini-cli)
    (use the latest version; older releases had incomplete streamable HTTP
@@ -88,7 +108,7 @@ only judgments inside the bundle."
 
 ---
 
-## Option E: Microsoft 365 Copilot (enterprise)
+## Option F: Microsoft 365 Copilot (enterprise)
 
 For organizations with a Microsoft 365 Copilot license, add judgment search
 to your agent in **Copilot Studio** or **Agent Builder**:

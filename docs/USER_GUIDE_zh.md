@@ -38,7 +38,25 @@ Claude 會自動搜尋判決庫、讀取相關判決,再用它自己的理解回
 
 ---
 
-## 方式 C：命令列工具（給開發者 / 進階）
+## 方式 C：Gemini 網頁版（Gemini Spark）
+
+需要帳號具備 **Gemini Spark**（Gemini 網頁版上方有「Spark」分頁即是）。
+2026 年 9 月 1 日以台灣帳號實測可用。
+
+1. 開啟 [gemini.google.com/spark/apps](https://gemini.google.com/spark/apps)
+   （或在 Spark 左側選單點「連結的應用程式」）。
+2. 切到「**自訂應用程式**」分頁。
+3. 在「**Spark 適用的自訂應用程式**」輸入框貼上：`https://tlr.dr-legal.com.tw/mcp`
+4. 按「**繼續**」,依畫面完成授權（自動完成動態註冊,不需要填任何憑證或金鑰）。
+5. 連結後在 **Spark 的「工作」**裡用中文提問即可,例如「幫我找三則因反應不及
+   過失撞人被判無罪的判決,附案號」。
+
+注意:自訂應用程式只在 Spark 任務中生效,Gemini 一般聊天視窗不會呼叫;
+「活動記錄」（Keep Activity）需維持開啟。
+
+---
+
+## 方式 D：命令列工具（給開發者 / 進階）
 
 如果你習慣終端,可以裝開源 CLI,把判決打包成檔案再貼給任何 AI：
 
@@ -56,7 +74,7 @@ twlegalrag pack "違反銀行法被判無罪的案件" -o bundle.json
 
 ---
 
-## 方式 D：Gemini CLI（給用 Gemini 的開發者）
+## 方式 E：Gemini CLI（給用 Gemini 的開發者）
 
 1. 安裝 [Gemini CLI](https://github.com/google-gemini/gemini-cli)（建議最新版,舊版對
    streamable HTTP 的支援不完整）。
@@ -77,7 +95,7 @@ twlegalrag pack "違反銀行法被判無罪的案件" -o bundle.json
 
 ---
 
-## 方式 E：Microsoft 365 Copilot（企業版）
+## 方式 F：Microsoft 365 Copilot（企業版）
 
 適用於有 Microsoft 365 Copilot 授權的組織,在 **Copilot Studio** 或
 **Agent Builder** 把判決搜尋加進你的 agent：
