@@ -133,6 +133,9 @@ Taiwan Legal RAG CLI は、法律偵探の公開 TLR エンドポイントから
   **引用前に**上級審で破棄済みかどうかを確認できます。
 - **行政解釈ツール**：発文番号の完全一致照会（効力状態付き）とセマンティック
   検索。解釈と判決は厳格に分離。詳細は [`docs/mcp-anchor.ja.md`](docs/mcp-anchor.ja.md)。
+- **現行法条の完全一致照会**：法令名＋条番号で現行条文の原文を取得。法令の
+  最終改正日と廃止注記付き。条番号の実在と条文内容を引用前に検証でき、モデルの
+  記憶に頼る必要がありません。現行整備版のみ（改正前の旧条文は公式の沿革を参照）。
 - **引用ガードは第一級市民**：`allowed_citations` ホワイトリスト、
   `unread_candidates` マーカー、bundle ごとの検証指示、CLI 側の引用チェック。
   「番号は本物、見解は捏造」という法務 AI 最悪の幻覚類型に対する設計です。
@@ -341,11 +344,12 @@ CLI **v2.1.0** も対応：`pack` が長文判決を最後までページング�
   `scripts/search_judgments.py` は実行ファイルを自動検出し、Windows の 2 つの
   落とし穴にも対応しています（skill 内の `SKILL.md` 参照）。
 
-Remote MCP インターフェースには現在 5 つのツールがあります：`search_bundle`、
-`search_judgments`、`get_judgment_fulltext`、そして 2026-08 追加の
+Remote MCP インターフェースには現在 6 つのツールがあります：`search_bundle`、
+`search_judgments`、`get_judgment_fulltext`、2026-08 追加の
 `get_legal_reference` と `search_legal_references`（行政解釈の正確検索と
-セマンティック検索、[`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md) 参照）。
-最後の 2 つはまだ本 CLI には組み込まれていません。
+セマンティック検索）、そして 2026-09 追加の `get_law_article`（現行法条の
+完全一致照会、[`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md) 参照）。
+最後の 3 つはまだ本 CLI には組み込まれていません。
 
 本サーバーは公式 [MCP Server Registry](https://registry.modelcontextprotocol.io/) に
 `io.github.aa0101181514/tw-legal-rag` として登録されています。

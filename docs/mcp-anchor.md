@@ -211,3 +211,55 @@ serials so the model never has to guess one from memory;
   Never conclude a topic is absent from the first window alone.
 - Lexical modes (`keyword` / `phrase`) now rank by relevance and return empty
   on zero hits.
+
+## 2026-09-01: `get_law_article` — exact current-statute lookup (hosted MCP)
+
+The hosted MCP adds a sixth tool, `get_law_article` (also available as REST
+`POST /v1/law_article`): an **exact lookup of a current Taiwan statute
+article** by law name plus article number. Like everything else on this
+surface, it **calls no LLM**. The statute corpus mirrors the official
+National Laws and Regulations Database (全國法規資料庫) and is synced
+periodically.
+
+### Purpose
+
+Statute-citation verification before legal writing: that the article number
+exists, what the current text says verbatim, and whether the law carries an
+abolition note. Article numbers shift when laws are amended, and statute text
+recalled from model memory is frequently a plausible-looking hallucination;
+this tool replaces memory with a lookup.
+
+### Input
+
+- `law_name` (required): full official name or a common abbreviation
+  (勞基法, 刑法, 憲法, 民訴法 and similar all resolve). Names glued to a
+  leading particle (依民法, 次按勞基法) also resolve.
+- `article_no` (required): `184`, `第184條`, `47-1`, `第47條之1`, and CJK
+  numerals (第十八條) are all accepted.
+
+### Output
+
+Each entry in `matches[]` carries the official `law_name`, `law_level`,
+`law_modified_date` (last amendment date), `law_url` (official database
+link), an `abolished` flag, the normalized `article_no`, and
+`article_content` (the current full text of the article). Quote statute text
+**only** from `article_content`.
+
+### Semantics of a miss
+
+- If the law resolves but the article is not found, the response says so
+  explicitly with the law's article count: the corpus stores each collected
+  law in full, so this usually means the article number is wrong or was
+  renumbered by amendment.
+- If the law name does not resolve, `law_candidates` lists collected names
+  containing the query string, to retry with an exact name. A miss does
+  **not** prove the law does not exist: municipal self-government ordinances
+  and some administrative rules are outside the corpus.
+
+### Limits
+
+- **Current consolidated version only.** There are no historical versions:
+  never use this tool to verify quotes of pre-amendment (行為時法) text;
+  follow `law_url` to the official amendment history instead.
+- Statutes only: administrative interpretations go through
+  `get_legal_reference`, judgments through `search_judgments`.

@@ -144,6 +144,12 @@ retrieval service that Legal Detective has been building for a long time:
   and semantic search over administrative interpretations; interpretations and
   judgments are strictly separated. See
   [`docs/mcp-anchor.md`](docs/mcp-anchor.md).
+- **Exact statute lookup** — retrieve the current text of a Taiwan statute
+  article by law name plus article number, with the law's last-amendment date
+  and any abolition note, so an article citation can be verified before it
+  goes into legal writing instead of being recalled from model memory. Common
+  abbreviations resolve to official law names. Current consolidated version
+  only; for pre-amendment text consult the official amendment history.
 - **Citation safeguards are first-class** — `allowed_citations` read-whitelist,
   `unread_candidates` markers, per-bundle verification instructions, plus the
   CLI-side citation check — all aimed at legal AI's worst hallucination mode:
@@ -369,11 +375,12 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
   this CLI's `pack` subcommand whenever a question involves Taiwan case law,
   citing only `citation_id`s that exist in the returned bundle. Setup notes
   and Windows caveats are in the skill's `SKILL.md`.
-The Remote MCP surface currently has five tools: `search_bundle`,
-`search_judgments`, `get_judgment_fulltext`, plus `get_legal_reference` and
+The Remote MCP surface currently has six tools: `search_bundle`,
+`search_judgments`, `get_judgment_fulltext`, `get_legal_reference` and
 `search_legal_references` added in 2026-08 (exact lookup and semantic search
-over administrative interpretations, see
-[`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md)); the last two are not wired into
+over administrative interpretations), plus `get_law_article` added in 2026-09
+(exact current-statute lookup and article-number verification, see
+[`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md)); the last three are not wired into
 this CLI yet.
 
 This server is listed in the official [MCP Server Registry](https://registry.modelcontextprotocol.io/)

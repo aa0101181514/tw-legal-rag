@@ -153,6 +153,10 @@ bundle.
 - **行政規則雙工具**：字號精確查詢（附效力狀態：已驗證有效／未驗證／已廢止／
   停止適用／已被取代）與語義檢索成對使用；函釋與判決嚴格分流，不混排、
   不得引為法院見解。詳見 [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md)。
+- **現行法條精確查詢**:以法規名稱＋條號取回現行條文原文,並附法規最後修正
+  日期與廢止註記。引用法條前可先核驗條號存在與文字內容,不必憑模型記憶背條文;
+  常用縮寫（勞基法、刑法、憲法）自動解析為官方法規名。僅提供現行整編版本,
+  行為時法（修法前舊條文）請至官方沿革查詢。
 - **引用防護是一等公民**：`allowed_citations` 白名單（只含實際讀入理由全文的
   判決）、`unread_candidates` 標記、寫進每個 bundle 的驗證指示，加上 CLI 端的
   citation check。整套設計針對法律 AI 最痛的幻覺型態：**字號真實、見解捏造**。
@@ -341,10 +345,11 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
   skill 內附的 `scripts/search_judgments.py` 會自動定位執行檔，並處理 Windows
   上的兩個踩雷點（詳見 skill 內的 `SKILL.md`）。
 
-Remote MCP 介面現有五個工具:`search_bundle`、`search_judgments`、
-`get_judgment_fulltext`,以及 2026-08 新增的 `get_legal_reference` 與
-`search_legal_references`(行政函釋字號精確查詢與語義檢索,見
-[`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md));後兩者尚未接入本 CLI。
+Remote MCP 介面現有六個工具:`search_bundle`、`search_judgments`、
+`get_judgment_fulltext`,2026-08 新增的 `get_legal_reference` 與
+`search_legal_references`(行政函釋字號精確查詢與語義檢索),以及 2026-09 新增的
+`get_law_article`(現行法條精確查詢與條號核驗,見
+[`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md));後三者尚未接入本 CLI。
 
 本服務已登錄於官方 [MCP Server Registry](https://registry.modelcontextprotocol.io/),
 名稱為 `io.github.aa0101181514/tw-legal-rag`。
