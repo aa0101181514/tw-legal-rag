@@ -346,7 +346,7 @@ CLI 只用其中兩個 bundle 層級檢查。請勿把檔案清單當功能清�
 - **Gemini 網頁版（Spark）**：開啟 [gemini.google.com/spark/apps](https://gemini.google.com/spark/apps)
   →「自訂應用程式」→ 在「Spark 適用的自訂應用程式」貼上
   `https://tlr.dr-legal.com.tw/mcp` → 按「繼續」完成授權（自動動態註冊,免金鑰）。
-  需帳號具備 Gemini Spark;連結後於 Spark 任務中使用,一般聊天視窗不會呼叫。
+  需帳號具備 Gemini Spark;連結後在 Spark 輸入框打 `@` 選「法律偵探」即可指名呼叫,一般聊天視窗不會呼叫。
   2026-09-01 台灣帳號實測可用。
 - **Gemini CLI（Remote MCP）**：在 `~/.gemini/settings.json` 的 `mcpServers` 加入
   `{"tlr": {"httpUrl": "https://tlr.dr-legal.com.tw/mcp"}}`,啟動後執行 `/mcp auth tlr`

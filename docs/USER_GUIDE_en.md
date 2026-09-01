@@ -56,9 +56,11 @@ shows a "Spark" tab). Verified working from a Taiwan account on 2026-09-01.
 3. Paste `https://tlr.dr-legal.com.tw/mcp` into **"Custom apps for Spark"**.
 4. Click **Continue** and finish the authorization on screen (dynamic
    registration completes automatically; no credentials or key needed).
-5. Ask inside a **Spark task**, for example: "Find three Taiwan judgments
-   where the defendant was acquitted of negligent injury due to inability to
-   react in time, with docket numbers."
+5. In the **Spark input box, type `@`** and pick the app to call it by name,
+   for example: "@app Find three Taiwan judgments where the defendant was
+   acquitted of negligent injury due to inability to react in time, with
+   docket numbers." Without `@`, Spark also decides on its own whether to
+   call the app for legal questions."
 
 Note: custom apps only work inside Spark tasks, not the regular chat window,
 and Keep Activity must stay on.

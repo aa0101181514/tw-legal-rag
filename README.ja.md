@@ -344,8 +344,9 @@ CLI **v2.1.0** も対応：`pack` が長文判決を最後までページング�
 - **Gemini ウェブ版（Spark）**：[gemini.google.com/spark/apps](https://gemini.google.com/spark/apps)
   を開き、カスタムアプリのタブで「Spark 適用のカスタムアプリ」に
   `https://tlr.dr-legal.com.tw/mcp` を貼り付けて「続行」、画面に従って認可を
-  完了します（自動の動的登録、キー不要）。アカウントに Gemini Spark が必要で、
-  連携後は Spark のタスク内で使用します（通常のチャット画面では呼び出されません）。
+  完了します（自動の動的登録、キー不要）。アカウントに Gemini Spark が必要です。
+  連携後は Spark の入力欄で `@` を入力してアプリを選ぶと名指しで呼び出せます
+  （通常のチャット画面ではカスタムアプリは呼び出されません）。
   2026-09-01 台湾アカウントで動作確認済み。
 - **Gemini CLI（Remote MCP）**：`~/.gemini/settings.json` の `mcpServers` に
   `{"tlr": {"httpUrl": "https://tlr.dr-legal.com.tw/mcp"}}` を追加し、CLI 内で

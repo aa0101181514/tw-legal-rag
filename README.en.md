@@ -378,8 +378,9 @@ AI tools via **Remote MCP**. Both use the same MCP endpoint
   [gemini.google.com/spark/apps](https://gemini.google.com/spark/apps) → the
   custom apps tab → paste `https://tlr.dr-legal.com.tw/mcp` into "Custom apps
   for Spark" → Continue and finish the authorization (automatic dynamic
-  registration, no key). Requires Gemini Spark on the account; the app is used
-  inside Spark tasks, not the regular chat window. Verified working from a
+  registration, no key). Requires Gemini Spark on the account; once linked, type `@` in the Spark
+  input box and pick the app to call it by name (the regular chat window does
+  not call custom apps). Verified working from a
   Taiwan account on 2026-09-01.
 - **Gemini CLI (Remote MCP)**: add
   `{"tlr": {"httpUrl": "https://tlr.dr-legal.com.tw/mcp"}}` under `mcpServers`
