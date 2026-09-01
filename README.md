@@ -349,9 +349,9 @@ Remote MCP 介面現有六個工具:
 
 | 工具 | 功能 | 新增時間 | 接入本 CLI |
 |------|------|:--------:|:----------:|
-| `search_bundle` | 檢索＋讀取理由全文,一次回傳含引用白名單的 bundle(建議入口) | 初版起 | ✅ |
-| `search_judgments` | 判決檢索(結構化 listing,完整案號自動切精確調卷) | 初版起 | ✅ |
-| `get_judgment_fulltext` | 判決理由全文(含審級關聯 `case_history`) | 初版起 | ✅ |
+| `search_bundle` | 檢索＋讀取理由全文,一次回傳含引用白名單的 bundle(建議入口) | 2026-06 | ✅ |
+| `search_judgments` | 判決檢索(結構化 listing,完整案號自動切精確調卷) | 2026-05 | ✅ |
+| `get_judgment_fulltext` | 判決理由全文(含審級關聯 `case_history`) | 2026-05 | ✅ |
 | `get_legal_reference` | 行政函釋字號精確查詢,附效力狀態 | 2026-08 | 尚未 |
 | `search_legal_references` | 行政函釋語義檢索 | 2026-08 | 尚未 |
 | `get_law_article` | 現行法條精確查詢與條號核驗 | 2026-09 | 尚未 |

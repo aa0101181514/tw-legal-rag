@@ -379,9 +379,9 @@ The Remote MCP surface currently has six tools:
 
 | Tool | What it does | Added | In this CLI |
 |------|--------------|:-----:|:-----------:|
-| `search_bundle` | Search plus reasoning-text reads in one call, returning a bundle with a citation whitelist (recommended entry point) | initial | ✅ |
-| `search_judgments` | Judgment search (structured listing; a full docket number switches to exact lookup) | initial | ✅ |
-| `get_judgment_fulltext` | Full reasoning text of a judgment (with the `case_history` appeal chain) | initial | ✅ |
+| `search_bundle` | Search plus reasoning-text reads in one call, returning a bundle with a citation whitelist (recommended entry point) | 2026-06 | ✅ |
+| `search_judgments` | Judgment search (structured listing; a full docket number switches to exact lookup) | 2026-05 | ✅ |
+| `get_judgment_fulltext` | Full reasoning text of a judgment (with the `case_history` appeal chain) | 2026-05 | ✅ |
 | `get_legal_reference` | Exact administrative-interpretation lookup by serial, with validity status | 2026-08 | not yet |
 | `search_legal_references` | Semantic search over administrative interpretations | 2026-08 | not yet |
 | `get_law_article` | Exact current-statute lookup and article-number verification | 2026-09 | not yet |
