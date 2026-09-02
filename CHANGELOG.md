@@ -1,5 +1,23 @@
 # Changelog
 
+## Data coverage update (2026-09-02)
+
+Documentation only; no package or API change (still v2.3.0).
+
+- **Administrative interpretations: 84,737 → 88,382** across **90 issuing
+  agencies** (was 78). The increase is mainly commercial-registration and
+  company-law interpretations from the Ministry of Economic Affairs, whose
+  count went from 3,131 to 6,670.
+- **Interpretation validity ledger: 50,853 → 69,461.** Coverage now includes
+  tax interpretations, whose serials were previously not registered, so exact
+  serial lookup reaches them.
+- **Exact serial lookup is more forgiving of format variants.** A query
+  written as `台勞動2字第040204號` now resolves to a record stored as
+  `（87）台勞動二字第040204號函` (year prefix, Chinese numerals, leading
+  zeros). Such a hit is flagged in the response so the caller re-checks the
+  returned serial and title before citing. Exact matches always take priority.
+- **Court judgments: 22,558,169 → 22,563,805** (daily incremental sync).
+
 ## v2.3.0 (2026-09-01)
 
 The CLI now reaches all six hosted tools. The server side for statutes and
