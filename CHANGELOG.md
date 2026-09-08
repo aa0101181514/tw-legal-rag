@@ -1,5 +1,31 @@
 # Changelog
 
+## Data coverage update (2026-09-08)
+
+Documentation only; no package or API change (still v2.3.0).
+
+- **Court judgments: 22,563,805 to 22,578,975** (daily incremental sync).
+  As in the previous two updates, the entire increase lands in the
+  "no court-code field" bucket (400,738 to 415,908, an exact match with the
+  delta). The ten court-level rows and four case-type rows are unchanged;
+  the daily sync does not populate the `court` field, and the cleanup is
+  still outstanding.
+- **Statute counts now come from the `laws` table, split by tier and repeal
+  status.** Previous figures did not reconcile with the production tables:
+  acts 1,083 to 1,017 (45,620 to 44,372 articles), regulations 7,474 to
+  7,249 (132,760 to 128,675 articles). Constitutional-tier instruments are
+  now listed as the 7 that exist in the database (228 articles: the
+  Constitution, its additional articles, the implementation procedure and
+  the martial-law orders) rather than the Constitution alone.
+- **Repealed instruments: 3,230 to 3,523** (320 acts, 3,201 regulations,
+  2 constitutional-tier), consistent with the same table and tier split.
+- **Administrative interpretations: 88,382 to 88,392** across the same 90
+  agencies; seven agencies gained between one and three records.
+- **Interpretation validity ledger: 69,461 to 69,483.**
+- **Appeal-chain relations: 4,537,220 to 4,540,466.** This row now uses an
+  exact `count(*)`; the earlier figure came from `pg_class.reltuples`, a
+  planner estimate that drifts with vacuum and had understated the table.
+
 ## Data coverage update (2026-09-02)
 
 Documentation only; no package or API change (still v2.3.0).
