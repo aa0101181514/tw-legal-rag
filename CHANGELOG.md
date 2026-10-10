@@ -1,5 +1,29 @@
 # Changelog
 
+## Data coverage update (2026-10-10)
+
+Documentation-only change; no package release (CLI still v2.3.0).
+
+- **Labour arbitration decisions: 400 to 450.** Ten decisions published since May 2026
+  (114 年勞裁字第 36、38、45、47、53、56、57、58 號 and 115 年勞裁字第 4、6 號) and forty
+  decisions from 2011 and 2012 (100 and 101 年) are now included. The collection is
+  refreshed weekly from the 勞動部不當勞動行為裁決委員會 public query page.
+- **Constitutional Court judgments: 57 to 59** (115 年憲判字第 6 號 and 第 7 號); the
+  constitutional row is now 872. Constitutional Court judgments are checked weekly.
+- **Court judgments: 22,663,802 to 22,674,799.** Court-level rows: 地方法院 17,083,731,
+  地方法院簡易庭 3,327,891, 高等法院及分院 1,355,772, 最高法院 405,325, 高等行政法院 202,960,
+  最高行政法院 124,161, 地方行政訴訟庭 92,599, 高雄少年及家事法院 24,977, 智慧財產及商業法院
+  24,092, 其他專業法庭・委員會 33,291. Case-type rows: 民事 14,550,390, 刑事 7,507,814,
+  行政 591,068, 其他 25,527.
+- **Administrative rules and interpretations: 102,950 to 103,029** (still 93 agencies).
+  財政部 10,659, 經濟部智慧財產局 7,185, 經濟部 6,677, 主計總處 721 (now listed above
+  公務人員保障暨培訓委員會).
+- **Acts: 1,018 to 1,022 (44,503 articles). Regulations: 7,253 to 7,254 (128,781
+  articles).** Repealed instruments unchanged at 3,525.
+- **Interpretation validity ledger: 69,616 to 80,339.**
+- **Appeal-chain relations: 4,550,703 to 4,366,833**, following a re-audit of the relation
+  set against the Judicial Yuan appeal-history lists.
+
 ## Data coverage update (2026-10-08)
 
 Documentation-only change; no package release (CLI still v2.3.0).
