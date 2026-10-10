@@ -36,7 +36,7 @@ bundle.
 | Constitutional Court judgments (憲判字) | 59 | same as above |
 | Tax interpretations (財政部) | 9,093 | same as above |
 | Interpretation validity ledger | 80,339 | repealed / ceased / superseded status, checked before citing |
-| Labour arbitration decisions (勞動部裁決委員會) | 450 | surfaced alongside labour queries, explicitly labelled as non-court decisions |
+| Labour arbitration decisions (勞動部裁決委員會) | 465 | surfaced alongside labour queries, explicitly labelled as non-court decisions |
 | Constitutional-tier instruments (憲法位階) | 7 | 228 articles: the Constitution, its additional articles, the implementation procedure and the martial-law orders. Searchable on [dr-legal.com.tw](https://dr-legal.com.tw) |
 | Acts (法律) | 1,022 / 44,503 articles | Named 法/律/條例/通則 per Central Regulation Standard Act §2. Same as above |
 | Regulations (命令) | 7,254 / 128,781 articles | Named 規程/規則/細則/辦法/綱要/標準/準則 per §3. Same as above |

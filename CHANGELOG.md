@@ -4,8 +4,8 @@
 
 Documentation-only change; no package release (CLI still v2.3.0).
 
-- **Labour arbitration decisions: 400 to 450.** Ten decisions published since May 2026
-  (114 年勞裁字第 36、38、45、47、53、56、57、58 號 and 115 年勞裁字第 4、6 號) and forty
+- **Labour arbitration decisions: 400 to 465.** Ten decisions published since May 2026
+  (114 年勞裁字第 36、38、45、47、53、56、57、58 號 and 115 年勞裁字第 4、6 號) and fifty-five
   decisions from 2011 and 2012 (100 and 101 年) are now included. The collection is
   refreshed weekly from the 勞動部不當勞動行為裁決委員會 public query page.
 - **Constitutional Court judgments: 57 to 59** (115 年憲判字第 6 號 and 第 7 號); the
