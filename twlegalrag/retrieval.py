@@ -111,19 +111,31 @@ def _no_proxy_entry_ok(entry: str) -> bool:
 
 @contextmanager
 def _env_override(values: dict):
+    """Temporarily set/unset env vars, restoring them on exit.
+
+    Removals are applied before assignments, and likewise on restore. Windows
+    ``os.environ`` is case-insensitive, so ``{"NO_PROXY": x, "no_proxy": None}``
+    would otherwise depend on dict order: popping ``no_proxy`` after writing
+    ``NO_PROXY`` deletes the value just written. That made
+    ``_no_proxy_entry_ok`` probe with no NO_PROXY at all, judge every entry
+    parseable, drop nothing, and let the InvalidURL crash v2.3.1 was meant to
+    prevent happen anyway on Windows.
+    """
     saved = {k: os.environ.get(k) for k in values}
     try:
         for k, v in values.items():
             if v is None:
                 os.environ.pop(k, None)
-            else:
+        for k, v in values.items():
+            if v is not None:
                 os.environ[k] = v
         yield
     finally:
         for k, v in saved.items():
             if v is None:
                 os.environ.pop(k, None)
-            else:
+        for k, v in saved.items():
+            if v is not None:
                 os.environ[k] = v
 
 
