@@ -18,6 +18,26 @@ Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律�
 > interpretations and Constitutional Court decisions, each with a citation check.
 > A source-available CLI (`twlegalrag`) talks to the same backend.
 
+## Quick connect: Taiwan law MCP server
+
+MCP endpoint (Streamable HTTP, OAuth):
+
+```
+https://tlr.dr-legal.com.tw/mcp
+```
+
+| Client | How to connect |
+|---|---|
+| Claude (web / desktop) | Connect from the [Claude connector directory](https://claude.ai/directory/taiwan-legal-rag), or add a custom connector and paste the endpoint |
+| Claude Code | `claude mcp add --transport http --scope user tlr https://tlr.dr-legal.com.tw/mcp` |
+| Codex CLI | `codex mcp add tlr --url https://tlr.dr-legal.com.tw/mcp`, then `codex mcp login tlr` |
+| ChatGPT, Gemini, Cursor, Microsoft 365 Copilot | Add a custom MCP connector and paste the endpoint; steps under "Other ways to connect" below |
+
+The first connection opens the Dr.Legal sign-in page (Google or email, free registration). No API key to request.
+Six tools: judgment search, judgment full text with appeal history, a citation-whitelisted bundle, current statute
+article lookup, administrative-interpretation lookup by serial number, and semantic search over administrative interpretations.
+Illustrated steps: [dr-legal.com.tw/en/mcp](https://dr-legal.com.tw/en/mcp).
+
 Taiwan Legal RAG CLI retrieves Taiwan court judgments from Legal Detective's
 public TLR endpoint and packages them for use with **your own AI tools**. It
 does **not** generate legal advice, does **not** call any LLM, and does **not**
@@ -239,8 +259,9 @@ still only sees the excerpts originally packed.
 pip install twlegalrag
 ```
 
-Depends only on `httpx` / `typer` / `rich`. No LLM packages or keys needed:
-this tool does not call LLMs.
+Depends only on `httpx` / `typer` / `rich`. No LLM packages or LLM keys needed:
+this tool does not call LLMs. Set a TLR connection key before first use (see
+"Configuration" below); without one, commands print where to get it.
 
 ## Usage
 
@@ -292,16 +313,17 @@ every judgment it returns, so the two always match. For the hosted Remote MCP
 for browsing but are moved to `unread_candidates` (not authority; must not be
 cited as court reasoning). See [`docs/mcp-anchor.md`](https://github.com/aa0101181514/tw-legal-rag/blob/main/docs/mcp-anchor.md).
 
-## Configuration (optional)
+## Configuration
 
-By default the CLI talks to the public endpoint `https://tlr.dr-legal.com.tw`,
-no key required. If the service operator issues you an API key, put it in an
-environment variable or `~/.twlegalrag/config.toml` (git-ignored; **never**
+By default the CLI talks to the public endpoint `https://tlr.dr-legal.com.tw`.
+Since 2026-10-30 REST calls need a credential: sign in to a Dr.Legal account
+(free), create a connection key on the [connection keys page](https://dr-legal.com.tw/mcp/keys),
+and put it in an environment variable or `~/.twlegalrag/config.toml` (git-ignored; **never**
 commit it):
 
 ```bash
 export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # default
-export TWLEGALRAG_TLR_API_KEY=...   # optional; NOT needed for the public endpoint (enterprise keys only)
+export TWLEGALRAG_TLR_API_KEY=...   # required since 2026-10-30: a self-serve connection key, an institutional key from info@dr-legal.com.tw, or an OAuth access token you obtained yourself
 ```
 No institutional key but want to call REST from your own code? Sign in once with the OAuth authorization-code + PKCE flow (a browser opens on the Dr.Legal sign-in page), then the refresh token keeps the session alive while you keep using it. A standard-library-only example is in [docs/tlr_oauth_cli.py](docs/tlr_oauth_cli.py): `python3 docs/tlr_oauth_cli.py login`, then `python3 docs/tlr_oauth_cli.py law 民法 184`. Tokens are stored in `~/.twlegalrag/tlr_oauth.json` (mode 600). Send an identifying User-Agent; the default `Python-urllib` is blocked at the edge.
 

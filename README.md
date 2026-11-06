@@ -14,8 +14,27 @@
 > `https://tlr.dr-legal.com.tw/mcp` 一個網址，AI 助理就能直接語義檢索 2,277 萬筆台灣裁判書、
 > 行政函釋與憲法法庭裁判，逐筆附引用查核。另提供同一後端的公開原始碼 CLI（`twlegalrag`）。
 >
-> Free, no-signup, no-API-key **Taiwan legal MCP server** + source-available CLI, backed by
-> Legal Detective's 22M-judgment semantic retrieval infrastructure.
+> Free, no API key; sign in to a Dr.Legal account when connecting. **Taiwan legal MCP server**
+> (Taiwan law MCP) + source-available CLI, backed by Dr.Legal's 22M-judgment semantic retrieval infrastructure.
+
+## 快速連接：台灣法律 MCP
+
+MCP 端點（Streamable HTTP，OAuth 授權）：
+
+```
+https://tlr.dr-legal.com.tw/mcp
+```
+
+| 工具 | 連接方式 |
+|---|---|
+| Claude（網頁／桌面） | 在 [Claude 連接器目錄](https://claude.ai/directory/taiwan-legal-rag) 按連接；或於 Connectors 新增自訂連接器，貼上端點 |
+| Claude Code | `claude mcp add --transport http --scope user tlr https://tlr.dr-legal.com.tw/mcp` |
+| Codex CLI | `codex mcp add tlr --url https://tlr.dr-legal.com.tw/mcp`，再執行 `codex mcp login tlr` |
+| ChatGPT、Gemini、Cursor、Microsoft 365 Copilot | 新增自訂 MCP 連接器並貼上端點，步驟見下方「其他接法」 |
+
+首次連接會開啟法律偵探登入頁，以 Google 或電子郵件帳號登入（免費註冊），不需申請 API 金鑰。
+提供六個工具：裁判檢索、裁判全文與審級關聯、附引用白名單的 bundle、現行法條查詢、行政函釋字號查詢、行政函釋語義檢索。
+圖文步驟見 [dr-legal.com.tw/mcp](https://dr-legal.com.tw/mcp)。
 
 Taiwan Legal RAG CLI retrieves Taiwan court judgments from Legal Detective's
 public TLR endpoint and packages them for use with **your own AI tools**. It
@@ -57,7 +76,7 @@ bundle.
 | 函釋效力履歷 | 84,831 筆 | 廢止／停止適用／被取代狀態追蹤，引用前驗效力 |
 
 法規範與裁判之取用方式：裁判書、行政規則走 hosted MCP 的語義檢索與字號精確查詢；
-憲法、法律、法規命令於 [dr-legal.com.tw](https://dr-legal.com.tw) 站上檢索。
+現行憲法、法律、法規命令的條文，以 hosted MCP 的 `get_law_article` 依法規名稱與條號精確查詢；法規全文檢索於 [dr-legal.com.tw](https://dr-legal.com.tw) 站上進行。
 
 裁判書為每日增量同步（司法院公開資料釋出有數日時差，極新宣判的裁判請以官網為準）。
 以上數字直接取自 production 資料庫並標註統計日，非估計值。
@@ -231,7 +250,8 @@ bundle」,不代表「法律推論正確」或「引文確實出自那篇」。*
 pip install twlegalrag
 ```
 
-只依賴 `httpx` / `typer` / `rich`。不需要任何 LLM 套件或金鑰，本工具不呼叫 LLM。
+只依賴 `httpx` / `typer` / `rich`。不需要任何 LLM 套件或 LLM 金鑰，本工具不呼叫 LLM。
+使用前先設定 TLR 連線金鑰（見下方「設定」）；未設定時，指令會提示取得方式。
 
 ## 使用
 
@@ -274,14 +294,14 @@ SELF-CHECK),要求下游模型在作答後逐一回頭核對:(a) 歸給某判決
 `judgments` 供瀏覽,但會移到 `unread_candidates`(非 authority,不可引為法院論理)。
 詳見 [`docs/mcp-anchor.zh.md`](docs/mcp-anchor.zh.md)。
 
-## 設定(選用)
+## 設定
 
-預設打公開端點 `https://tlr.dr-legal.com.tw`,免金鑰即可使用。若服務方發給你 API key,
-可放環境變數或 `~/.twlegalrag/config.toml`(已 git-ignore,**切勿** commit)：
+預設連接公開端點 `https://tlr.dr-legal.com.tw`。2026-10-30 起 REST 需帶憑證：登入法律偵探帳號（免費）後，
+到[連線金鑰頁](https://dr-legal.com.tw/mcp/keys)自助產生金鑰，放環境變數或 `~/.twlegalrag/config.toml`(已 git-ignore,**切勿** commit)：
 
 ```bash
 export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # 預設
-export TWLEGALRAG_TLR_API_KEY=...   # 2026-10-30 起 REST 必須帶憑證：向 info@dr-legal.com.tw 申請的機構金鑰，或自行以 OAuth 取得的 access token
+export TWLEGALRAG_TLR_API_KEY=...   # 2026-10-30 起 REST 必須帶憑證：自助產生的連線金鑰、向 info@dr-legal.com.tw 申請的機構金鑰，或自行以 OAuth 取得的 access token
 ```
 沒有機構金鑰、想在自己的程式裡直接呼叫 REST：走 OAuth 授權碼加 PKCE 流程登入一次（會開瀏覽器進法律偵探登入頁），之後以 refresh token 自動續期，持續使用不必重登。可直接用純標準函式庫的範例 [docs/tlr_oauth_cli.py](docs/tlr_oauth_cli.py)：`python3 docs/tlr_oauth_cli.py login`，然後 `python3 docs/tlr_oauth_cli.py law 民法 184`。範例會把 token 存在 `~/.twlegalrag/tlr_oauth.json`（權限 600）。注意：請求要帶能辨識程式的 User-Agent，預設的 `Python-urllib` 會被邊緣防護擋下。
 

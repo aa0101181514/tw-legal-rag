@@ -15,6 +15,24 @@
 > 行政解釈・憲法法廷判決をセマンティック検索し、引用チェック付きで返します。
 > 同じバックエンドに接続するソースコード公開 CLI（`twlegalrag`）も提供。
 
+## クイック接続：台湾法律 MCP
+
+MCP エンドポイント（Streamable HTTP、OAuth）：
+
+```
+https://tlr.dr-legal.com.tw/mcp
+```
+
+| クライアント | 接続方法 |
+|---|---|
+| Claude（Web／デスクトップ） | [Claude コネクタディレクトリ](https://claude.ai/directory/taiwan-legal-rag)から接続。またはカスタムコネクタを追加してエンドポイントを貼り付け |
+| Claude Code | `claude mcp add --transport http --scope user tlr https://tlr.dr-legal.com.tw/mcp` |
+| Codex CLI | `codex mcp add tlr --url https://tlr.dr-legal.com.tw/mcp` のあと `codex mcp login tlr` |
+| ChatGPT、Gemini、Cursor、Microsoft 365 Copilot | カスタム MCP コネクタを追加してエンドポイントを貼り付け。手順は下の「その他の接続方法」を参照 |
+
+初回接続時に Dr.Legal のログインページが開きます（Google またはメール、登録無料）。API キーの申請は不要です。
+ツールは 6 つ：判決検索、判決全文と審級関係、引用ホワイトリスト付き bundle、現行法条文の照会、行政解釈の発文番号照会、行政解釈のセマンティック検索。
+
 Taiwan Legal RAG CLI は、法律偵探の公開 TLR エンドポイントから台湾の裁判所判決を
 検索し、**あなた自身の AI ツール**で使える形にパッケージするツールです。本ツールは
 法的助言を**生成せず**、いかなる LLM も**呼び出さず**、第三者モデルの出力の意味的
@@ -214,8 +232,9 @@ Taiwan Legal RAG CLI は、法律偵探の公開 TLR エンドポイントから
 pip install twlegalrag
 ```
 
-依存は `httpx` / `typer` / `rich` のみ。LLM パッケージも API キーも不要です。
-本ツールは LLM を呼び出しません。
+依存は `httpx` / `typer` / `rich` のみ。LLM パッケージも LLM の API キーも不要です。
+本ツールは LLM を呼び出しません。初回利用前に TLR の接続キーを設定してください（下の「設定」参照）。
+未設定の場合、コマンドが取得方法を表示します。
 
 ## 使い方
 
@@ -266,16 +285,17 @@ v1.1 以降、`verification_instructions` には**見解レイヤーのセルフ
 なく、裁判所の論理として引用不可）。詳細は
 [`docs/mcp-anchor.md`](docs/mcp-anchor.ja.md)。
 
-## 設定（任意）
+## 設定
 
 デフォルトで公開エンドポイント `https://tlr.dr-legal.com.tw` に接続します。2026 年 10 月 30 日以降、
-REST には資格情報が必要です。サービス側から発行された API キーは、環境変数または
+REST には資格情報が必要です。Dr.Legal アカウント（無料）でログインし、[接続キーページ](https://dr-legal.com.tw/mcp/keys)で
+自分で発行した接続キーを、環境変数または
 `~/.twlegalrag/config.toml`（git-ignore 済み。**絶対に** commit しないこと）に
 設定します：
 
 ```bash
 export TWLEGALRAG_TLR_BASE_URL=https://tlr.dr-legal.com.tw   # デフォルト
-export TWLEGALRAG_TLR_API_KEY=...   # 2026-10-30 以降必須：info@dr-legal.com.tw に申請した機関キー、または自分で OAuth 取得した access token
+export TWLEGALRAG_TLR_API_KEY=...   # 2026-10-30 以降必須：自分で発行した接続キー、info@dr-legal.com.tw に申請した機関キー、または自分で OAuth 取得した access token
 ```
 機関キーがなく自分のプログラムから REST を呼びたい場合：OAuth 認可コード＋PKCE フローで一度ログインし（ブラウザで Dr.Legal のログインページが開きます）、以後は refresh token で自動更新されるので使い続ける限り再ログインは不要です。標準ライブラリのみの例が [docs/tlr_oauth_cli.py](docs/tlr_oauth_cli.py) にあります：`python3 docs/tlr_oauth_cli.py login` のあと `python3 docs/tlr_oauth_cli.py law 民法 184`。トークンは `~/.twlegalrag/tlr_oauth.json`（パーミッション 600）に保存されます。識別できる User-Agent を付けてください。既定の `Python-urllib` はエッジで遮断されます。
 

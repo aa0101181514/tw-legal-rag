@@ -165,6 +165,32 @@ def _make_http_client(timeout: float) -> httpx.Client:
     return client
 
 
+KEYS_PAGE = "https://dr-legal.com.tw/mcp/keys"
+
+
+def _auth_help(had_key: bool) -> str:
+    """Plain-text guidance for HTTP 401 (the endpoint requires a credential)."""
+    if had_key:
+        head = (
+            "TLR 拒絕了目前的憑證（HTTP 401）：金鑰可能已撤銷、輸入有誤，或 access token 已過期。\n"
+            "TLR rejected the configured credential (HTTP 401): the key may be revoked "
+            "or mistyped, or the access token has expired."
+        )
+    else:
+        head = (
+            "TLR 需要憑證（HTTP 401）：尚未設定連線金鑰。\n"
+            "TLR requires a credential (HTTP 401): no connection key is configured."
+        )
+    return (
+        f"{head}\n"
+        f"  1. 登入法律偵探帳號（免費），到 {KEYS_PAGE} 產生連線金鑰。\n"
+        f"     Sign in to a Dr.Legal account (free) and create a connection key at {KEYS_PAGE}\n"
+        "  2. export TWLEGALRAG_TLR_API_KEY=<金鑰 / key>\n"
+        "     或寫入 ~/.twlegalrag/config.toml（tlr 區段的 api_key）。\n"
+        "     Or set api_key in the tlr section of ~/.twlegalrag/config.toml."
+    )
+
+
 class TLRClient:
     """Thin client over the TLR retrieval API. Carries no LLM, no DB, no keys."""
 
@@ -221,6 +247,8 @@ class TLRClient:
                     "kill switch engaged."
                 )
             data = _loads_lenient(resp.text)
+            if resp.status_code == 401:
+                raise RetrievalError(_auth_help(bool(self.api_key)))
             if resp.status_code >= 400:
                 detail = data.get("detail", data) if isinstance(data, dict) else data
                 raise RetrievalError(f"TLR error (HTTP {resp.status_code}): {detail}")

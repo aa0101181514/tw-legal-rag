@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.3.2 (2026-11-06)
+
+- **CLI: HTTP 401 now prints plain guidance.** Since 2026-10-30 the REST endpoint requires a credential.
+  A command run without one used to print the raw error payload; it now says where to create a connection
+  key (`https://dr-legal.com.tw/mcp/keys`, free after signing in) and how to set `TWLEGALRAG_TLR_API_KEY`.
+  A rejected credential gets its own message. The credential itself is never echoed.
+- **Docs:** each README opens with a quick-connect section (MCP endpoint, Claude directory link, one-line
+  commands for Claude Code and Codex). The configuration sections describe self-serve connection keys.
+  The Chinese README states that current statute articles are served by `get_law_article`.
+- **Package metadata:** PyPI summary and keywords, and the MCP Registry description, now name the service
+  as a Taiwan law MCP server.
+
 ## Data coverage update (2026-11-04)
 
 Documentation-only change; no package release (CLI still v2.3.1).
