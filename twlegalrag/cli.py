@@ -78,6 +78,43 @@ def _client() -> TLRClient:
     return TLRClient(base_url=get_tlr_base_url(), api_key=get_tlr_api_key())
 
 
+def _warn_missing_fulltext(hits, read_n: int) -> None:
+    """Warn on stderr when reasoning text could not be fetched at all.
+
+    Only the first ``read_n`` hits were meant to be read (``--read-top``); the
+    rest are listing-only by request, which is not a problem. A hit with no
+    reasoning text still enters the bundle, but the citation check then has
+    nothing to compare against and silently degrades to ``needs_review`` — so
+    say so rather than letting the user assume the text was captured.
+    """
+    for j in hits[:read_n]:
+        if not j.fulltext:
+            err.print(
+                f"[yellow]⚠ {j.citation_text}: 未取得判決理由全文 "
+                f"(引用檢查將降級為待人工)。[/]"
+            )
+
+
+def _warn_truncated_bundle(data: dict) -> None:
+    """Warn on stderr for bundle entries whose reasoning text is incomplete.
+
+    Covers both causes: the retrieval paging cap and the bundle excerpt cap.
+    The bundle JSON carries ``fulltext_truncated`` either way, but a human
+    running ``pack`` sees only the success line unless we surface it here.
+    """
+    for j in data.get("judgments", []):
+        if not j.get("fulltext_truncated"):
+            continue
+        got = len(j.get("fulltext_excerpt") or "")
+        total = j.get("fulltext_total_chars")
+        of_total = f"/{total}" if total else ""
+        err.print(
+            f"[yellow]⚠ {j.get('citation_id')} {j.get('citation_text')}: "
+            f"理由全文僅收錄 {got}{of_total} 字, 其餘段落不在 bundle 內 "
+            f"— 勿據此斷定判決未論及某爭點。[/]"
+        )
+
+
 @app.command()
 def health() -> None:
     """Check the TLR retrieval service is up."""
@@ -112,6 +149,11 @@ def search(
                 if read
                 else c.search(query, search_type=search_type, max_results=n)
             )
+    except ValueError as e:
+        # Bad option value (e.g. --type bogus). Without this the raw ValueError
+        # escapes and typer prints a full traceback at the user.
+        err.print(f"[bold red]參數錯誤:[/] {e}")
+        raise typer.Exit(1)
     except RetrievalError as e:
         err.print(f"[bold red]檢索失敗:[/] {e}")
         raise typer.Exit(1)
@@ -123,6 +165,8 @@ def search(
     if not hits:
         console.print("[yellow]無結果[/]")
         return
+    if read:
+        _warn_missing_fulltext(hits, len(hits))
     table = Table(show_lines=False)
     table.add_column("#", justify="right", style="dim")
     table.add_column("字號", style="cyan")
@@ -185,7 +229,7 @@ def pack(
         None, "--out", "-o", help="輸出 bundle JSON 路徑 (預設印到 stdout)"
     ),
     read_top: Optional[int] = typer.Option(
-        None, "--read-top", help="抓全文的前 N 筆 (預設全部)"
+        None, "--read-top", min=0, help="抓全文的前 N 筆 (預設全部)"
     ),
 ) -> None:
     """Retrieve judgments and package them as a bundle for your own AI tool.
@@ -198,6 +242,9 @@ def pack(
         with _client() as c:
             err.print(f"[dim]檢索判決中... (TLR: {c.base_url})[/]")
             hits = c.search_and_read(question, max_results=n, read_top=read_top)
+    except ValueError as e:
+        err.print(f"[bold red]參數錯誤:[/] {e}")
+        raise typer.Exit(1)
     except RetrievalError as e:
         err.print(f"[bold red]檢索失敗:[/] {e}")
         raise typer.Exit(1)
@@ -208,6 +255,10 @@ def pack(
         err.print("[yellow]檢索無結果。[/]")
         raise typer.Exit(1)
     data = build_bundle(question, hits)
+    # Say out loud what the bundle only records in a JSON field: which hits came
+    # back with no reasoning text, and which ones were cut short.
+    _warn_missing_fulltext(hits, len(hits) if read_top is None else read_top)
+    _warn_truncated_bundle(data)
     payload = json.dumps(data, ensure_ascii=False, indent=2)
     if out:
         out.write_text(payload, encoding="utf-8")
