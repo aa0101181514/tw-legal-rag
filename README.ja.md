@@ -242,6 +242,9 @@ pip install twlegalrag
 # 1) 検索のみ：該当判決をリスト表示
 twlegalrag search "勞資 加班費" -n 5 --read
 
+# 裁判日・裁判所で絞り込み、新しい順 (クエリ内の日付では絞り込まれません)
+twlegalrag search "商標權 侵害" --from 2026-10-01 --to 2026-10-31 --court 智慧財產及商業法院 --newest
+
 # 2) パック：任意の AI に渡せるバンドルを生成 ★メインフロー
 twlegalrag pack "車禍對方全責,我可以求償什麼?" -o bundle.json
 #   → bundle.json を ChatGPT / Claude / Gemini に貼り付け、バンドル内の判決のみ

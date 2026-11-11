@@ -187,6 +187,23 @@ hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
   勿憑首窗斷定某論述不存在。
 - 詞彙檢索模式（`keyword` / `phrase`）改為相關性排序；零命中回空。
 
+## 2026-11-11：裁判日期與法院篩選（`search_judgments`／`search_bundle`）
+
+兩個判決檢索工具（以及 REST `/v1/search`、`/v1/pack`）新增四個選填參數，全部不給時行為與先前相同。
+
+- `date_from`、`date_to`：限定**裁判日期**，格式 `YYYY-MM-DD`。
+- `court`：法院全名，如 最高法院、智慧財產及商業法院、臺灣臺北地方法院。
+- `sort`：`relevance`（預設）或 `newest`（裁判日期新到舊）。
+
+說明：
+
+- 寫在 `query` 裡的日期或「最新」等字樣**不會**限定日期。伺服器偵測到這類字樣而未使用上述參數時，回應會附 `search_hint` 提示改用參數。
+- 有套用篩選時，回應以 `filters` 回顯實際條件；查無結果時 `filters.note` 會說明資料庫收錄通常落後裁判日約 7 至 10 日，查無不代表該裁判不存在。
+- 無法辨識的法院名稱或不存在的日期會回參數錯誤，不會默默忽略。
+- 完整裁判字號仍走精確調卷，不受篩選影響。
+- CLI：`twlegalrag search|pack "…" --from 2026-10-01 --to 2026-10-31 --court 智慧財產及商業法院 --newest`。
+
+
 ## 2026-09-01:`get_law_article` — 現行法條精確查詢(hosted MCP)
 
 hosted MCP 新增第六個工具 `get_law_article`(亦提供 REST

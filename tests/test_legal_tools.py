@@ -160,3 +160,48 @@ def test_cli_ref_search_table_and_reminder(monkeypatch):
     assert r.exit_code == 0, r.output
     assert "台財稅第881945861號" in r.output
     assert "命中段落" in r.output
+
+
+# ---------------------------------------------------------------------------
+# judgment-date / court filters (v2.3.3)
+# ---------------------------------------------------------------------------
+def test_search_sends_filters_only_when_given():
+    c = _fake_client({"/v1/search": {"results": []}})
+    c.search("商標權 侵害")
+    assert c.calls[-1][1] == {"query": "商標權 侵害", "search_type": "hybrid", "max_results": 5}
+    c.search("商標權 侵害", date_from="2026-10-01", date_to="2026-10-31",
+             court="智慧財產及商業法院", sort="newest")
+    body = c.calls[-1][1]
+    assert body["date_from"] == "2026-10-01" and body["date_to"] == "2026-10-31"
+    assert body["court"] == "智慧財產及商業法院" and body["sort"] == "newest"
+
+
+def test_search_rejects_bad_sort():
+    c = _fake_client({"/v1/search": {"results": []}})
+    try:
+        c.search("x", sort="oldest")
+    except ValueError:
+        return
+    raise AssertionError("sort=oldest should be rejected")
+
+
+def test_cli_search_filter_flags(monkeypatch):
+    c = _fake_client({"/v1/search": {"results": []}})
+    monkeypatch.setattr(cli_mod, "_client", lambda: _Ctx(c))
+    r = CliRunner().invoke(app, ["search", "商標權 侵害", "--from", "2026-10-01",
+                                 "--court", "最高法院", "--newest"])
+    assert r.exit_code == 0, r.output
+    body = c.calls[-1][1]
+    assert body["date_from"] == "2026-10-01" and body["court"] == "最高法院"
+    assert body["sort"] == "newest" and "date_to" not in body
+
+
+class _Ctx:
+    def __init__(self, c):
+        self.c = c
+
+    def __enter__(self):
+        return self.c
+
+    def __exit__(self, *a):
+        return False

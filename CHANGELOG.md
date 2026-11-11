@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.3.3 (2026-11-11)
+
+- **Judgment-date and court filters.** `search` and `pack` accept `--from` / `--to` (judgment date, YYYY-MM-DD), `--court` (full court name) and `--newest` (most recent first). `TLRClient.search()` / `search_and_read()` take the matching `date_from`, `date_to`, `court`, `sort` arguments; the hosted MCP tools `search_judgments` and `search_bundle` accept the same four optional inputs. Dates written inside the query text do not filter by date. See `docs/mcp-anchor.md`.
+- Hosted service fixes on the same day: a query such as "court name + 115年10月 + keywords" is no longer treated as a case number; `get_law_article` accepts 台 for 臺 in statute names; summary-court judgments now carry the correct parent district court name.
+
 ## Data coverage update (2026-11-11)
 
 Documentation-only change; no package release (CLI still v2.3.2).

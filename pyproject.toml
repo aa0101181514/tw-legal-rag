@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "twlegalrag"
-version = "2.3.2"
+version = "2.3.3"
 description = "Source-available CLI for Taiwan Legal RAG, the hosted Taiwan law MCP server (台灣法律 MCP): semantic search over 22M+ Taiwan court judgments, statute and administrative-interpretation lookup, and a bundle-level citation check. Retrieval-only; not legal advice."
 readme = "README.md"
 license = { text = "Elastic-2.0" }

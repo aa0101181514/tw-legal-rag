@@ -212,6 +212,29 @@ serials so the model never has to guess one from memory;
 - Lexical modes (`keyword` / `phrase`) now rank by relevance and return empty
   on zero hits.
 
+## 2026-11-11: judgment-date and court filters (`search_judgments` / `search_bundle`)
+
+Both judgment-search tools (and the REST `/v1/search`, `/v1/pack`) accept four
+optional inputs. Omitting all of them keeps the previous behaviour.
+
+- `date_from`, `date_to`: restrict the **judgment date** (裁判日期), `YYYY-MM-DD`.
+- `court`: a full court name, e.g. 最高法院, 智慧財產及商業法院, 臺灣臺北地方法院.
+- `sort`: `relevance` (default) or `newest` (most recent judgment date first).
+
+Notes:
+
+- Dates or words such as 最新 written inside `query` do **not** filter by date.
+  When the server sees them without the parameters above it adds a
+  `search_hint` to the response pointing to these inputs.
+- When filters are applied the response echoes them in `filters`. If nothing
+  matches, `filters.note` explains that the database usually lags the judgment
+  date by about 7 to 10 days; no match does not mean the judgment does not exist.
+- An unrecognised court name or an impossible date is rejected as invalid
+  input rather than silently ignored.
+- A full case number still triggers exact docket lookup and ignores the filters.
+- CLI: `twlegalrag search|pack "…" --from 2026-10-01 --to 2026-10-31 --court 智慧財產及商業法院 --newest`.
+
+
 ## 2026-09-01: `get_law_article` — exact current-statute lookup (hosted MCP)
 
 The hosted MCP adds a sixth tool, `get_law_article` (also available as REST

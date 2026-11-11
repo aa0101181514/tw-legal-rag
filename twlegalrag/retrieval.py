@@ -271,15 +271,29 @@ class TLRClient:
         *,
         search_type: str = "hybrid",
         max_results: int = 5,
+        date_from: Optional[str] = None,
+        date_to: Optional[str] = None,
+        court: Optional[str] = None,
+        sort: Optional[str] = None,
     ) -> list[Judgment]:
-        """Search judgments. Returns Layer-1 listings (no reasoning text yet)."""
+        """Search judgments. Returns Layer-1 listings (no reasoning text yet).
+
+        Optional filters (sent only when given): ``date_from`` / ``date_to``
+        restrict the judgment date (YYYY-MM-DD), ``court`` takes a full court
+        name (e.g. 最高法院), and ``sort="newest"`` orders by judgment date,
+        most recent first. Dates written inside ``query`` do NOT filter.
+        """
         if search_type not in ("hybrid", "keyword", "phrase"):
             raise ValueError("search_type must be hybrid | keyword | phrase")
+        if sort not in (None, "relevance", "newest"):
+            raise ValueError("sort must be relevance | newest")
         max_results = max(1, min(int(max_results), 10))  # server caps at 10
-        data = self._post(
-            _SEARCH_PATH,
-            {"query": query, "search_type": search_type, "max_results": max_results},
-        )
+        body: dict = {"query": query, "search_type": search_type, "max_results": max_results}
+        for key, val in (("date_from", date_from), ("date_to", date_to),
+                         ("court", court), ("sort", sort)):
+            if val:
+                body[key] = val
+        data = self._post(_SEARCH_PATH, body)
         results = data.get("results", []) if isinstance(data, dict) else []
         # Server-side retrieval note (e.g. exact docket lookup engaged, or
         # "case number not found — do not describe the case from memory").
@@ -368,13 +382,20 @@ class TLRClient:
         search_type: str = "hybrid",
         max_results: int = 5,
         read_top: Optional[int] = None,
+        date_from: Optional[str] = None,
+        date_to: Optional[str] = None,
+        court: Optional[str] = None,
+        sort: Optional[str] = None,
     ) -> list[Judgment]:
         """Search then fetch full text for the top ``read_top`` hits (default all).
 
         This is the one-call retrieval the CLI uses: locate via search, then read
         reasoning text so the bundle and the citation check have real holding text.
         """
-        hits = self.search(query, search_type=search_type, max_results=max_results)
+        hits = self.search(
+            query, search_type=search_type, max_results=max_results,
+            date_from=date_from, date_to=date_to, court=court, sort=sort,
+        )
         n = len(hits) if read_top is None else min(read_top, len(hits))
         for j in hits[:n]:
             try:

@@ -38,9 +38,21 @@ def main() -> int:
     parser.add_argument(
         "-n", type=int, default=5, help="number of judgments to retrieve (1-10)"
     )
+    parser.add_argument("--from", dest="date_from", help="earliest judgment date, YYYY-MM-DD")
+    parser.add_argument("--to", dest="date_to", help="latest judgment date, YYYY-MM-DD")
+    parser.add_argument("--court", help="full court name, e.g. 最高法院")
+    parser.add_argument("--newest", action="store_true", help="most recent judgment date first")
     args = parser.parse_args()
 
     cmd = _cli_command() + ["pack", args.question, "-n", str(args.n)]
+    if args.date_from:
+        cmd += ["--from", args.date_from]
+    if args.date_to:
+        cmd += ["--to", args.date_to]
+    if args.court:
+        cmd += ["--court", args.court]
+    if args.newest:
+        cmd += ["--newest"]
     try:
         # The CLI prints the bundle JSON to stdout and progress to stderr;
         # inherit both so the caller sees exactly what the CLI produced.
