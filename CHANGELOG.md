@@ -1,8 +1,12 @@
+# Changelog
+
+## Hosted service update (2026-11-12)
+
+- **Relevance check before reading.** `search_judgments` and `search_bundle` now confirm that the matched passage is directly relevant before reading a judgment into the bundle. Results that are not relevant enough are listed in `unread_candidates` with `reason: "low_relevance"` and the read slot goes to the next result. One judgment issued under several case numbers is read once (`reason: "duplicate_judgment"`). When nothing is relevant enough, `allowed_citations` is empty and the response carries `relevance_note`. No client change is needed; see `docs/mcp-anchor.md`.
+
 ## v2.3.4 (2026-11-12)
 
 - **Case-category filter.** `search` and `pack` accept `--case-type` (刑事, 民事 or 行政). `TLRClient.search()` / `search_and_read()` take the matching `case_type` argument; the hosted MCP tools `search_judgments` and `search_bundle` and the REST endpoints accept `case_type` as an optional input. Omitting it keeps the previous behaviour.
-
-# Changelog
 
 ## v2.3.3 (2026-11-11)
 

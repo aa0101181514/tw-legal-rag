@@ -218,6 +218,22 @@ hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
 - CLI：`twlegalrag search|pack "…" --case-type 刑事`。
 
 
+## 2026-11-12：讀入前的相關度確認與重複裁判合併（`search_judgments`／`search_bundle`）
+
+伺服器把裁判理由讀入 bundle 之前，會先確認命中的段落與查詢是否直接相關。輸入參數沒有變動，回應多了兩種 `reason` 與一個選填欄位。
+
+- `reason: "low_relevance"`：命中段落與查詢的相關度不足，該裁判的理由沒有讀入 bundle，不在 `allowed_citations` 內。讀全文的名額由排在後面的結果遞補。
+- `reason: "duplicate_judgment"`：同一份裁判書以多個字號出現時只讀一次，其餘列為未讀，`note` 會指出已讀的那一筆 `citation_id`，請引用該筆。
+- `relevance_note`：所有候選的相關度都不足時，`allowed_citations` 為空，並附這個欄位說明沒有任何裁判被讀入。此時請改寫查詢，或向使用者說明本資料庫未找到直接對題的裁判；這不代表該類裁判不存在。
+
+說明：
+
+- 名次與 `citation_id` 的編號不變，改變的只有哪幾筆被讀入。
+- 被列為未讀的裁判仍在 `judgments` 供瀏覽，也可用 `get_judgment_fulltext` 補讀全文後再決定是否採用。
+- 完整裁判字號的精確調卷、`sort=newest`，以及 `search_type` 為 `keyword` 或 `phrase` 的查詢不做相關度確認。
+- 用戶端不需要修改。只認 `allowed_citations` 的既有整合會自動得到較乾淨的引用範圍。
+
+
 ## 2026-09-01:`get_law_article` — 現行法條精確查詢(hosted MCP)
 
 hosted MCP 新增第六個工具 `get_law_article`(亦提供 REST

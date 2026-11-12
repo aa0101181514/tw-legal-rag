@@ -255,6 +255,35 @@ Notes:
 - CLI: `twlegalrag search|pack "…" --case-type 刑事`.
 
 
+## 2026-11-12: relevance check before reading, and merged duplicate judgments (`search_judgments` / `search_bundle`)
+
+Before a judgment's reasoning is read into the bundle, the server now checks
+whether the passage that matched is directly relevant to the query. Inputs are
+unchanged; the response gains two `reason` values and one optional field.
+
+- `reason: "low_relevance"`: the matched passage is not relevant enough to the
+  query, so the judgment's reasoning was not read into the bundle and it is not
+  in `allowed_citations`. The read slot goes to the next result instead.
+- `reason: "duplicate_judgment"`: when one judgment appears under more than one
+  case number it is read once. The others are listed as unread, and `note`
+  names the `citation_id` that was read; cite that one.
+- `relevance_note`: when no candidate is relevant enough, `allowed_citations`
+  is empty and this field says that nothing was read. Rephrase the query, or
+  tell the user that no on-point judgment was found in this database; that does
+  not mean none exists.
+
+Notes:
+
+- Ranking and `citation_id` numbering do not change. Only which results are
+  read changes.
+- Unread judgments stay in `judgments` for browsing and can still be read with
+  `get_judgment_fulltext` before deciding whether to rely on them.
+- Exact lookup by full case number, `sort=newest`, and queries with
+  `search_type` set to `keyword` or `phrase` skip the relevance check.
+- No client change is needed. Integrations that already cite only
+  `allowed_citations` get a cleaner citation scope automatically.
+
+
 ## 2026-09-01: `get_law_article` — exact current-statute lookup (hosted MCP)
 
 The hosted MCP adds a sixth tool, `get_law_article` (also available as REST
