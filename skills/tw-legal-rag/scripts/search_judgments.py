@@ -42,6 +42,7 @@ def main() -> int:
     parser.add_argument("--to", dest="date_to", help="latest judgment date, YYYY-MM-DD")
     parser.add_argument("--court", help="full court name, e.g. 最高法院")
     parser.add_argument("--newest", action="store_true", help="most recent judgment date first")
+    parser.add_argument("--case-type", dest="case_type", choices=["刑事", "民事", "行政"], help="case category")
     args = parser.parse_args()
 
     cmd = _cli_command() + ["pack", args.question, "-n", str(args.n)]
@@ -53,6 +54,8 @@ def main() -> int:
         cmd += ["--court", args.court]
     if args.newest:
         cmd += ["--newest"]
+    if args.case_type:
+        cmd += ["--case-type", args.case_type]
     try:
         # The CLI prints the bundle JSON to stdout and progress to stderr;
         # inherit both so the caller sees exactly what the CLI produced.

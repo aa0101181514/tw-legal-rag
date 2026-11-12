@@ -204,6 +204,20 @@ hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
 - CLI：`twlegalrag search|pack "…" --from 2026-10-01 --to 2026-10-31 --court 智慧財產及商業法院 --newest`。
 
 
+## 2026-11-12：案件類別篩選（`search_judgments`／`search_bundle`）
+
+兩個判決檢索工具（以及 REST `/v1/search`、`/v1/pack`）新增選填參數 `case_type`，值為 `刑事`、`民事` 或 `行政`。不給時行為與先前相同。
+
+說明：
+
+- 問題明顯屬於某一類程序時使用；不確定時不要帶，同一爭點可能出現在其他類別的裁判。
+- 憲法法庭裁判、懲戒裁判等不屬於上述三類，指定類別時不會回傳。
+- 有套用時，回應的 `filters` 會回顯 `case_type`；查無結果時 `filters.note` 會提示可拿掉 `case_type` 再試。
+- 無法辨識的類別，或類別與 `court` 互相矛盾時，會回參數錯誤，不會默默忽略。
+- 完整裁判字號仍走精確調卷，不受篩選影響。
+- CLI：`twlegalrag search|pack "…" --case-type 刑事`。
+
+
 ## 2026-09-01:`get_law_article` — 現行法條精確查詢(hosted MCP)
 
 hosted MCP 新增第六個工具 `get_law_article`(亦提供 REST

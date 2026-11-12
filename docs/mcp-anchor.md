@@ -235,6 +235,26 @@ Notes:
 - CLI: `twlegalrag search|pack "…" --from 2026-10-01 --to 2026-10-31 --court 智慧財產及商業法院 --newest`.
 
 
+## 2026-11-12: case-category filter (`search_judgments` / `search_bundle`)
+
+Both judgment-search tools (and the REST `/v1/search`, `/v1/pack`) accept an
+optional `case_type` input: `刑事` (criminal), `民事` (civil) or `行政`
+(administrative). Omitting it keeps the previous behaviour.
+
+Notes:
+
+- Use it when the question clearly belongs to one type of proceeding. When
+  unsure, leave it out: the same issue may be decided in another category.
+- Constitutional Court and disciplinary decisions fall outside the three
+  categories and are not returned when a category is given.
+- When applied, the response echoes `case_type` in `filters`. If nothing
+  matches, `filters.note` suggests retrying without `case_type`.
+- An unrecognised category, or one that contradicts `court`, is rejected as
+  invalid input rather than silently ignored.
+- A full case number still triggers exact docket lookup and ignores the filter.
+- CLI: `twlegalrag search|pack "…" --case-type 刑事`.
+
+
 ## 2026-09-01: `get_law_article` — exact current-statute lookup (hosted MCP)
 
 The hosted MCP adds a sixth tool, `get_law_article` (also available as REST

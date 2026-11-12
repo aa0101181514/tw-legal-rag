@@ -1,3 +1,7 @@
+## v2.3.4 (2026-11-12)
+
+- **Case-category filter.** `search` and `pack` accept `--case-type` (刑事, 民事 or 行政). `TLRClient.search()` / `search_and_read()` take the matching `case_type` argument; the hosted MCP tools `search_judgments` and `search_bundle` and the REST endpoints accept `case_type` as an optional input. Omitting it keeps the previous behaviour.
+
 # Changelog
 
 ## v2.3.3 (2026-11-11)

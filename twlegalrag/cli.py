@@ -107,14 +107,15 @@ def search(
     date_to: Optional[str] = typer.Option(None, "--to", help="裁判日期迄日 YYYY-MM-DD"),
     court: Optional[str] = typer.Option(None, "--court", help="法院全名，如 最高法院、智慧財產及商業法院"),
     newest: bool = typer.Option(False, "--newest", help="依裁判日期新到舊排序"),
+    case_type: Optional[str] = typer.Option(None, "--case-type", help="案件類別：刑事、民事、行政"),
 ) -> None:
     """Retrieval only — list matching judgments (no LLM, no cost)."""
     try:
         with _client() as c:
             hits = (
-                c.search_and_read(query, search_type=search_type, max_results=n, date_from=date_from, date_to=date_to, court=court, sort="newest" if newest else None)
+                c.search_and_read(query, search_type=search_type, max_results=n, date_from=date_from, date_to=date_to, court=court, sort="newest" if newest else None, case_type=case_type)
                 if read
-                else c.search(query, search_type=search_type, max_results=n, date_from=date_from, date_to=date_to, court=court, sort="newest" if newest else None)
+                else c.search(query, search_type=search_type, max_results=n, date_from=date_from, date_to=date_to, court=court, sort="newest" if newest else None, case_type=case_type)
             )
     except RetrievalError as e:
         err.print(f"[bold red]檢索失敗:[/] {e}")
@@ -195,6 +196,7 @@ def pack(
     date_to: Optional[str] = typer.Option(None, "--to", help="裁判日期迄日 YYYY-MM-DD"),
     court: Optional[str] = typer.Option(None, "--court", help="法院全名，如 最高法院、智慧財產及商業法院"),
     newest: bool = typer.Option(False, "--newest", help="依裁判日期新到舊排序"),
+    case_type: Optional[str] = typer.Option(None, "--case-type", help="案件類別：刑事、民事、行政"),
 ) -> None:
     """Retrieve judgments and package them as a bundle for your own AI tool.
 
@@ -206,7 +208,7 @@ def pack(
         with _client() as c:
             err.print(f"[dim]檢索判決中... (TLR: {c.base_url})[/]")
             hits = c.search_and_read(
-                question, max_results=n, read_top=read_top, date_from=date_from, date_to=date_to, court=court, sort="newest" if newest else None,
+                question, max_results=n, read_top=read_top, date_from=date_from, date_to=date_to, court=court, sort="newest" if newest else None, case_type=case_type,
             )
     except RetrievalError as e:
         err.print(f"[bold red]檢索失敗:[/] {e}")

@@ -272,6 +272,9 @@ twlegalrag search "勞資 加班費" -n 5 --read
 # Restrict by judgment date and court, newest first (dates inside the query text do not filter)
 twlegalrag search "商標權 侵害" --from 2026-10-01 --to 2026-10-31 --court 智慧財產及商業法院 --newest
 
+# Restrict to one case category (刑事 criminal, 民事 civil, 行政 administrative)
+twlegalrag search "小額付費 詐欺得利" --case-type 刑事
+
 # 2) Pack: produce a bundle you can hand to any AI  ★ main flow
 twlegalrag pack "車禍對方全責,我可以求償什麼?" -o bundle.json
 #   → paste bundle.json to ChatGPT / Claude / Gemini and require it to cite

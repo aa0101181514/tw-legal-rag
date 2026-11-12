@@ -205,3 +205,31 @@ class _Ctx:
 
     def __exit__(self, *a):
         return False
+
+
+# ---------------------------------------------------------------------------
+# case_type filter (v2.3.4)
+# ---------------------------------------------------------------------------
+def test_search_sends_case_type_only_when_given():
+    c = _fake_client({"/v1/search": {"results": []}})
+    c.search("詐欺得利")
+    assert "case_type" not in c.calls[-1][1]
+    c.search("詐欺得利", case_type="刑事")
+    assert c.calls[-1][1]["case_type"] == "刑事"
+
+
+def test_search_rejects_bad_case_type():
+    c = _fake_client({"/v1/search": {"results": []}})
+    try:
+        c.search("x", case_type="家事")
+    except ValueError:
+        return
+    raise AssertionError("case_type=家事 should be rejected")
+
+
+def test_cli_search_case_type_flag(monkeypatch):
+    c = _fake_client({"/v1/search": {"results": []}})
+    monkeypatch.setattr(cli_mod, "_client", lambda: _Ctx(c))
+    r = CliRunner().invoke(app, ["search", "詐欺得利", "--case-type", "刑事"])
+    assert r.exit_code == 0, r.output
+    assert c.calls[-1][1]["case_type"] == "刑事"
