@@ -1,5 +1,13 @@
 # Changelog
 
+## Data coverage update (2026-11-21)
+
+Documentation-only change; no package release (CLI still v2.3.4).
+
+- **Court judgments: 22,795,389 to 22,846,886** (+51,497). Court-level and case-category breakdowns refreshed across all three READMEs.
+- **Administrative rules and interpretations: 107,889 to 107,921**; 107 issuing agencies. Per-agency counts refreshed.
+- **Regulations in force: 7,255 to 7,259 instruments, 128,753 to 128,773 articles.** Appeal-chain relations: 3,303,924. Interpretation validity ledger: 85,024. Labour arbitration decisions: 467.
+
 ## Hosted service update (2026-11-12)
 
 - **Relevance check before reading.** `search_judgments` and `search_bundle` now confirm that the matched passage is directly relevant before reading a judgment into the bundle. Results that are not relevant enough are listed in `unread_candidates` with `reason: "low_relevance"` and the read slot goes to the next result. One judgment issued under several case numbers is read once (`reason: "duplicate_judgment"`). When nothing is relevant enough, `allowed_citations` is empty and the response carries `relevance_note`. No client change is needed; see `docs/mcp-anchor.md`.
