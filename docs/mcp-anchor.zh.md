@@ -189,7 +189,7 @@ hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
 
 ## 2026-11-11：裁判日期與法院篩選（`search_judgments`／`search_bundle`）
 
-兩個判決檢索工具（以及 REST `/v1/search`、`/v1/pack`）新增四個選填參數，全部不給時行為與先前相同。
+兩個裁判檢索工具及其 REST 端點均接受以下選填參數。自 2026-11-22 起，預設搜尋也可直接在查詢中指定最高法院或最高行政法院。另傳 `court` 時，以該參數為準。
 
 - `date_from`、`date_to`：限定**裁判日期**，格式 `YYYY-MM-DD`。
 - `court`：法院全名，如 最高法院、智慧財產及商業法院、臺灣臺北地方法院。
@@ -206,7 +206,7 @@ hosted MCP 新增第五個工具 `search_legal_references`(亦提供 REST
 
 ## 2026-11-12：案件類別篩選（`search_judgments`／`search_bundle`）
 
-兩個判決檢索工具（以及 REST `/v1/search`、`/v1/pack`）新增選填參數 `case_type`，值為 `刑事`、`民事` 或 `行政`。不給時行為與先前相同。
+兩個裁判檢索工具及其 REST 端點均接受選填參數 `case_type`，值為 `刑事`、`民事` 或 `行政`。
 
 說明：
 

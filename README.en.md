@@ -26,6 +26,10 @@ Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律�
 > interpretations and Constitutional Court decisions, each with a citation check.
 > A source-available CLI (`twlegalrag`) talks to the same backend.
 
+## Search by issuing court
+
+Since 2026-11-22, you can name Taiwan’s Supreme Court (最高法院) or Supreme Administrative Court (最高行政法院) directly in a judgment search. For example, `最高法院民事判決 租賃押金返還` searches Supreme Court civil judgments about the return of a rental deposit. You can also ask for decisions by other courts that cite the Supreme Court. This works with existing MCP connections and the CLI. [Changelog](CHANGELOG.md#2026-11-22)
+
 ## Quick connect: Taiwan law MCP server
 
 MCP endpoint (Streamable HTTP, OAuth):

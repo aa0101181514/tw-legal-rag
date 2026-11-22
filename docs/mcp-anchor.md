@@ -214,8 +214,7 @@ serials so the model never has to guess one from memory;
 
 ## 2026-11-11: judgment-date and court filters (`search_judgments` / `search_bundle`)
 
-Both judgment-search tools (and the REST `/v1/search`, `/v1/pack`) accept four
-optional inputs. Omitting all of them keeps the previous behaviour.
+Both judgment-search tools and their REST endpoints accept the optional inputs below. Since 2026-11-22, the default search also recognizes an explicit request for Taiwan’s Supreme Court or Supreme Administrative Court in the query. A supplied `court` parameter takes precedence.
 
 - `date_from`, `date_to`: restrict the **judgment date** (裁判日期), `YYYY-MM-DD`.
 - `court`: a full court name, e.g. 最高法院, 智慧財產及商業法院, 臺灣臺北地方法院.
@@ -239,7 +238,7 @@ Notes:
 
 Both judgment-search tools (and the REST `/v1/search`, `/v1/pack`) accept an
 optional `case_type` input: `刑事` (criminal), `民事` (civil) or `行政`
-(administrative). Omitting it keeps the previous behaviour.
+(administrative).
 
 Notes:
 

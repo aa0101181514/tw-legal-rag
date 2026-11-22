@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-22
+
+The default judgment search now recognizes an explicit request for decisions issued by Taiwan’s Supreme Court (最高法院) or Supreme Administrative Court (最高行政法院). A request for other courts’ decisions citing the Supreme Court keeps those other courts in scope. An explicit `court` parameter takes precedence.
+
+This is available through existing MCP connections and the CLI.
+
 ## Data coverage update (2026-11-21)
 
 Documentation-only change; no package release (CLI still v2.3.4).

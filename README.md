@@ -25,6 +25,10 @@
 > Free, no API key; sign in to a Dr.Legal account when connecting. **Taiwan legal MCP server**
 > (Taiwan law MCP) + source-available CLI, backed by Dr.Legal's 22M-judgment semantic retrieval infrastructure.
 
+## 依作成法院查找裁判
+
+自 2026-11-22 起，裁判搜尋可直接在查詢中指定最高法院或最高行政法院。例如輸入 `最高法院民事判決 租賃押金返還`，就會在最高法院的民事判決中搜尋押金返還爭議。如果你想找的是其他法院引用最高法院見解的裁判，也可以在查詢中寫明。既有 MCP 連線與 CLI 可直接使用。[更新紀錄](CHANGELOG.md#2026-11-22)
+
 ## 快速連接：台灣法律 MCP
 
 MCP 端點（Streamable HTTP，OAuth 授權）：
