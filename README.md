@@ -8,6 +8,14 @@
 
 </div>
 
+<p align="center">
+  <a href="https://github.com/aa0101181514/tw-legal-rag/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aa0101181514/tw-legal-rag?style=social"></a>
+  <a href="https://pypi.org/project/twlegalrag/"><img alt="PyPI" src="https://img.shields.io/pypi/v/twlegalrag"></a>
+  <a href="https://glama.ai/mcp/servers/aa0101181514/tw-legal-rag"><img alt="Glama MCP server score" src="https://glama.ai/mcp/servers/aa0101181514/tw-legal-rag/badges/score.svg"></a>
+</p>
+
+<p align="center">覺得好用，請按右上角 ⭐ Star，讓更多人找得到。</p>
+
 ---
 
 > **免費、免 API key，連接時登入法律偵探帳號** 的台灣法律 MCP 伺服器：在 Claude、ChatGPT、Gemini CLI、Microsoft 365 Copilot、Codex、Cursor 加入

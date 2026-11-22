@@ -8,6 +8,14 @@
 
 </div>
 
+<p align="center">
+  <a href="https://github.com/aa0101181514/tw-legal-rag/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aa0101181514/tw-legal-rag?style=social"></a>
+  <a href="https://pypi.org/project/twlegalrag/"><img alt="PyPI" src="https://img.shields.io/pypi/v/twlegalrag"></a>
+  <a href="https://glama.ai/mcp/servers/aa0101181514/tw-legal-rag"><img alt="Glama MCP server score" src="https://glama.ai/mcp/servers/aa0101181514/tw-legal-rag/badges/score.svg"></a>
+</p>
+
+<p align="center">お役に立ちましたら、右上の ⭐ Star を押していただけると、より多くの方に届きます。</p>
+
 ---
 
 > **無料・API キー不要、接続時に Dr.Legal アカウントでログイン**の台湾法律 **MCP サーバー**：Claude、ChatGPT、Gemini CLI、Microsoft 365 Copilot、Codex、Cursor に

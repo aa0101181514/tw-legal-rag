@@ -10,6 +10,14 @@ Author: Aaron Huang (黃思齊), attorney-at-law, founder of [Dr.Legal / 法律�
 
 </div>
 
+<p align="center">
+  <a href="https://github.com/aa0101181514/tw-legal-rag/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aa0101181514/tw-legal-rag?style=social"></a>
+  <a href="https://pypi.org/project/twlegalrag/"><img alt="PyPI" src="https://img.shields.io/pypi/v/twlegalrag"></a>
+  <a href="https://glama.ai/mcp/servers/aa0101181514/tw-legal-rag"><img alt="Glama MCP server score" src="https://glama.ai/mcp/servers/aa0101181514/tw-legal-rag/badges/score.svg"></a>
+</p>
+
+<p align="center">If TLR is useful, a ⭐ Star at the top right helps others find it.</p>
+
 ---
 
 > **Free, no API key; sign in to a Dr.Legal account when connecting.** A Taiwan legal **MCP server**: add one URL
